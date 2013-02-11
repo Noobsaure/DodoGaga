@@ -89,7 +89,7 @@ public class SpritesetMap {
 		List<Sprite> list = new ArrayList<Sprite>();
 		
 		int iStart = (int) (sx/Cst.TILE_W) + 1;
-		int jStart = (int) (sy/Cst.TILE_HH) +2;
+		int jStart = (int) (sy/Cst.TILE_HH) + 2;
 		int iEnd = (int) (sw/Cst.TILE_W);
 		int jEnd = (int) (sh/Cst.TILE_HH) - 1;
 		
@@ -114,7 +114,7 @@ public class SpritesetMap {
 				spriteTile.setPosition(pos.x, pos.y - spriteTile.getElevation());
 				spriteTile.draw(batch);
 				
-				/*
+				
 				events = Game.map.eventsAt(i,j);
 				if(events != null){
 					for(GameEvent event : events){
@@ -133,7 +133,7 @@ public class SpritesetMap {
 
 				for(Sprite spr : list){
 					spr.draw(batch);
-				}*/
+				}
 				
 			}
 		}
