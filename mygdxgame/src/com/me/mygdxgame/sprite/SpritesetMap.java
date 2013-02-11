@@ -37,7 +37,6 @@ public class SpritesetMap {
 
 		createSpriteBatches();
 		createTilemap();
-		createFixedSprites();
 	}
 
 	private void createSpriteBatches(){
@@ -67,11 +66,6 @@ public class SpritesetMap {
 		highlightedJ = isoToJ(x,y);
 	}
 
-	private void createFixedSprites(){
-	}
-
-	private int isoToI(float x, float y) {return (int)(y/Cst.TILE_HH + x/Cst.TILE_HW)/2;}
-	private int isoToJ(float x, float y) {return (int)(y/Cst.TILE_HH - x/Cst.TILE_HW)/2;}
 
 	public void update(){
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
