@@ -98,10 +98,9 @@ public class SpritesetMap {
 		iEnd = Math.min(iEnd, Game.map.getWidthInTiles());
 		jEnd = Math.min(jEnd, Game.map.getHeightInTiles());
 		
-		System.out.println(iStart + " " + jStart + "             " + iEnd);
-		for(int i=iStart; i < iEnd; i++) {
-			for(int j=jStart; j < jEnd; j++) {
-				
+		for(int j=jStart; j < jEnd; j++) {
+			for(int i=iStart; i < iEnd; i++) {
+			
 				pos.y = j*Cst.TILE_HH; //+cam y
 				if (j % 2 == 0) {
 					pos.x = i*Cst.TILE_W; //+cam x
