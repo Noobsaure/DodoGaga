@@ -53,17 +53,6 @@ public class GameMap implements TileBasedMap {
 		}
 	}
 	
-	public void isoToI(float x, float y) {
-	    float tx = x - Cst.TILE_HW;
-	    float ty = y - Cst.TILE_HH;
-
-	    x = Math.floor((pX + (pY - hHeight) * 2) / this.tileset.tileSize.width);
-	    y = Math.floor((pY - (pX - hWidth) * 0.5) / this.tileset.tileSize.height);
-
-	    tx = Math.floor((x - y) / 2) + 1 + this.camera.x;
-	    ty = y + x + 2 + this.camera.y;
-	}
-	
 	public void convertToScreen(Vector2 point){
 		float x = point.x / Cst.TILE_W;
 		float y = point.y / Cst.TILE_H;
