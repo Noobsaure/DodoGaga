@@ -3,6 +3,8 @@ package com.me.mygdxgame.game;
 import ia.pathfinding.Mover;
 import ia.pathfinding.TileBasedMap;
 
+import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -25,6 +27,7 @@ public class GameMap implements TileBasedMap {
 	private final int HEIGHT;
 
 	private boolean[][] visited;
+	//private final BufferedImage mouseMap = new Bu;
 	
 	public GameMap(int width, int height) {
 		this.WIDTH = width;
@@ -51,6 +54,15 @@ public class GameMap implements TileBasedMap {
 			event = new GameEvent(rand.nextInt(2),tilePosition,innerTilePosition);
 			refreshEventPosition(tilePosition.x, tilePosition.y, event);
 		}
+	}
+	
+	public Point2i isoToTile(float x, float y) {
+		float innerX = x % Cst.TILE_W;
+		float innerY = y % Cst.TILE_H;
+		//Color c = new Color(mouseMap.getRGB(innerX, innerY);
+		
+		
+		return new Point2i(0,0);
 	}
 	
 	public void convertToScreen(Vector2 point){
