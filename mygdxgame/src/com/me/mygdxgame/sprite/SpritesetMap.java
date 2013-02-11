@@ -76,11 +76,11 @@ public class SpritesetMap {
 
 		pickRay = Game.cam.getPickRay(Gdx.graphics.getWidth(), 0);
 		Intersector.intersectRayPlane(pickRay, GameMap.getXyplane(), inter);
-		float sw = inter.x;
+		float sw = inter.x - sx;
 
 		pickRay = Game.cam.getPickRay(0, Gdx.graphics.getHeight());
 		Intersector.intersectRayPlane(pickRay, GameMap.getXyplane(), inter);
-		float sh = inter.y;
+		float sh = inter.y - sy;
 
 		Point2i pos = new Point2i(0, 0);
 		SpriteTile spriteTile;
@@ -88,25 +88,14 @@ public class SpritesetMap {
 		List<GameEvent> events;
 		List<Sprite> list = new ArrayList<Sprite>();
 		
-		int iStart = (int) (sx/Cst.TILE_W) + 1;
-		int jStart = (int) (sy/Cst.TILE_HH) +2;
-		int iEnd = (int) (sw/Cst.TILE_W);
-		int jEnd = (int) (sh/Cst.TILE_HH) - 1;
-		
-		iStart = Math.max(iStart, 0);
-		jStart = Math.max(jStart, 0);
-		iEnd = Math.min(iEnd, Game.map.getWidthInTiles());
-		jEnd = Math.min(jEnd, Game.map.getHeightInTiles());
-		
-		System.out.println(iStart + " " + jStart + "             " + iEnd);
-		for(int i=iStart; i < iEnd; i++) {
-			for(int j=jStart; j < jEnd; j++) {
+		for(int i=0; i < 20; i++) {
+			for(int j=0; j < 20; j++) {
 				
-				pos.y = j*Cst.TILE_HH; //+cam y
-				if (j % 2 == 0) {
-					pos.x = i*Cst.TILE_W; //+cam x
+				pos.y = i*Cst.TILE_HH; //+cam y
+				if (i % 2 == 0) {
+					pos.x = j*Cst.TILE_W; //+cam x
 				} else {
-					pos.x = i*Cst.TILE_W + Cst.TILE_HW; //+cam x
+					pos.x = j*Cst.TILE_W + Cst.TILE_HW; //+cam x
 				}
 				
 				
