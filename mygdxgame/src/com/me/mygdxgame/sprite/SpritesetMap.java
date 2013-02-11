@@ -88,15 +88,17 @@ public class SpritesetMap {
 		List<GameEvent> events;
 		List<Sprite> list = new ArrayList<Sprite>();
 		
-		int iStart = (int) (sx/Cst.TILE_W) + 1;
-		int jStart = (int) (sy/Cst.TILE_HH) + 2;
-		int iEnd = (int) (sw/Cst.TILE_W);
-		int jEnd = (int) (sh/Cst.TILE_HH) - 1;
+		int iStart = (int) (sx/Cst.TILE_W) - 1;
+		int jStart = (int) (sy/Cst.TILE_HH) - 1;
+		int iEnd = (int) (sw/Cst.TILE_W) + 1;
+		int jEnd = (int) (sh/Cst.TILE_HH) + 1;
 		
 		iStart = Math.max(iStart, 0);
 		jStart = Math.max(jStart, 0);
 		iEnd = Math.min(iEnd, Game.map.getWidthInTiles());
 		jEnd = Math.min(jEnd, Game.map.getHeightInTiles());
+		
+		int nbrendered = 0;
 		
 		for(int j=jStart; j < jEnd; j++) {
 			for(int i=iStart; i < iEnd; i++) {
@@ -113,6 +115,8 @@ public class SpritesetMap {
 
 				spriteTile.setPosition(pos.x, pos.y - spriteTile.getElevation());
 				spriteTile.draw(batch);
+				nbrendered++;
+				
 				
 				
 				events = Game.map.eventsAt(i,j);
@@ -137,6 +141,8 @@ public class SpritesetMap {
 				
 			}
 		}
+		
+		System.out.println("Tiles rendered : "+nbrendered);
 		
 		/*
 		int iStart = isoToI(sx, sy) - 2;
