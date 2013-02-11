@@ -1,4 +1,5 @@
-package ia.pathfinding;
+package com.me.mygdxgame.ia.pathfinding;
+
 
 /**
  * A description of an implementation that can find a path from one 

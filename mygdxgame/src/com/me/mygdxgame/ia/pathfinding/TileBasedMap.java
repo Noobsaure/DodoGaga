@@ -1,4 +1,5 @@
-package ia.pathfinding;
+package com.me.mygdxgame.ia.pathfinding;
+
 
 /**
  * The description for the data we're pathfinding over. This provides the contract

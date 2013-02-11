@@ -24,17 +24,17 @@ public class SceneMap extends SceneBase implements InputProcessor{
 	SpritesetMap spriteset;
 	
 	public SceneMap(){
-		Game.map.setup();
+		Game.map.setup(Cst.MAP_SIZE);
 		spriteset = new SpritesetMap();
 		
 		Gdx.input.setInputProcessor(this); //enable event handling
 	}
 	
 	public void update(){
-		super.update();
 		Game.cam.update();
 		Game.map.update();
 		spriteset.update();
+		super.update();
 	}
 
 	public void terminate() {
@@ -102,11 +102,11 @@ public class SceneMap extends SceneBase implements InputProcessor{
 		if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT) || Gdx.input.isTouched(1)){
 
 			Ray pickRay = Game.cam.getPickRay(Gdx.input.getX(), Gdx.input.getY());
-			Intersector.intersectRayPlane(pickRay, GameMap.getXyplane(), curr);
+			Intersector.intersectRayPlane(pickRay, Cst.XY_PLANE, curr);
 	 
 			if(!(last.x == -1 && last.y == -1 && last.z == -1)) {
 				pickRay = Game.cam.getPickRay(last.x, last.y);
-				Intersector.intersectRayPlane(pickRay, GameMap.getXyplane(), delta);			
+				Intersector.intersectRayPlane(pickRay, Cst.XY_PLANE, delta);			
 				delta.sub(curr);
 				Game.cam.position.add(delta.x, delta.y, delta.z);
 			}
@@ -130,7 +130,7 @@ public class SceneMap extends SceneBase implements InputProcessor{
 	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
 		Ray pickRay = Game.cam.getPickRay(screenX, screenY);
-		Intersector.intersectRayPlane(pickRay, GameMap.getXyplane(), highlight);
+		Intersector.intersectRayPlane(pickRay, Cst.XY_PLANE, highlight);
 		spriteset.highlightTile(highlight.x - Cst.TILE_HW, highlight.y);
 		return true;
 	}

@@ -1,8 +1,9 @@
-package ia.pathfinding.heuristics;
+package com.me.mygdxgame.ia.pathfinding.heuristics;
 
-import ia.pathfinding.AStarHeuristic;
-import ia.pathfinding.Mover;
-import ia.pathfinding.TileBasedMap;
+import com.me.mygdxgame.ia.pathfinding.AStarHeuristic;
+import com.me.mygdxgame.ia.pathfinding.Mover;
+import com.me.mygdxgame.ia.pathfinding.TileBasedMap;
+
 
 /**
  * A heuristic that uses the tile that is closest to the target

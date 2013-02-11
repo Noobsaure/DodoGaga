@@ -3,12 +3,11 @@ package com.me.mygdxgame.sprite;
 import com.me.mygdxgame.game.GameEntity;
 import com.me.mygdxgame.utils.Cst;
 
-public class SpriteAnimated extends SpriteBase{
-	
-	private int elevation = 0;
+public class SpriteAnimated extends SpriteStatic{
 	
 	public SpriteAnimated(String textureName){
 		super(textureName);
+		elevation = 0;
 	}
 	
 	public void update(GameEntity entity){

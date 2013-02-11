@@ -5,8 +5,19 @@ import com.me.mygdxgame.utils.Cst;
 
 public class SpriteStatic extends SpriteBase{
 	
+	protected int elevation;
+	
 	public SpriteStatic(String textureName){
-		super(textureName);
+		this(textureName, 0);
+	}
+	
+	public SpriteStatic(String textureName, int elevation){
+		this(textureName, elevation, 1, 1, 1, 1);
+	}
+	
+	public SpriteStatic(String textureName, int elevation, float r, float g, float b, float a){
+		super(textureName, r, g, b, a);
+		this.elevation = elevation;
 	}
 	
 	public void update(GameEntity entity){
@@ -17,4 +28,13 @@ public class SpriteStatic extends SpriteBase{
 		setPosition(x-Cst.CELL_HW, y-getHeight()-getElevation()-Cst.CELL_HH);
 		
 	}
+	
+	public int getElevation() {
+		return elevation;
+	}
+	
+	public void setElevation(int elevation) {
+		this.elevation = elevation;
+	}
+	
 }

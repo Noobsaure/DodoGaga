@@ -1,9 +1,10 @@
-package ia.pathfinding;
+package com.me.mygdxgame.ia.pathfinding;
 
-import ia.pathfinding.heuristics.ClosestHeuristic;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
+import com.me.mygdxgame.ia.pathfinding.heuristics.ClosestHeuristic;
 
 
 /**

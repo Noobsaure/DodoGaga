@@ -6,26 +6,30 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 
 public class WindowMgr {
 
 	private static Stage stage;
 	private static Skin skin;
+	private static Label fpsLabel;
+	public static Label spriteNumberLabel;
 	
 	public static void init(){
-        stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
-        Gdx.input.setInputProcessor(stage);
-
-        //skin = new Skin(Gdx.files.internal("Graphics/Window/uiskin.json"));
-    	//skin.getAtlas().getTextures().iterator().next().setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
-    	
-        Table table = new Table();
-        table.setFillParent(true);
-        stage.addActor(table);
-        
-    	//table.add(new Label("This is regular text.", skin));
-    	
-        
+		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+		Gdx.input.setInputProcessor(stage);
+		skin = new Skin(Gdx.files.internal("Graphics/Window/uiskin.json"));
+		
+		Table table = new Table();
+		table.setFillParent(true);
+		table.setPosition(-Gdx.graphics.getWidth()/3, Gdx.graphics.getHeight()/2-10);
+		stage.addActor(table);
+		
+		
+		fpsLabel = new Label("", skin);
+		table.add(fpsLabel);
+		spriteNumberLabel = new Label("", skin);
+		table.add(spriteNumberLabel);
 	}
 
 	public void resize (int width, int height) {
@@ -33,7 +37,8 @@ public class WindowMgr {
 	}
 
 	public static void update(){
-	        //Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		fpsLabel.setText("FPS: " + Gdx.graphics.getFramesPerSecond() + "          ");
+		
 		stage.act(Gdx.graphics.getDeltaTime());
 		stage.draw();
 		

@@ -6,31 +6,17 @@ import com.badlogic.gdx.utils.Disposable;
 import com.me.mygdxgame.game.GameEvent;
 import com.me.mygdxgame.mgr.TextureMgr;
 
-public class SpriteBase extends Sprite implements Disposable{
+public class SpriteBase extends Sprite{
 
-	private String textureName;
-	private int elevation;
+	protected String textureName;
 	
 	public SpriteBase(String textureName){
-		this(textureName,0,1,1,1,1);
-	}
-	
-	public SpriteBase(String textureName, int elevation){
-		this(textureName,elevation,1,1,1,1);
+		this(textureName, 1, 1, 1, 1);
 	}
 	
 	public SpriteBase(String textureName, float r, float g, float b, float a){
-		this(textureName,0,r,g,b,a);
-	}
-	
-	public SpriteBase(String textureName, int elevation, float r, float g, float b, float a){
 		this.textureName = textureName;
-		this.elevation = elevation;
 		this.setTexture(this.textureName, r, g, b, a);
-	}
-	
-	@Override
-	public void dispose() {
 	}
 	
 	@Override
@@ -66,12 +52,7 @@ public class SpriteBase extends Sprite implements Disposable{
 	}
 
 	public void setTexture(String textureName){
-		Texture texture = TextureMgr.get(textureName);
-		super.setTexture(texture);
-		setRegion(0, 0, texture.getWidth(), texture.getHeight());
-		setColor(1, 1, 1, 1);
-		setSize(Math.abs(texture.getWidth()), Math.abs(texture.getHeight()));
-		flip(false, true);
+		setTexture(textureName, 1, 1, 1, 1);
 	}
 	
 	public void setTexture(String textureName, float r, float g, float b, float a){
@@ -87,11 +68,5 @@ public class SpriteBase extends Sprite implements Disposable{
 		return this.textureName;
 	}
 	
-	public int getElevation() {
-		return elevation;
-	}
-	
-	public void setElevation(int elevation) {
-		this.elevation = elevation;
-	}
+
 }

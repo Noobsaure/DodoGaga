@@ -1,4 +1,5 @@
-package ia.pathfinding;
+package com.me.mygdxgame.ia.pathfinding;
+
 
 import java.util.ArrayList;
 

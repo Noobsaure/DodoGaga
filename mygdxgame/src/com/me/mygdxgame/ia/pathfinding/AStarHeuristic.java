@@ -1,6 +1,5 @@
-package ia.pathfinding;
+package com.me.mygdxgame.ia.pathfinding;
 
-import com.me.mygdxgame.game.GameMap;
 
 /**
  * The description of a class providing a cost for a given tile based

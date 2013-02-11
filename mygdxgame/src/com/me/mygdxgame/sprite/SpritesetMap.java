@@ -17,8 +17,8 @@ import com.badlogic.gdx.math.collision.Ray;
 import com.me.mygdxgame.game.Game;
 import com.me.mygdxgame.game.GameEvent;
 import com.me.mygdxgame.game.GameMap;
-import com.me.mygdxgame.mgr.StaticMgr;
-import com.me.mygdxgame.mgr.TileMgr;
+import com.me.mygdxgame.mgr.SpriteMgr;
+import com.me.mygdxgame.mgr.WindowMgr;
 import com.me.mygdxgame.utils.Cst;
 import com.me.mygdxgame.utils.Point2i;
 
@@ -38,7 +38,7 @@ public class SpritesetMap {
 	}
 
 	private void createTilemap(){
-		tilemap = new byte[Game.map.getWidthInTiles()][Game.map.getHeightInTiles()];
+		tilemap = new byte[Game.map.getMapSize().x][Game.map.getMapSize().y];
 
 		Random rand = new Random();
 
@@ -69,17 +69,17 @@ public class SpritesetMap {
 		Vector3 inter = new Vector3();
 
 		Ray pickRay = Game.cam.getPickRay(0, 0);
-		Intersector.intersectRayPlane(pickRay, GameMap.getXyplane(), inter);
+		Intersector.intersectRayPlane(pickRay, Cst.XY_PLANE, inter);
 
 		float sx = inter.x;
 		float sy = inter.y;
 
 		pickRay = Game.cam.getPickRay(Gdx.graphics.getWidth(), 0);
-		Intersector.intersectRayPlane(pickRay, GameMap.getXyplane(), inter);
+		Intersector.intersectRayPlane(pickRay, Cst.XY_PLANE, inter);
 		float sw = inter.x;
 
 		pickRay = Game.cam.getPickRay(0, Gdx.graphics.getHeight());
-		Intersector.intersectRayPlane(pickRay, GameMap.getXyplane(), inter);
+		Intersector.intersectRayPlane(pickRay, Cst.XY_PLANE, inter);
 		float sh = inter.y;
 
 		Point2i pos = new Point2i(0, 0);
@@ -95,8 +95,8 @@ public class SpritesetMap {
 		
 		iStart = Math.max(iStart, 0);
 		jStart = Math.max(jStart, 0);
-		iEnd = Math.min(iEnd, Game.map.getWidthInTiles());
-		jEnd = Math.min(jEnd, Game.map.getHeightInTiles());
+		iEnd = Math.min(iEnd, Game.map.getMapSize().x);
+		jEnd = Math.min(jEnd, Game.map.getMapSize().y);
 		
 		int nbrendered = 0;
 		
@@ -111,7 +111,7 @@ public class SpritesetMap {
 				}
 				
 				
-				spriteTile = TileMgr.get(tilemap[i][j]);
+				spriteTile = SpriteMgr.getTile(tilemap[i][j]);
 
 				spriteTile.setPosition(pos.x, pos.y - spriteTile.getElevation());
 				spriteTile.draw(batch);
@@ -122,12 +122,13 @@ public class SpritesetMap {
 				events = Game.map.eventsAt(i,j);
 				if(events != null){
 					for(GameEvent event : events){
-						spriteStatic = StaticMgr.get(event.getId());
+						spriteStatic = SpriteMgr.getStatic(event.getId());
 						spriteStatic.setElevation(spriteTile.getElevation());
 						spriteStatic.update(event);
 						list.add(spriteStatic);
 					}
 				}
+				
 				
 				Collections.sort(list, new Comparator<Sprite>() {
 					@Override public int compare(Sprite s1, Sprite s2) {
@@ -137,12 +138,13 @@ public class SpritesetMap {
 
 				for(Sprite spr : list){
 					spr.draw(batch);
+					nbrendered++;
 				}
 				
 			}
 		}
 		
-		System.out.println("Tiles rendered : "+nbrendered);
+		WindowMgr.spriteNumberLabel.setText("Draw number: " + nbrendered);
 		
 		/*
 		int iStart = isoToI(sx, sy) - 2;

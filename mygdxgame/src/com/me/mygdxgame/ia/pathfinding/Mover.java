@@ -1,4 +1,5 @@
-package ia.pathfinding;
+package com.me.mygdxgame.ia.pathfinding;
+
 
 /**
  * A tagging interface for an object representing the entity in the game that
