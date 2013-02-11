@@ -5,8 +5,8 @@ public class Cst {
 	public static final int TILE_H = 128;
 	public static final int TILE_WALL_H = 64;
 	
-	public static final int MAP_WIDTH = 20;
-	public static final int MAP_HEIGHT = 20;
+	public static final int MAP_WIDTH = 100;
+	public static final int MAP_HEIGHT = 50;
 	
 	
 	public static final int TILE_HW = TILE_W / 2;
