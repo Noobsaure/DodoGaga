@@ -20,28 +20,21 @@ import com.me.mygdxgame.game.GameMap;
 import com.me.mygdxgame.mgr.StaticMgr;
 import com.me.mygdxgame.mgr.TileMgr;
 import com.me.mygdxgame.utils.Cst;
+import com.me.mygdxgame.utils.Point2i;
 
 public class SpritesetMap {
 
-	private BitmapFont font;
 	private SpriteBatch batch;
-	private SpriteBatch batch2;
-	private int highlightedI = -1;
-	private int highlightedJ = -1;
-	private SpriteTile highlightedTile;
 
 	private byte[][] tilemap;
 
 	public SpritesetMap(){
-		font = new BitmapFont(Gdx.files.internal("arial-15.fnt"), false);
-
 		createSpriteBatches();
 		createTilemap();
 	}
 
 	private void createSpriteBatches(){
 		batch = new SpriteBatch();
-		batch2 = new SpriteBatch();
 	}
 
 	private void createTilemap(){
@@ -62,8 +55,8 @@ public class SpritesetMap {
 	}
 
 	public void highlightTile(float x, float y) {
-		highlightedI = isoToI(x,y);
-		highlightedJ = isoToJ(x,y);
+		//highlightedI = isoToI(x,y);
+		//highlightedJ = isoToJ(x,y);
 	}
 
 
@@ -89,6 +82,53 @@ public class SpritesetMap {
 		Intersector.intersectRayPlane(pickRay, GameMap.getXyplane(), inter);
 		float sh = inter.y - sy;
 
+		Point2i pos = new Point2i(0, 0);
+		SpriteTile spriteTile;
+		SpriteStatic spriteStatic;
+		List<GameEvent> events;
+		List<Sprite> list = new ArrayList<Sprite>();
+		
+		for(int i=0; i < 20; i++) {
+			for(int j=0; j < 20; j++) {
+				
+				pos.y = i*Cst.TILE_HH; //+cam y
+				if (i % 2 == 0) {
+					pos.x = j*Cst.TILE_W; //+cam x
+				} else {
+					pos.x = j*Cst.TILE_W + Cst.TILE_HW; //+cam x
+				}
+				
+				
+				spriteTile = TileMgr.get(tilemap[i][j]);
+
+				spriteTile.setPosition(pos.x, pos.y - spriteTile.getElevation());
+				spriteTile.draw(batch);
+				
+				/*
+				events = Game.map.eventsAt(i,j);
+				if(events != null){
+					for(GameEvent event : events){
+						spriteStatic = StaticMgr.get(event.getId());
+						spriteStatic.setElevation(spriteTile.getElevation());
+						spriteStatic.update(event);
+						list.add(spriteStatic);
+					}
+				}
+				
+				Collections.sort(list, new Comparator<Sprite>() {
+					@Override public int compare(Sprite s1, Sprite s2) {
+						return (int) (s1.getY() - s2.getY());
+					}
+				});
+
+				for(Sprite spr : list){
+					spr.draw(batch);
+				}*/
+				
+			}
+		}
+		
+		/*
 		int iStart = isoToI(sx, sy) - 2;
 		int jStart = isoToJ(sx + sw, sy) - 2;
 		int iMax = isoToI(sx + sw, sy + sh) + 2;
@@ -142,12 +182,9 @@ public class SpritesetMap {
 				}
 			}
 		}
-
+		*/
 		batch.end();
 
-		batch2.begin();
-		font.draw(batch2, String.valueOf(Gdx.graphics.getFramesPerSecond()), 20, 20);
-		batch2.end();
 	}
 
 }
