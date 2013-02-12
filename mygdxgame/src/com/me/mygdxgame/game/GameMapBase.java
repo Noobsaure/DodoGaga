@@ -1,11 +1,23 @@
 package com.me.mygdxgame.game;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Plane;
 import com.badlogic.gdx.math.Vector2;
 import com.me.mygdxgame.utils.Cst;
@@ -17,15 +29,16 @@ public abstract class GameMapBase {
 	private Map<String, List<GameEvent>> tileEvents;
 	private List<GameEvent> events;
 	protected Point2i mapSize;
+	private Pixmap mouseMap;
 	
 	public GameMapBase() {
 		mapSize = new Point2i();
+		mouseMap = new Pixmap(Gdx.files.internal("mouseMapIso.png"));
 	}
 	
 	public void setup(Point2i mapSize) {
 		this.mapSize.x = mapSize.x;
 		this.mapSize.y = mapSize.y;
-		
 		setupEvents();
 	}
 	
@@ -45,16 +58,16 @@ public abstract class GameMapBase {
 			refreshEventPosition(tilePosition.x, tilePosition.y, event);
 		}
 	}
-	/*
+	
 	public Point2i isoToTile(float x, float y) {
-		float innerX = x % Cst.TILE_W;
-		float innerY = y % Cst.TILE_H;
-		//Color c = new Color(mouseMap.getRGB(innerX, innerY);
-		
-		
+		int innerX = (int) (x % Cst.TILE_W);
+		int innerY = (int) (y % Cst.TILE_H);
+		Color c = new Color(mouseMap.getPixel(innerX, innerY));
+		System.out.println(c.getRed()+" "+c.getGreen()+" "+c.getBlue());
+		System.out.println(mouseMap.getPixel(innerX, innerY));		
 		return new Point2i(0,0);
 	}
-	
+	/*
 	public void convertToScreen(Vector2 point){
 		float x = point.x / Cst.TILE_W;
 		float y = point.y / Cst.TILE_H;

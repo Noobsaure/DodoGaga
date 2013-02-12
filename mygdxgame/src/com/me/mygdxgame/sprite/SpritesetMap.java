@@ -148,61 +148,6 @@ public class SpritesetMap {
 		
 		WindowMgr.spriteNumberLabel.setText("Draw number: " + nbrendered);
 		
-		/*
-		int iStart = isoToI(sx, sy) - 2;
-		int jStart = isoToJ(sx + sw, sy) - 2;
-		int iMax = isoToI(sx + sw, sy + sh) + 2;
-		int jMax = isoToJ(sx, sy + sh) + 2;
-
-		iStart = Math.max(iStart, 0);
-		jStart = Math.max(jStart, 0);
-		iMax = Math.min(iMax, Game.map.getWidthInTiles());
-		jMax = Math.min(jMax, Game.map.getHeightInTiles());
-		
-		SpriteTile spriteTile;
-		SpriteStatic spriteStatic;
-		List<GameEvent> events;
-		List<Sprite> list = new ArrayList<Sprite>();
-		
-		for (int i = iStart; i < iMax; i++) {
-			for (int j = jStart; j < jMax; j++) {
-				
-				spriteTile = TileMgr.get(tilemap[i][j]);
-
-				int x = i * Cst.TILE_HW - j * Cst.TILE_HW;
-				int y = i * Cst.TILE_HH + j * Cst.TILE_HH - spriteTile.getElevation();
-				
-				if(i == highlightedI && j == highlightedJ) {
-					highlightedTile = SpriteTile.getHighlightedTile(spriteTile);
-					highlightedTile.setPosition(x, y);
-					highlightedTile.draw(batch);
-				} else {
-					spriteTile.setPosition(x, y);
-					spriteTile.draw(batch);
-				}
-				
-				events = Game.map.eventsAt(i,j);
-				if(events != null){
-					for(GameEvent event : events){
-						spriteStatic = StaticMgr.get(event.getId());
-						spriteStatic.setElevation(spriteTile.getElevation());
-						spriteStatic.update(event);
-						list.add(spriteStatic);
-					}
-				}
-				
-				Collections.sort(list, new Comparator<Sprite>() {
-					@Override public int compare(Sprite s1, Sprite s2) {
-						return (int) (s1.getY() - s2.getY());
-					}
-				});
-
-				for(Sprite spr : list){
-					spr.draw(batch);
-				}
-			}
-		}
-		*/
 		batch.end();
 
 	}
