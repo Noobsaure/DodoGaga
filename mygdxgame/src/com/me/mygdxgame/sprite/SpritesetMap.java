@@ -141,6 +141,8 @@ public class SpritesetMap {
 					nbrendered++;
 				}
 				
+				list.clear();
+				
 			}
 		}
 		
