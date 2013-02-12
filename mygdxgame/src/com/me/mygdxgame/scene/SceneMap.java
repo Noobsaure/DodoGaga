@@ -131,8 +131,7 @@ public class SceneMap extends SceneBase implements InputProcessor{
 	public boolean mouseMoved(int screenX, int screenY) {
 		Ray pickRay = Game.cam.getPickRay(screenX, screenY);
 		Intersector.intersectRayPlane(pickRay, Cst.XY_PLANE, highlight);
-		//Game.map.isoToTile(highlight.x, highlight.y);
-		//spriteset.highlightTile(highlight.x - Cst.TILE_HW, highlight.y);
+		spriteset.highlightTile(Game.map.isoToTile(highlight.x, highlight.y));
 		return true;
 	}
 	

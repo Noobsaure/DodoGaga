@@ -33,7 +33,7 @@ public abstract class GameMapBase {
 	
 	public GameMapBase() {
 		mapSize = new Point2i();
-		mouseMap = new Pixmap(Gdx.files.internal("mouseMapIso.png"));
+		mouseMap = new Pixmap(Gdx.files.internal("mouseMapIso.png"));		
 	}
 	
 	public void setup(Point2i mapSize) {
@@ -62,10 +62,31 @@ public abstract class GameMapBase {
 	public Point2i isoToTile(float x, float y) {
 		int innerX = (int) (x % Cst.TILE_W);
 		int innerY = (int) (y % Cst.TILE_H);
-		Color c = new Color(mouseMap.getPixel(innerX, innerY));
-		System.out.println(c.getRed()+" "+c.getGreen()+" "+c.getBlue());
-		System.out.println(mouseMap.getPixel(innerX, innerY));		
-		return new Point2i(0,0);
+		
+		Point2i res = new Point2i((int) x / Cst.TILE_W , (int) (2 * y) / Cst.TILE_H);
+		
+		switch(mouseMap.getPixel(innerX, innerY)) {
+		case -16776961:
+			res.y = res.y - 1;
+			res.x = res.x - 1;
+			break;
+		case -65281:
+			res.y = res.y - 1;
+			break;
+		case 16711935:
+			res.x = res.x - 1;
+			res.y = res.y + 1;
+			break;
+		case 65535:
+			res.y = res.y + 1;
+			break;
+		case -1:
+			break;
+			default:
+				res.x = -1;
+				res.y = -1;
+		}
+		return res;
 	}
 	/*
 	public void convertToScreen(Vector2 point){

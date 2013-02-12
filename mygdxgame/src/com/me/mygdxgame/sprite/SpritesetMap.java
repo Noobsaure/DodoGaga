@@ -8,7 +8,6 @@ import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Intersector;
@@ -16,7 +15,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.me.mygdxgame.game.Game;
 import com.me.mygdxgame.game.GameEvent;
-import com.me.mygdxgame.game.GameMap;
 import com.me.mygdxgame.mgr.SpriteMgr;
 import com.me.mygdxgame.mgr.WindowMgr;
 import com.me.mygdxgame.utils.Cst;
@@ -25,6 +23,7 @@ import com.me.mygdxgame.utils.Point2i;
 public class SpritesetMap {
 
 	private SpriteBatch batch;
+	private Point2i highlightedTile = new Point2i(-1,-1);
 
 	private byte[][] tilemap;
 
@@ -54,9 +53,8 @@ public class SpritesetMap {
 		}
 	}
 
-	public void highlightTile(float x, float y) {
-		//highlightedI = isoToI(x,y);
-		//highlightedJ = isoToJ(x,y);
+	public void highlightTile(Point2i p) {
+		highlightedTile = p;
 	}
 
 
@@ -84,6 +82,7 @@ public class SpritesetMap {
 
 		Point2i pos = new Point2i(0, 0);
 		SpriteTile spriteTile;
+		SpriteTile highlightedSpriteTile;
 		SpriteStatic spriteStatic;
 		List<GameEvent> events;
 		List<Sprite> list = new ArrayList<Sprite>();
@@ -110,14 +109,18 @@ public class SpritesetMap {
 					pos.x = i*Cst.TILE_W + Cst.TILE_HW; //+cam x
 				}
 				
-				
 				spriteTile = SpriteMgr.getTile(tilemap[i][j]);
-
-				spriteTile.setPosition(pos.x, pos.y - spriteTile.getElevation());
-				spriteTile.draw(batch);
+				
+				if(i == highlightedTile.x && j == highlightedTile.y) {
+					highlightedSpriteTile = SpriteTile.getHighlightedTile(spriteTile);
+					highlightedSpriteTile.setPosition(pos.x, pos.y - spriteTile.getElevation());
+					highlightedSpriteTile.draw(batch);
+				} else {
+					spriteTile.setPosition(pos.x, pos.y - spriteTile.getElevation());
+					spriteTile.draw(batch);
+				}
+				
 				nbrendered++;
-				
-				
 				
 				events = Game.map.eventsAt(i,j);
 				if(events != null){
