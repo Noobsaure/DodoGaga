@@ -1,6 +1,7 @@
 package com.me.mygdxgame.utils.interval;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector3;
 import com.me.mygdxgame.mgr.IntervalMgr;
 
@@ -8,10 +9,11 @@ public class Interval extends IntervalBase{
 
 	private float duration;
 	private float currentTime;
-	private IntervalEntity entity;
+	private IntervalTransformable transformable;
+	private Interpolation interpolation;
 	
-	public Interval(IntervalEntity entity, float duration, Vector3 start, Vector3 end){
-		this.entity = entity;
+	public Interval(IntervalTransformable transformable, float duration, Vector3 start, Vector3 end){
+		this.transformable = transformable;
 		this.duration = duration;
 		currentTime = duration;
 	}
@@ -21,8 +23,8 @@ public class Interval extends IntervalBase{
 	}
 	
 	public void start(){
-	    //interval_mgr.remove_np(self.np)
-	    //interval_mgr.add_interval(self)
+		IntervalMgr.removeTransformable(transformable);
+		IntervalMgr.addInterval(this);
 	}
 	
 	public void stop(){
@@ -44,8 +46,8 @@ public class Interval extends IntervalBase{
 	        interval_mgr.delete_after(self)*/
 	}
 	
-	public IntervalEntity getEntity(){
-		return entity;
+	public IntervalTransformable getTransformable(){
+		return transformable;
 	}
 
 }

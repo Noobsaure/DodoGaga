@@ -1,5 +1,5 @@
 package com.me.mygdxgame.utils.interval;
 
-public interface IntervalEntity {
+public interface IntervalTransformable {
 
 }

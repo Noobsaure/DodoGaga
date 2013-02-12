@@ -6,15 +6,15 @@ import java.util.List;
 import java.util.Map;
 
 import com.me.mygdxgame.utils.interval.Interval;
-import com.me.mygdxgame.utils.interval.IntervalEntity;
+import com.me.mygdxgame.utils.interval.IntervalTransformable;
 
 public class IntervalMgr {
 
 	private static List<Interval> intervals = new ArrayList<Interval>();
 	private static List<Interval> finishedIntervals = new ArrayList<Interval>();
-	private static Map<IntervalEntity, Interval> intervalsEntity = new Hashtable<IntervalEntity, Interval>();
+	private static Map<IntervalTransformable, Interval> intervalsTransformable = new Hashtable<IntervalTransformable, Interval>();
 	
-	public static void removeEntity(){
+	public static void removeTransformable(){
 		
 	}
 	
@@ -31,7 +31,7 @@ public class IntervalMgr {
 	private static void deleteFinishedIntervals(){
 		for(Interval interval : finishedIntervals){
 			intervals.remove(interval);
-			intervalsEntity.remove(interval.getEntity());
+			intervalsTransformable.remove(interval.getTransformable());
 		}
 		finishedIntervals.clear();
 	}
@@ -41,13 +41,13 @@ public class IntervalMgr {
 	}
 	
 	public static void addInterval(Interval interval){
-		intervalsEntity.put(interval.getEntity(), interval);
+		intervalsTransformable.put(interval.getTransformable(), interval);
 		intervals.add(interval);
 	}
 	
-	public static void removeEntity(IntervalEntity entity){
-		intervals.remove(intervalsEntity.get(entity));
-		intervalsEntity.remove(entity);
+	public static void removeTransformable(IntervalTransformable transformable){
+		intervals.remove(intervalsTransformable.get(transformable));
+		intervalsTransformable.remove(transformable);
 	}
 }
 
