@@ -5,14 +5,17 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.me.mygdxgame.game.Game;
+import com.me.mygdxgame.game.GameEvent;
 import com.me.mygdxgame.game.GameMap;
 import com.me.mygdxgame.mgr.SceneMgr;
 import com.me.mygdxgame.sprite.SpritesetMap;
 import com.me.mygdxgame.utils.Cst;
 import com.me.mygdxgame.utils.Point2i;
+import com.me.mygdxgame.utils.interval.Interval;
 
 public class SceneMap extends SceneBase implements InputProcessor{
 	
@@ -44,6 +47,10 @@ public class SceneMap extends SceneBase implements InputProcessor{
 
 	@Override
 	public boolean keyDown(int keycode) {
+		if(keycode == Keys.P){
+			//Interval interval = new Interval(new GameMovable(0), 1, new Vector2(0,0), new Vector2(2,2), "linear");
+			//interval.start();
+		}
 		return false;
 	}
 

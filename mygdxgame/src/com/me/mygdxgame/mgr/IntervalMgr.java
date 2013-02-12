@@ -14,9 +14,6 @@ public class IntervalMgr {
 	private static List<Interval> finishedIntervals = new ArrayList<Interval>();
 	private static Map<IntervalTransformable, Interval> intervalsTransformable = new Hashtable<IntervalTransformable, Interval>();
 	
-	public static void removeTransformable(){
-		
-	}
 	
 	public static void update(){
 		for(Interval interval : intervals){
