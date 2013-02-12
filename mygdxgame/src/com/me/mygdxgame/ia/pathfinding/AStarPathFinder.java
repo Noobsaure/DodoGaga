@@ -99,6 +99,27 @@ public class AStarPathFinder implements PathFinder {
 			
 			// search through all the neighbours of the current node evaluating
 			// them as next steps
+			//TODO : déterminer le voisins dans un switch pour plus de rapidité,
+			//haut = 0, bas = 1, gauche = 0, droite = 1, i = haut/bas, j = gauche/droite
+			//for(int i de 0 à 1) do
+			//	for(int j de 0 à 1) do
+			//		switch(i * 8 + j * 4 + current.innerTilePosition.x * 2 + current.innerTilePosition.y)
+			//		0 => haut gauche, inner(0.0)
+			//		1 => haut gauche, inner(0.1)
+			//		3 => haut gauche, inner(1.0)
+			//		4 => haut gauche, inner(1.1)
+			//		5 => haut droite, inner(0.0)
+			//		6 => haut droite, inner(0.1)
+			//		7 => haut droite, inner(1.0)
+			//		8 => haut droite, inner(1.1)
+			//		9 =>  bas gauche, inner(0.0)
+			//	   10 =>  bas gauche, inner(0.1)
+			//	   11 =>  bas gauche, inner(1.0)
+			//	   12 =>  bas gauche, inner(1.1)
+			//	   13 =>  bas droite, inner(0.0)
+			//	   14 =>  bas droite, inner(0.1)
+			//	   15 =>  bas droite, inner(1.0)
+			//	   16 =>  bas droite, inner(1.1)
 			for (int x=-1;x<2;x++) {
 				for (int y=-1;y<2;y++) {
 					// not a neighbour, its the current tile

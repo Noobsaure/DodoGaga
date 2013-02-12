@@ -1,9 +1,9 @@
 package com.me.mygdxgame.game;
 
 import com.me.mygdxgame.ia.pathfinding.Mover;
+import com.me.mygdxgame.ia.pathfinding.TileBasedMap;
 
-
-public class GameMap extends GameMapBase{
+public class GameMap extends GameMapBase implements TileBasedMap {
 
 	private boolean[][] visited;
 	//private final BufferedImage mouseMap = new Bu;
@@ -40,6 +40,18 @@ public class GameMap extends GameMapBase{
 	}
 
 	public float getCost(Mover mover, int sx, int sy, int tx, int ty) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getWidthInTiles() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getHeightInTiles() {
 		// TODO Auto-generated method stub
 		return 0;
 	}

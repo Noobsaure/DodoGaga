@@ -16,11 +16,10 @@ public abstract class GameMapBase {
 	private Map<String, List<GameEvent>> tileEvents;
 	private List<GameEvent> events;
 	protected Point2i mapSize;
-	private static Pixmap mouseMap;
+	private static Pixmap mouseMap = new Pixmap(Gdx.files.internal("mouseMapIso.png"));
 	
 	public GameMapBase() {
-		mapSize = new Point2i();
-		mouseMap = new Pixmap(Gdx.files.internal("mouseMapIso.png"));		
+		mapSize = new Point2i();	
 	}
 	
 	public void setup(Point2i mapSize) {
