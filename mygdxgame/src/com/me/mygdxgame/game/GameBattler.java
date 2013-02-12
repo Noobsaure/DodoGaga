@@ -1,14 +1,8 @@
 package com.me.mygdxgame.game;
 
-import java.util.List;
-
 import com.me.mygdxgame.utils.Point2i;
 
-public class GameBattler extends GameEntity{
-	
-	private int dirX = 0;
-	private int dirY = 0;
-	private List<Point2i> currentPath;
+public class GameBattler extends GameMovable{
 	
 	public GameBattler(int id) {
 		super(id);

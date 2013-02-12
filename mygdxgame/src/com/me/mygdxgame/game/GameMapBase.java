@@ -16,7 +16,7 @@ public abstract class GameMapBase {
 	private Map<String, List<GameEvent>> tileEvents;
 	private List<GameEvent> events;
 	protected Point2i mapSize;
-	private Pixmap mouseMap;
+	private static Pixmap mouseMap;
 	
 	public GameMapBase() {
 		mapSize = new Point2i();
@@ -42,11 +42,12 @@ public abstract class GameMapBase {
 			tilePosition = new Point2i(rand.nextInt(mapSize.x),rand.nextInt(mapSize.y));
 			innerTilePosition = new Point2i(rand.nextInt(Cst.NB_X_CELL),rand.nextInt(Cst.NB_Y_CELL));
 			event = new GameEvent(rand.nextInt(2),tilePosition,innerTilePosition);
-			refreshEventPosition(tilePosition.x, tilePosition.y, event);
+			//refreshEventPosition(tilePosition.x, tilePosition.y, event);
+			addEventToTile(tilePosition,event);
 		}
 	}
 	
-	public Point2i isoToTile(float x, float y) {
+	public static Point2i isoToTile(float x, float y) {
 		int innerX = (int) (x % Cst.TILE_W);
 		int innerY = (int) (y % Cst.TILE_H);
 		
@@ -96,7 +97,7 @@ public abstract class GameMapBase {
 		point.x = - (y * Cst.TILE_HW) + (x * Cst.TILE_HW);
 		point.y = (y * Cst.TILE_HH) + (x * Cst.TILE_HH);
 	}
-	*/
+	
 	public void refreshEventPosition(int tileX, int tileY, GameEvent ev){
 		List<GameEvent> evs;
 		
@@ -114,7 +115,23 @@ public abstract class GameMapBase {
 			tileEvents.put(new Point2i(tileX, tileY).getHashCode(), evs);
 		}
 		evs.add(ev);
+	}*/
 	
+	public void removeEventFromTile(Point2i tile, GameEvent ev) {
+		List<GameEvent> evs = eventsAt(tile);
+		evs.remove(ev);
+		if(evs.isEmpty()) {
+			tileEvents.remove(tile.getHashCode());
+		}
+	}
+	
+	public void addEventToTile(Point2i tile, GameEvent ev) {
+		List<GameEvent> evs = eventsAt(tile);
+		if(evs == null) {
+			evs = new ArrayList<GameEvent>();
+			evs.add(ev);
+			tileEvents.put(tile.getHashCode(), evs);
+		}
 	}
 	
 	public List<GameEvent> eventsAt(int tileX, int tileY){
@@ -128,6 +145,7 @@ public abstract class GameMapBase {
 	
 	public void update(){
 		updateEvents();
+		System.out.println(tileEvents.size());
 	}
 	
 	public void updateEvents(){

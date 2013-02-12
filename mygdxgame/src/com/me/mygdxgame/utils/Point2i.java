@@ -14,4 +14,7 @@ public class Point2i extends Point2<Integer>{
 		return x + "," + y;
 	}
 	
+	public boolean equals(Point2i p) {
+		return this.x == p.x && this.y == p.y;
+	}
 }
