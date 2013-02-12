@@ -1,27 +1,14 @@
 package com.me.mygdxgame.game;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Plane;
-import com.badlogic.gdx.math.Vector2;
 import com.me.mygdxgame.utils.Cst;
-import com.me.mygdxgame.utils.Point2f;
 import com.me.mygdxgame.utils.Point2i;
 
 public abstract class GameMapBase {
@@ -63,24 +50,24 @@ public abstract class GameMapBase {
 		int innerX = (int) (x % Cst.TILE_W);
 		int innerY = (int) (y % Cst.TILE_H);
 		
-		Point2i res = new Point2i((int) x / Cst.TILE_W , (int) (2 * y) / Cst.TILE_H);
-		
+		Point2i res = new Point2i((int) x / Cst.TILE_W ,  (2 * ((int)y / Cst.TILE_H)));
+		System.out.println(res.x+" ; "+res.y);
 		switch(mouseMap.getPixel(innerX, innerY)) {
-		case -16776961:
+		case -16776961://haut gauche
 			res.y = res.y - 1;
 			res.x = res.x - 1;
 			break;
-		case -65281:
+		case -65281://haut droite
 			res.y = res.y - 1;
 			break;
-		case 16711935:
+		case 16711935://bas gauche
 			res.x = res.x - 1;
 			res.y = res.y + 1;
 			break;
-		case 65535:
+		case 65535://bas droite
 			res.y = res.y + 1;
 			break;
-		case -1:
+		case -1://milieu
 			break;
 			default:
 				res.x = -1;
