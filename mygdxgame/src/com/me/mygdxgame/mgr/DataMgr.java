@@ -32,7 +32,7 @@ public class DataMgr {
 			for(int i=0; i < data.tileSize.x; i++){
 				for(int j=0; j < data.tileSize.y; j++){
 					int n = rand.nextInt(255);
-					if(n < 200){
+					if(n < 300){
 						data.tilemap[i][j] = Cst.FLOOR;
 					} else{
 						data.tilemap[i][j] = Cst.WALL;

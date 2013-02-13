@@ -38,10 +38,11 @@ public abstract class GameMapBase {
 		Point2i tilePosition;
 		Point2i innerTilePosition;	
 		
-		for(int i=0; i<1; i++){
-			tilePosition = new Point2i(2, 4);
+		for(int i=0; i<100; i++){
+			tilePosition = new Point2i(0, 0);
+			//innerTilePosition = new Point2i(1, 1);
 			//tilePosition = new Point2i(rand.nextInt(getMapSize().x),rand.nextInt(getMapSize().y));
-			innerTilePosition = new Point2i(rand.nextInt(Cst.NB_X_CELL),rand.nextInt(Cst.NB_Y_CELL));
+			innerTilePosition = new Point2i(rand.nextInt(Cst.NB_CELL),rand.nextInt(Cst.NB_CELL));
 			int spriteId = 2;//2+rand.nextInt(2)
 			event = new GameEvent(spriteId,tilePosition,innerTilePosition);
 			//refreshEventPosition(tilePosition.x, tilePosition.y, event);

@@ -45,18 +45,28 @@ public abstract class GameMover extends GameEvent implements IntervalTransformab
 		}
 	}
 	
-	public void startIntervalToTile(Point2i tilePos){
+	public void startIntervalToTile(Point2i tile, Point2i cell){
 		Point2f destination = new Point2f();
 		
-		//float x = Cst.TILE_HW + Cst.TILE_W * tilePos.x + Cst.TILE_HW * (tilePos.y % 2);
-		//float y = Cst.TILE_HH + Cst.TILE_HH * tilePos.y;
-		//x += getInnerTilePosition().x * Cst.CELL_HW - getInnerTilePosition().y * Cst.CELL_HW;
-		//y += getInnerTilePosition().x * Cst.CELL_HH + getInnerTilePosition().y * Cst.CELL_HH;
+		float resultX = 0;
+		float resultY = 0;
 		
-		destination.x = 0f;//x-Cst.TILE_HW;
-		destination.y = 0f;//y+Cst.TILE_HH;
+		//Je me place en haut au ileu de la tile visuelle
+		int i = tile.x;
+		int j = tile.y;
+		float x = i*Cst.TILE_W + Cst.TILE_HW * (j % 2) + Cst.TILE_HW;
+		float y = j*Cst.TILE_HH;
 		
-		System.out.println(destination.x + " " + destination.y);
+		//j'utilise la methode convertToIsodu rendu en diamond pour trouver la bonne cell pos
+		float x2 = cell.x;
+		float y2 = cell.y;
+		resultX = - (y2 * Cst.CELL_HW) + (x2 * Cst.CELL_HW);
+		resultY = (y2 * Cst.CELL_HH) + (x2 * Cst.CELL_HH) + Cst.CELL_HH;
+		
+		destination.x = x+resultX;
+		destination.y = y+resultY;
+		
+		System.out.println("Deplacement en Tile: " + tile + "   Cell: " + cell);
 		Interval interval = new Interval(this, 0.5f, realPosition, destination, "linear");
 		interval.start();
 	}

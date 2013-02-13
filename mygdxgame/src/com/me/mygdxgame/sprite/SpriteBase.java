@@ -1,22 +1,24 @@
 package com.me.mygdxgame.sprite;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.Disposable;
 import com.me.mygdxgame.game.GameEvent;
 import com.me.mygdxgame.mgr.TextureMgr;
 
-public class SpriteBase extends Sprite{
+public class SpriteBase extends Sprite implements Cloneable{
 
-	protected String textureName;
+	protected String textureFilename;
 	
-	public SpriteBase(String textureName){
-		this(textureName, 1, 1, 1, 1);
+	public SpriteBase(String textureFilename){
+		this(textureFilename, new Color(1,1,1,1));
 	}
 	
-	public SpriteBase(String textureName, float r, float g, float b, float a){
-		this.textureName = textureName;
-		this.setTexture(this.textureName, r, g, b, a);
+	public SpriteBase(String textureFilename, Color color){
+		this.textureFilename = textureFilename;
+		this.setTexture(this.textureFilename);
+		this.setColor(color);
 	}
 	
 	@Override
@@ -50,23 +52,22 @@ public class SpriteBase extends Sprite{
 		super.setOrigin(originX, originY);
 		setPosition(getX() - getOriginX(), getY() - getOriginY());
 	}
-
-	public void setTexture(String textureName){
-		setTexture(textureName, 1, 1, 1, 1);
-	}
 	
-	public void setTexture(String textureName, float r, float g, float b, float a){
-		Texture texture = TextureMgr.get(textureName);
+	public void setTexture(String textureFilename){
+		Texture texture = TextureMgr.get(textureFilename);
 		super.setTexture(texture);
 		setRegion(0, 0, texture.getWidth(), texture.getHeight());
-		setColor(r, g, b, a);
+		setColor(1,1,1,1);
 		setSize(Math.abs(texture.getWidth()), Math.abs(texture.getHeight()));
 		flip(false, true);
 	}
 	
-	public String getTextureName() {
-		return this.textureName;
+	public String getTextureFilename() {
+		return this.textureFilename;
 	}
 	
-
+  	public SpriteBase clone() {
+  		try { return (SpriteBase) super.clone(); } catch(CloneNotSupportedException cnse) { return null; }
+  	}
+	
 }

@@ -48,21 +48,31 @@ public class SpriteMgr {
 		}
 	}
 	
-	public static SpriteTile getTile(int id){
+	public static SpriteTile getTile(int id, boolean copy){
 		addTile(id);
-		return new SpriteTile(tiles[id].getTextureName(),tiles[id].getElevation(),tiles[id].getColor());
+		if(copy){
+			return (SpriteTile) tiles[id].clone();
+		}
+		else{
+			return tiles[id];
+		}
+		//return new SpriteTile(tiles[id].getTextureFilename(),tiles[id].getElevation(),tiles[id].getColor());
 	}
 	
 	public static SpriteStatic getStatic(int id){
 		addStatic(id);
-		return new SpriteStatic(statics[id].getTextureName(),statics[id].getElevation(),statics[id].getColor());
+		return (SpriteStatic) statics[id].clone();
+		//return new SpriteStatic(statics[id].getTextureName(),statics[id].getElevation(),statics[id].getColor());
 		
 	}
 	
 	public static SpriteAnimated getAnimated(int id){
 		addAnimated(id);
-		SpriteAnimated sprite = new SpriteAnimated(animateds[id].getTextureName(),animateds[id].getElevation(),animateds[id].getColor());
-		sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight());
+		SpriteAnimated sprite = (SpriteAnimated) animateds[id].clone();
+		sprite.setOrigin(sprite.getWidth()/2, 0);//, sprite.getHeight());
 		return sprite;
+		//SpriteAnimated sprite = new SpriteAnimated(animateds[id].getTextureFilename(),animateds[id].getElevation(),animateds[id].getColor());
+		//sprite.setOrigin(sprite.getWidth()/2, 0);//, sprite.getHeight());
+		//return sprite;
 	}
 }

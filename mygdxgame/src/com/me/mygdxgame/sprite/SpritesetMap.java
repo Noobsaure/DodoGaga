@@ -96,14 +96,11 @@ public class SpritesetMap {
 		for(int j=jStart; j < jEnd; j++) {
 			for(int i=iStart; i < iEnd; i++) {
 			
+				pos.x = i*Cst.TILE_W + Cst.TILE_HW * (j % 2);
 				pos.y = j*Cst.TILE_HH;
-				if (j % 2 == 0) {
-					pos.x = i*Cst.TILE_W;
-				} else {
-					pos.x = i*Cst.TILE_W + Cst.TILE_HW;
-				}
 				
-				spriteTile = SpriteMgr.getTile(Game.map.mapData.tilemap[i][j]);
+				
+				spriteTile = SpriteMgr.getTile(Game.map.mapData.tilemap[i][j], false);
 				
 				if(i == highlightedTile.x && j == highlightedTile.y) {
 					highlightedSpriteTile = SpriteTile.getHighlightedTile(spriteTile);
@@ -129,7 +126,7 @@ public class SpritesetMap {
 						}
 						else if(event instanceof GameEvent){
 							sprite = SpriteMgr.getStatic(event.getSpriteId());
-							sprite.setElevation(spriteTile.getElevation());
+							//sprite.setElevation(spriteTile.getElevation());
 							sprite.update(event);
 							list.add(sprite);
 						}
