@@ -1,5 +1,6 @@
 package com.me.mygdxgame.sprite;
 
+import com.badlogic.gdx.graphics.Color;
 import com.me.mygdxgame.game.GameEntity;
 import com.me.mygdxgame.utils.Cst;
 
@@ -17,6 +18,11 @@ public class SpriteStatic extends SpriteBase{
 	
 	public SpriteStatic(String textureName, int elevation, float r, float g, float b, float a){
 		super(textureName, r, g, b, a);
+		this.elevation = elevation;
+	}
+	
+	public SpriteStatic(String textureName, int elevation, Color c){
+		super(textureName, c.r, c.g, c.b, c.a);
 		this.elevation = elevation;
 	}
 	

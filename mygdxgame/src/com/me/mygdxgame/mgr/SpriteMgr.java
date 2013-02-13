@@ -50,16 +50,17 @@ public class SpriteMgr {
 	
 	public static SpriteTile getTile(int id){
 		addTile(id);
-		return tiles[id];
+		return new SpriteTile(tiles[id].getTextureName(),tiles[id].getElevation(),tiles[id].getColor());
 	}
 	
 	public static SpriteStatic getStatic(int id){
 		addStatic(id);
-		return statics[id];
+		return new SpriteStatic(statics[id].getTextureName(),statics[id].getElevation(),statics[id].getColor());
+		
 	}
 	
 	public static SpriteAnimated getAnimated(int id){
 		addAnimated(id);
-		return animateds[id];
+		return new SpriteAnimated(animateds[id].getTextureName(),animateds[id].getElevation(),animateds[id].getColor());
 	}
 }
