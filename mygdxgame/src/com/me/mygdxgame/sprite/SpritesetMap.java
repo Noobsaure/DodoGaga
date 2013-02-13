@@ -25,33 +25,26 @@ public class SpritesetMap {
 	private SpriteBatch batch;
 	private Point2i highlightedTile = new Point2i(-1,-1);
 
-	private byte[][] tilemap;
+	//private byte[][] tilemap;
 
 	public SpritesetMap(){
 		createSpriteBatches();
-		createTilemap();
+		//createTilemap();
 	}
 
 	private void createSpriteBatches(){
 		batch = new SpriteBatch();
 	}
 
+	/*
 	private void createTilemap(){
 		tilemap = new byte[Game.map.getMapSize().x][Game.map.getMapSize().y];
-
-		Random rand = new Random();
-
-		for(int i=0; i<tilemap.length; i++){
-			for(int j=0; j<tilemap[0].length; j++){
-				int n = rand.nextInt(255);
-				if(n < 200){
-				tilemap[i][j] = Cst.FLOOR;
-				} else{
-					tilemap[i][j] = Cst.WALL;
-				}
+		for(int i=0; i < Game.map.getMapSize().x; i++){
+			for(int j=0; j < Game.map.getMapSize().y; j++){
+				tilemap
 			}
 		}
-	}
+	}*/
 
 	public void highlightTile(Point2i p) {
 		highlightedTile = p;
@@ -109,7 +102,7 @@ public class SpritesetMap {
 					pos.x = i*Cst.TILE_W + Cst.TILE_HW; //+cam x
 				}
 				
-				spriteTile = SpriteMgr.getTile(tilemap[i][j]);
+				spriteTile = SpriteMgr.getTile(Game.map.mapData.tilemap[i][j]);
 				
 				if(i == highlightedTile.x && j == highlightedTile.y) {
 					highlightedSpriteTile = SpriteTile.getHighlightedTile(spriteTile);
@@ -125,7 +118,7 @@ public class SpritesetMap {
 				events = Game.map.eventsAt(i,j);
 				if(events != null){
 					for(GameEvent event : events){
-						spriteStatic = SpriteMgr.getStatic(event.getId());
+						spriteStatic = SpriteMgr.getStatic(event.getSpriteId());
 						spriteStatic.setElevation(spriteTile.getElevation());
 						spriteStatic.update(event);
 						list.add(spriteStatic);

@@ -4,12 +4,12 @@ import com.me.mygdxgame.utils.Point2i;
 
 public class GameEvent extends GameEntity{
 
-	public GameEvent(int id){
-		super(id);
+	public GameEvent(int spriteId){
+		super(spriteId);
 	}
 	
-	public GameEvent(int id, Point2i tilePosition, Point2i innerTilePosition) {
-		super(id,tilePosition,innerTilePosition);
+	public GameEvent(int spriteId, Point2i tilePosition, Point2i innerTilePosition) {
+		super(spriteId,tilePosition,innerTilePosition);
 	}
 	
 	public void update(){

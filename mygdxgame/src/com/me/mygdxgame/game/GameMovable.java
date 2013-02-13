@@ -11,12 +11,15 @@ public abstract class GameMovable extends GameEvent implements IntervalTransform
 	private boolean hasChanged = false;
 	
 	public GameMovable(int id) {
-		super(id);
-		realPosition = new Point2f(0,0);
+		this(id, new Point2i(0,0), new Point2i(0,0));
+		//super(id);
+		//realPosition = new Point2f(0,0);
 	}
 	
 	public GameMovable(int id, Point2i tilePosition, Point2i innerTilePosition) {
 		super(id,tilePosition,innerTilePosition);
+		realPosition = new Point2f(0,0);
+		setRealPosition(realPosition);
 	}
 
 	public Point2f getRealPosition() {return realPosition;}

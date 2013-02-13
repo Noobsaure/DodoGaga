@@ -1,42 +1,51 @@
 package com.me.mygdxgame.mgr;
 
+import java.util.Hashtable;
+import java.util.Map;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.me.mygdxgame.sprite.SpriteBase;
 import com.me.mygdxgame.sprite.SpriteStatic;
 import com.me.mygdxgame.sprite.SpriteTile;
+import com.me.mygdxgame.data.Data;
+import com.me.mygdxgame.data.DataSprite;
+import com.me.mygdxgame.data.DataTile;
+import com.me.mygdxgame.utils.Cst;
 
 public class SpriteMgr {
 
-	private static SpriteStatic[] staticArray = new SpriteStatic[128];
-	private static int staticIndex = 0;
-	private static SpriteTile[] tileArray = new SpriteTile[128];
-	private static int tileIndex = 0;
+	private static SpriteTile[] tiles = new SpriteTile[127];
+	private static SpriteStatic[] statics = new SpriteStatic[Data.sprites.size()];
 	
-	public static void add(SpriteStatic sprite){
-		if(staticIndex < staticArray.length) {
-			staticArray[staticIndex] = sprite;
-			staticIndex++;
+	private static void addTile(int id){
+		if(tiles[id] == null){
+			DataTile dataTile = Data.tiles.get(id);
+			DataSprite dataSprite = Data.sprites.get(dataTile.spriteId);
+			SpriteTile sprite = new SpriteTile(dataSprite.textureFilename);
+			if(dataTile.isWall){
+				sprite.setElevation(Cst.TILE_WALL_H);
+			}
+			tiles[id] = sprite;
 		}
 	}
 	
-	public static SpriteStatic getStatic(int id) {
-		SpriteStatic res = null;
-		if(id <= staticIndex && id >= 0) {
-			res = staticArray[id];
-		}
-		return res;
-	}
-	
-	public static void addTile(SpriteTile sprite){
-		if(tileIndex < tileArray.length) {
-			tileArray[tileIndex] = sprite;
-			tileIndex++;
+	public static void addStatic(int id){
+		if(statics[id] == null){
+			DataSprite dataSprite = Data.sprites.get(id);
+			SpriteTile sprite = new SpriteTile(dataSprite.textureFilename);
+			statics[id] = sprite;
 		}
 	}
 	
-	public static SpriteTile getTile(int id) {
-		SpriteTile res = null;
-		if(id <= tileIndex && id >= 0) {
-			res = tileArray[id];
-		}
-		return res;
+	public static SpriteTile getTile(int id){
+		addTile(id);
+		return tiles[id];
 	}
+	
+	public static SpriteStatic getStatic(int id){
+		addStatic(id);
+		return statics[id];
+	}
+	
 }

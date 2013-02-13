@@ -1,7 +1,9 @@
 package com.me.mygdxgame.mgr;
 
 import java.util.ArrayList;
+import java.util.Random;
 
+import com.me.mygdxgame.data.Data;
 import com.me.mygdxgame.data.DataMap;
 import com.me.mygdxgame.data.DataSprite;
 import com.me.mygdxgame.data.DataTile;
@@ -21,23 +23,62 @@ public class DataMgr {
 	
 	public static void loadDatabase(){
 		
-		DataMap.tiles = new ArrayList<DataTile>();
-		DataTile dataTile;
+		//Load maps database
+		Data.maps = new ArrayList<DataMap>();
+		
+			//Map 0
+			DataMap data = new DataMap(0, "Map000", Cst.MAP_SIZE);
+			Random rand = new Random();
+			for(int i=0; i < data.tileSize.x; i++){
+				for(int j=0; j < data.tileSize.y; j++){
+					int n = rand.nextInt(255);
+					if(n < 200){
+						data.tilemap[i][j] = Cst.FLOOR;
+					} else{
+						data.tilemap[i][j] = Cst.WALL;
+					}
+				}
+			}
+			Data.maps.add(data);
+		
+		//Load sprites database
+		Data.sprites = new ArrayList<DataSprite>();
 		DataSprite dataSprite;
+			
+			//sprite 0  (floor)
+			dataSprite = new DataSprite(0, "Floor", "floor.png");
+			Data.sprites.add(dataSprite);
+			
+			//sprite 1 (wall)
+			dataSprite = new DataSprite(1, "Wall", "wall.png");
+			Data.sprites.add(dataSprite);
+			
+			//sprite 2 (tree)
+			dataSprite = new DataSprite(2, "Tree", "tree.png");
+			Data.sprites.add(dataSprite);
+			
+			//sprite 3 (character big)
+			dataSprite = new DataSprite(3, "characterBig", "characterBig.png");
+			Data.sprites.add(dataSprite);
+			
+		//Load tiles database
+		Data.tiles = new ArrayList<DataTile>();
+		DataTile dataTile;
 		
-		dataSprite = new DataSprite(0,"Floor","floor.png");
-		dataTile = new DataTile(0,"Floor",dataSprite);
-		DataMap.tiles.add(dataTile);
-		SpriteMgr.addTile(new SpriteTile("floor.png"));
+			//Tile 0
+			
+			dataTile = new DataTile(0, "Floor", 0, false);
+			Data.tiles.add(dataTile);
+			//SpriteMgr.addTile(new SpriteTile("floor.png"));
+			
+			//Tile 1
+			dataTile = new DataTile(1, "Wall", 1, true);
+			Data.tiles.add(dataTile);
+			//SpriteMgr.addTile(new SpriteTile("wall.png",Cst.TILE_WALL_H));
 		
-		dataSprite = new DataSprite(1,"Wall","wall.png");
-		dataTile = new DataTile(1,"Wall",true,dataSprite);
-		DataMap.tiles.add(dataTile);
-		SpriteMgr.addTile(new SpriteTile("wall.png",Cst.TILE_WALL_H));
+		//SpriteMgr.add(new SpriteStatic("tree.png"));
 		
-		SpriteMgr.add(new SpriteStatic("tree.png"));
-		
-		SpriteMgr.add(new SpriteStatic("characterBig.png"));
+		//SpriteMgr.add(new SpriteStatic("characterBig.png"));
 	}
 	
 	public static void createGameObjects(){

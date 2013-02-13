@@ -14,6 +14,7 @@ import com.me.mygdxgame.game.GameMap;
 import com.me.mygdxgame.mgr.SceneMgr;
 import com.me.mygdxgame.sprite.SpritesetMap;
 import com.me.mygdxgame.utils.Cst;
+import com.me.mygdxgame.utils.Point2f;
 import com.me.mygdxgame.utils.Point2i;
 import com.me.mygdxgame.utils.interval.Interval;
 
@@ -27,7 +28,7 @@ public class SceneMap extends SceneBase implements InputProcessor{
 	SpritesetMap spriteset;
 	
 	public SceneMap(){
-		Game.map.setup(Cst.MAP_SIZE);
+		Game.map.setup(0);
 		spriteset = new SpritesetMap();
 		
 		Gdx.input.setInputProcessor(this); //enable event handling
@@ -48,6 +49,7 @@ public class SceneMap extends SceneBase implements InputProcessor{
 	@Override
 	public boolean keyDown(int keycode) {
 		if(keycode == Keys.P){
+			Game.map.movableBattlerTest.setRealPosition(new Point2f(15,15));
 			//Interval interval = new Interval(new GameMovable(0), 1, new Vector2(0,0), new Vector2(2,2), "linear");
 			//interval.start();
 		}

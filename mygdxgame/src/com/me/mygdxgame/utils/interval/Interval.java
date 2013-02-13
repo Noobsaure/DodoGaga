@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.me.mygdxgame.mgr.IntervalMgr;
+import com.me.mygdxgame.utils.Point2f;
 
 /*
 	static private final String[] interpolators = new String[] {"bounce", "bounceIn", "bounceOut", "circle", "circleIn",
@@ -62,8 +63,8 @@ public class Interval extends IntervalBase{
 		temp.mul(alpha);
 		temp.add(start);
 		
-		//transformable.setPosition(temp.x, temp.y);
-		System.out.println(currentTime + "   ------>  " + temp);
+		transformable.setRealPosition(new Point2f(temp.x, temp.y));
+		//System.out.println(currentTime + "   ------>  " + temp);
 
 		if(alpha == 1){
 			IntervalMgr.deleteLater(this);

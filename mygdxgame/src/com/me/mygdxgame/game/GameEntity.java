@@ -6,16 +6,16 @@ public class GameEntity{
 	
 	protected Point2i tilePosition;
 	protected Point2i innerTilePosition;
-	private int id;
+	private int spriteId;
 	
-	public GameEntity(int id){
-		this(id, new Point2i(0, 0), new Point2i(0, 0));
+	public GameEntity(int spriteId){
+		this(spriteId, new Point2i(0, 0), new Point2i(0, 0));
 	}
 	
-	public GameEntity(int id, Point2i tilePosition, Point2i innerTilePosition){
+	public GameEntity(int spriteId, Point2i tilePosition, Point2i innerTilePosition){
 		this.tilePosition = tilePosition;
 		this.innerTilePosition = innerTilePosition;
-		this.id = id;
+		this.spriteId = spriteId;
 	}
 	
 	public Point2i getTilePosition(){
@@ -38,6 +38,6 @@ public class GameEntity{
 		this.innerTilePosition = innerTilePosition;
 	}
 	
-	public int getId() {return this.id;}
+	public int getSpriteId() {return this.spriteId;}
 	
 }

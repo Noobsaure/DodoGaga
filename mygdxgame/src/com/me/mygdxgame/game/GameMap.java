@@ -13,8 +13,8 @@ public class GameMap extends GameMapBase implements TileBasedMap {
 	}
 	
 	public void clearVisited(){
-		for (int x=0; x < mapSize.x; x++){
-			for (int y=0; y < mapSize.y; y++){
+		for (int x=0; x < getMapSize().x; x++){
+			for (int y=0; y < getMapSize().y; y++){
 				visited[x][y] = false;
 			}
 		}

@@ -13,6 +13,7 @@ public class GameBattler extends GameMovable{
 	}
 	
 	public void update() {
+		super.update();
 		//TODO check si les x prochaines cases du chemin sont libres. Retrouver un chemin via A* si c'est pas le cas.
 	}
 }
