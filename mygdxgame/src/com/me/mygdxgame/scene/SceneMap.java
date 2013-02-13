@@ -51,9 +51,10 @@ public class SceneMap extends SceneBase implements InputProcessor{
 	@Override
 	public boolean keyDown(int keycode) {
 		if(keycode == Keys.P){
+			Game.map.movableBattlerTest.startIntervalToTile(new Point2i(3, 1));
 			//Game.map.movableBattlerTest.setRealPosition(new Point2f(900,300));
-			Interval interval = new Interval(Game.map.movableBattlerTest, 1, new Vector2(600,300), new Vector2(1000,1000), "bounceOut");
-			interval.start();
+			//Interval interval = new Interval(Game.map.movableBattlerTest, 1, new Vector2(600,300), new Vector2(1000,1000), "pow5Out");
+			//interval.start();
 		}
 		return false;
 	}

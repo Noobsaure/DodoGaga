@@ -21,7 +21,7 @@ public abstract class GameMapBase {
 	private Map<String, List<GameEvent>> tileEvents;
 	private List<GameEvent> events;
 	private static Pixmap mouseMap = new Pixmap(Gdx.files.internal("mouseMapIso.png"));
-	public static GameMovable movableBattlerTest = new GameBattler(3, new Point2f(600, 300));
+	public static GameMover movableBattlerTest = new GameBattler(3, new Point2f(600, 300));
 	
 	public void setup(int mapId) {
 		this.mapId = mapId;

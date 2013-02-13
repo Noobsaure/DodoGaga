@@ -3,7 +3,7 @@ package com.me.mygdxgame.game;
 import com.me.mygdxgame.utils.Point2f;
 import com.me.mygdxgame.utils.Point2i;
 
-public class GameBattler extends GameMovable{
+public class GameBattler extends GameMover{
 	
 	public GameBattler(int id, Point2f realPosition) {
 		super(id, realPosition);

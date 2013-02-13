@@ -22,7 +22,10 @@ public class Interval extends IntervalBase{
 	Vector2 start;
 	Vector2 end;
 	
-
+	public Interval(IntervalTransformable transformable, float duration, Point2f start, Point2f end, String interpolation){
+		this(transformable, duration, new Vector2(start.x, start.y), new Vector2(end.x, end.y), interpolation);
+	}
+	
 	public Interval(IntervalTransformable transformable, float duration, Vector2 start, Vector2 end, String interpolation){
 		this.transformable = transformable;
 		this.duration = duration;
@@ -65,8 +68,7 @@ public class Interval extends IntervalBase{
 		
 		transformable.setRealPosition(new Point2f(temp.x, temp.y));
 		//System.out.println(currentTime + "   ------>  " + temp);
-		System.out.println(Math.min(1, (0.5) / 1f));
-		
+
 		if(alpha == 1){
 			IntervalMgr.deleteLater(this);
 		}

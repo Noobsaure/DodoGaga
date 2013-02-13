@@ -3,9 +3,10 @@ package com.me.mygdxgame.game;
 import com.me.mygdxgame.utils.Cst;
 import com.me.mygdxgame.utils.Point2f;
 import com.me.mygdxgame.utils.Point2i;
+import com.me.mygdxgame.utils.interval.Interval;
 import com.me.mygdxgame.utils.interval.IntervalTransformable;
 
-public abstract class GameMovable extends GameEvent implements IntervalTransformable {
+public abstract class GameMover extends GameEvent implements IntervalTransformable {
 
 	private Point2f realPosition;
 	private boolean hasChanged = false;
@@ -16,7 +17,7 @@ public abstract class GameMovable extends GameEvent implements IntervalTransform
 		//realPosition = new Point2f(0,0);
 	//}
 	
-	public GameMovable(int id, Point2f realPosition) {
+	public GameMover(int id, Point2f realPosition) {
 		super(id);
 		this.realPosition = realPosition;
 		setRealPosition(realPosition);
@@ -42,5 +43,21 @@ public abstract class GameMovable extends GameEvent implements IntervalTransform
 				this.tilePosition = pos;
 			}
 		}
+	}
+	
+	public void startIntervalToTile(Point2i tilePos){
+		Point2f destination = new Point2f();
+		
+		//float x = Cst.TILE_HW + Cst.TILE_W * tilePos.x + Cst.TILE_HW * (tilePos.y % 2);
+		//float y = Cst.TILE_HH + Cst.TILE_HH * tilePos.y;
+		//x += getInnerTilePosition().x * Cst.CELL_HW - getInnerTilePosition().y * Cst.CELL_HW;
+		//y += getInnerTilePosition().x * Cst.CELL_HH + getInnerTilePosition().y * Cst.CELL_HH;
+		
+		destination.x = 0f;//x-Cst.TILE_HW;
+		destination.y = 0f;//y+Cst.TILE_HH;
+		
+		System.out.println(destination.x + " " + destination.y);
+		Interval interval = new Interval(this, 0.5f, realPosition, destination, "linear");
+		interval.start();
 	}
 }

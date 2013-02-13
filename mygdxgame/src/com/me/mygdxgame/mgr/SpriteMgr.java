@@ -61,6 +61,8 @@ public class SpriteMgr {
 	
 	public static SpriteAnimated getAnimated(int id){
 		addAnimated(id);
-		return new SpriteAnimated(animateds[id].getTextureName(),animateds[id].getElevation(),animateds[id].getColor());
+		SpriteAnimated sprite = new SpriteAnimated(animateds[id].getTextureName(),animateds[id].getElevation(),animateds[id].getColor());
+		sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight());
+		return sprite;
 	}
 }

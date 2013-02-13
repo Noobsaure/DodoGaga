@@ -15,7 +15,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.me.mygdxgame.game.Game;
 import com.me.mygdxgame.game.GameEvent;
-import com.me.mygdxgame.game.GameMovable;
+import com.me.mygdxgame.game.GameMover;
 import com.me.mygdxgame.mgr.SpriteMgr;
 import com.me.mygdxgame.mgr.WindowMgr;
 import com.me.mygdxgame.utils.Cst;
@@ -96,11 +96,11 @@ public class SpritesetMap {
 		for(int j=jStart; j < jEnd; j++) {
 			for(int i=iStart; i < iEnd; i++) {
 			
-				pos.y = j*Cst.TILE_HH; //+cam y
+				pos.y = j*Cst.TILE_HH;
 				if (j % 2 == 0) {
-					pos.x = i*Cst.TILE_W; //+cam x
+					pos.x = i*Cst.TILE_W;
 				} else {
-					pos.x = i*Cst.TILE_W + Cst.TILE_HW; //+cam x
+					pos.x = i*Cst.TILE_W + Cst.TILE_HW;
 				}
 				
 				spriteTile = SpriteMgr.getTile(Game.map.mapData.tilemap[i][j]);
@@ -119,12 +119,12 @@ public class SpritesetMap {
 				events = Game.map.eventsAt(i,j);
 				if(events != null){
 					for(GameEvent event : events){
-						if(event instanceof GameMovable){
+						if(event instanceof GameMover){
 							SpriteAnimated spriteAnim = SpriteMgr.getAnimated(event.getSpriteId());
 							//System.out.println(event.getClass());
 							//System.out.println(((GameMovable) event).getRealPosition());
 							//sprite.setElevation(spriteTile.getElevation());
-							spriteAnim.update((GameMovable) event);
+							spriteAnim.update((GameMover) event);
 							list.add(spriteAnim);
 						}
 						else if(event instanceof GameEvent){
