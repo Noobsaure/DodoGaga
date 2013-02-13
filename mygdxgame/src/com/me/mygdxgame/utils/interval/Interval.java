@@ -59,13 +59,14 @@ public class Interval extends IntervalBase{
 		temp.set(end);
 		temp.sub(start);
 		
-		float alpha = Math.min(1, (currentTime / duration) / 1f);
-		temp.mul(alpha);
+		float alpha = Math.min(1, currentTime / duration);
+		temp.mul(interpolation.apply(alpha));
 		temp.add(start);
 		
 		transformable.setRealPosition(new Point2f(temp.x, temp.y));
 		//System.out.println(currentTime + "   ------>  " + temp);
-
+		System.out.println(Math.min(1, (0.5) / 1f));
+		
 		if(alpha == 1){
 			IntervalMgr.deleteLater(this);
 		}
