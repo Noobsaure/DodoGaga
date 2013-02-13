@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.me.mygdxgame.sprite.SpriteAnimated;
 import com.me.mygdxgame.sprite.SpriteBase;
 import com.me.mygdxgame.sprite.SpriteStatic;
 import com.me.mygdxgame.sprite.SpriteTile;
@@ -17,6 +18,7 @@ public class SpriteMgr {
 
 	private static SpriteTile[] tiles = new SpriteTile[127];
 	private static SpriteStatic[] statics = new SpriteStatic[Data.sprites.size()];
+	private static SpriteAnimated[] animateds = new SpriteAnimated[Data.sprites.size()];
 	
 	private static void addTile(int id){
 		if(tiles[id] == null){
@@ -33,8 +35,16 @@ public class SpriteMgr {
 	public static void addStatic(int id){
 		if(statics[id] == null){
 			DataSprite dataSprite = Data.sprites.get(id);
-			SpriteTile sprite = new SpriteTile(dataSprite.textureFilename);
+			SpriteStatic sprite = new SpriteStatic(dataSprite.textureFilename);
 			statics[id] = sprite;
+		}
+	}
+	
+	public static void addAnimated(int id){
+		if(animateds[id] == null){
+			DataSprite dataSprite = Data.sprites.get(id);
+			SpriteAnimated sprite = new SpriteAnimated(dataSprite.textureFilename);
+			animateds[id] = sprite;
 		}
 	}
 	
@@ -48,4 +58,8 @@ public class SpriteMgr {
 		return statics[id];
 	}
 	
+	public static SpriteAnimated getAnimated(int id){
+		addAnimated(id);
+		return animateds[id];
+	}
 }

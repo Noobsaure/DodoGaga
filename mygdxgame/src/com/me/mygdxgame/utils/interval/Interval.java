@@ -59,7 +59,7 @@ public class Interval extends IntervalBase{
 		temp.set(end);
 		temp.sub(start);
 		
-		float alpha = Math.min(1, currentTime / duration);
+		float alpha = Math.min(1, (currentTime / duration) / 1f);
 		temp.mul(alpha);
 		temp.add(start);
 		

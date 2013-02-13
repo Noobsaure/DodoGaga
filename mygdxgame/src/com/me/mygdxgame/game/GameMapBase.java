@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.me.mygdxgame.data.Data;
 import com.me.mygdxgame.data.DataMap;
 import com.me.mygdxgame.utils.Cst;
+import com.me.mygdxgame.utils.Point2f;
 import com.me.mygdxgame.utils.Point2i;
 
 public abstract class GameMapBase {
@@ -20,7 +21,7 @@ public abstract class GameMapBase {
 	private Map<String, List<GameEvent>> tileEvents;
 	private List<GameEvent> events;
 	private static Pixmap mouseMap = new Pixmap(Gdx.files.internal("mouseMapIso.png"));
-	public static GameMovable movableBattlerTest = new GameBattler(2);
+	public static GameMovable movableBattlerTest = new GameBattler(3, new Point2f(600, 300));
 	
 	public void setup(int mapId) {
 		this.mapId = mapId;
@@ -37,11 +38,12 @@ public abstract class GameMapBase {
 		Point2i tilePosition;
 		Point2i innerTilePosition;	
 		
-		for(int i=0; i<100; i++){
+		for(int i=0; i<1; i++){
 			tilePosition = new Point2i(2, 4);
 			//tilePosition = new Point2i(rand.nextInt(getMapSize().x),rand.nextInt(getMapSize().y));
 			innerTilePosition = new Point2i(rand.nextInt(Cst.NB_X_CELL),rand.nextInt(Cst.NB_Y_CELL));
-			event = new GameEvent(2+rand.nextInt(2),tilePosition,innerTilePosition);
+			int spriteId = 2;//2+rand.nextInt(2)
+			event = new GameEvent(spriteId,tilePosition,innerTilePosition);
 			//refreshEventPosition(tilePosition.x, tilePosition.y, event);
 			addEventToTile(tilePosition,event);
 		}
@@ -125,6 +127,7 @@ public abstract class GameMapBase {
 				tileEvents.remove(tile.getHashCode());
 			}
 		}
+		//System.out.println(tile);
 	}
 	
 	public void addEventToTile(Point2i tile, GameEvent ev) {
@@ -133,7 +136,8 @@ public abstract class GameMapBase {
 			evs = new ArrayList<GameEvent>();
 			tileEvents.put(tile.getHashCode(), evs);
 		}
-		evs.add(ev);		
+		evs.add(ev);
+		//System.out.println(tile);
 	}
 	
 	public List<GameEvent> eventsAt(int tileX, int tileY){

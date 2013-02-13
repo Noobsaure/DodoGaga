@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.collision.Ray;
 import com.me.mygdxgame.game.Game;
 import com.me.mygdxgame.game.GameEvent;
 import com.me.mygdxgame.game.GameMap;
+import com.me.mygdxgame.mgr.IntervalMgr;
 import com.me.mygdxgame.mgr.SceneMgr;
 import com.me.mygdxgame.sprite.SpritesetMap;
 import com.me.mygdxgame.utils.Cst;
@@ -35,6 +36,7 @@ public class SceneMap extends SceneBase implements InputProcessor{
 	}
 	
 	public void update(){
+		IntervalMgr.update();
 		Game.cam.update();
 		Game.map.update();
 		spriteset.update();
@@ -49,9 +51,9 @@ public class SceneMap extends SceneBase implements InputProcessor{
 	@Override
 	public boolean keyDown(int keycode) {
 		if(keycode == Keys.P){
-			Game.map.movableBattlerTest.setRealPosition(new Point2f(15,15));
-			//Interval interval = new Interval(new GameMovable(0), 1, new Vector2(0,0), new Vector2(2,2), "linear");
-			//interval.start();
+			//Game.map.movableBattlerTest.setRealPosition(new Point2f(900,300));
+			Interval interval = new Interval(Game.map.movableBattlerTest, 1, new Vector2(600,300), new Vector2(1000,1000), "sine");
+			interval.start();
 		}
 		return false;
 	}

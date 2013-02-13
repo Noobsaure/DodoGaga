@@ -15,6 +15,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.me.mygdxgame.game.Game;
 import com.me.mygdxgame.game.GameEvent;
+import com.me.mygdxgame.game.GameMovable;
 import com.me.mygdxgame.mgr.SpriteMgr;
 import com.me.mygdxgame.mgr.WindowMgr;
 import com.me.mygdxgame.utils.Cst;
@@ -76,9 +77,9 @@ public class SpritesetMap {
 		Point2i pos = new Point2i(0, 0);
 		SpriteTile spriteTile;
 		SpriteTile highlightedSpriteTile;
-		SpriteStatic spriteStatic;
+		SpriteStatic sprite;
 		List<GameEvent> events;
-		List<Sprite> list = new ArrayList<Sprite>();
+		List<SpriteBase> list = new ArrayList<SpriteBase>();
 		
 		int iStart = (int) (sx/Cst.TILE_W) - 1;
 		int jStart = (int) (sy/Cst.TILE_HH) - 1;
@@ -118,10 +119,20 @@ public class SpritesetMap {
 				events = Game.map.eventsAt(i,j);
 				if(events != null){
 					for(GameEvent event : events){
-						spriteStatic = SpriteMgr.getStatic(event.getSpriteId());
-						spriteStatic.setElevation(spriteTile.getElevation());
-						spriteStatic.update(event);
-						list.add(spriteStatic);
+						if(event instanceof GameMovable){
+							SpriteAnimated spriteAnim = SpriteMgr.getAnimated(event.getSpriteId());
+							//System.out.println(event.getClass());
+							//System.out.println(((GameMovable) event).getRealPosition());
+							//sprite.setElevation(spriteTile.getElevation());
+							spriteAnim.update((GameMovable) event);
+							list.add(spriteAnim);
+						}
+						else if(event instanceof GameEvent){
+							sprite = SpriteMgr.getStatic(event.getSpriteId());
+							sprite.setElevation(spriteTile.getElevation());
+							sprite.update(event);
+							list.add(sprite);
+						}
 					}
 				}
 				
