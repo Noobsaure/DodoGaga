@@ -8,6 +8,8 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.me.mygdxgame.mgr.IntervalMgr;
 import com.me.mygdxgame.utils.Point2f;
+import com.me.mygdxgame.utils.interval.interfaces.IntervalPlayable;
+import com.me.mygdxgame.utils.interval.interfaces.IntervalTransformable;
 
 /*
 	static private final String[] interpolators = new String[] {"bounce", "bounceIn", "bounceOut", "circle", "circleIn",
@@ -15,7 +17,7 @@ import com.me.mygdxgame.utils.Point2f;
 		"linear", "pow2", "pow2In", "pow2Out", "pow3", "pow3In", "pow3Out", "pow4", "pow4In", "pow4Out", "pow5", "pow5In",
 		"pow5Out", "sine", "sineIn", "sineOut", "swing", "swingIn", "swingOut"};
  */
-public class Interval extends TransformableContainer implements IntervalPlayable{
+public class Interval extends TransformableContainer{
 
 	private float duration;
 	private float currentTime;
@@ -24,6 +26,7 @@ public class Interval extends TransformableContainer implements IntervalPlayable
 	Vector2 temp;
 	Vector2 start;
 	Vector2 end;
+	IntervalTransformable transformable;
 	
 	public Interval(IntervalTransformable transformable, float duration, Point2f start, Point2f end, String interpolation){
 		this(transformable, duration, new Vector2(start.x, start.y), new Vector2(end.x, end.y), interpolation);
@@ -31,7 +34,8 @@ public class Interval extends TransformableContainer implements IntervalPlayable
 	
 	public Interval(IntervalTransformable transformable, float duration, Vector2 start, Vector2 end, String interpolation){
 		super();
-		transformables.add(transformable);
+		this.transformable = transformable;
+		//transformables.add(transformable);
 		this.duration = duration;
 		currentTime = 0;
 		this.start = start;
@@ -50,51 +54,11 @@ public class Interval extends TransformableContainer implements IntervalPlayable
 		currentTime = 0;
 	}
 	
-	public void start(){
-		reset();
-		state = IntervalBase.State.PLAYING_ONCE;
-		launch();
-	}
-	
-	public void loop(){
-		reset();
-		state = IntervalBase.State.LOOPING;
-		launch();
-	}
-	
-	private void launch(){
-		IntervalMgr.removeTransformables(getTransformables());
-		IntervalMgr.addInterval(this);
-	}
-	
 	public void finish(){
 		currentTime = duration;
 	}
 	
-	public void stopAndDelete(){
-		state = IntervalBase.State.DELETED;
-		IntervalMgr.deleteLater(this);
-	}
-	
-	public void pause(){
-		memoState = state;
-		state = IntervalBase.State.PAUSED;
-	}
-	
-	public void resume(){
-		state = memoState;
-	}
-	
-	public void tooglePauseResume(){
-		if(state == IntervalBase.State.PAUSED){
-			resume();
-		}
-		else{
-			pause();
-		}
-	}
-	
-	public void update(){
+	public void updateMain(){
 		if(state == IntervalBase.State.DELETED || state == IntervalBase.State.PAUSED){
 			return;
 		}
@@ -109,20 +73,11 @@ public class Interval extends TransformableContainer implements IntervalPlayable
 		temp.add(start);
 		
 		getTransformable().setRealPosition(new Point2f(temp.x, temp.y));
-
-		if(isFinished()){
-			if(state == IntervalBase.State.PLAYING_ONCE){
-				IntervalMgr.deleteLater(this);
-			}
-			else if(state == IntervalBase.State.LOOPING){
-				reset();
-			}	
-		}
 		
 	}
 	
 	public IntervalTransformable getTransformable(){
-		return transformables.get(0);
+		return transformable;
 	}
 	
 	public boolean isPlaying(){
@@ -131,6 +86,13 @@ public class Interval extends TransformableContainer implements IntervalPlayable
 
 	public boolean isFinished(){
 		return currentTime >= duration;
+	}
+
+	@Override
+	public List<IntervalTransformable> getTransformables() {
+		List<IntervalTransformable> transformables = new ArrayList<IntervalTransformable>();
+		transformables.add(transformable);
+		return transformables;
 	}
 	
 }

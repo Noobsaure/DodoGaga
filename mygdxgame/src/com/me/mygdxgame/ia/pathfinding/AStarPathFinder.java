@@ -75,6 +75,8 @@ public class AStarPathFinder implements PathFinder {
 	 * @see PathFinder#findPath(Mover, int, int, int, int, int, int)
 	 */
 	public Path findPath(Mover mover, int sx, int sy, int cx, int cy, int tx, int ty, int ctx, int cty) {
+		return new Path();
+		/*
 		// easy first check, if the destination is blocked, we can't get there
 		if (map.blocked(mover, tx, ty)) {
 			return null;
@@ -178,6 +180,7 @@ public class AStarPathFinder implements PathFinder {
 		
 		// thats it, we have our path 
 		return path;
+		*/
 	}
 
 	/**

@@ -4,7 +4,7 @@ import com.me.mygdxgame.utils.Cst;
 import com.me.mygdxgame.utils.Point2f;
 import com.me.mygdxgame.utils.Point2i;
 import com.me.mygdxgame.utils.interval.Interval;
-import com.me.mygdxgame.utils.interval.IntervalTransformable;
+import com.me.mygdxgame.utils.interval.interfaces.IntervalTransformable;
 
 public abstract class GameMover extends GameEvent implements IntervalTransformable {
 
