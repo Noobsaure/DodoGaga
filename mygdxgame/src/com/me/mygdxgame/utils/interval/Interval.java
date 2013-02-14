@@ -27,6 +27,7 @@ public class Interval extends IntervalBase{
 	}
 	
 	public Interval(IntervalTransformable transformable, float duration, Vector2 start, Vector2 end, String interpolation){
+		super();
 		this.transformable = transformable;
 		this.duration = duration;
 		currentTime = 0;
@@ -48,15 +49,47 @@ public class Interval extends IntervalBase{
 	}
 	
 	public void start(){
+		state = IntervalBase.State.PLAYING_ONCE;
+		launch();
+	}
+	
+	public void loop(){
+		state = IntervalBase.State.LOOPING;
+		launch();
+	}
+	
+	private void launch(){
 		IntervalMgr.removeTransformable(transformable);
 		IntervalMgr.addInterval(this);
 	}
 	
-	public void stop(){
+	public void finish(){
 		currentTime = duration;
 	}
 	
+	public void stopAndDelete(){
+		state = IntervalBase.State.DELETED;
+		IntervalMgr.deleteLater(this);
+	}
+	
+	public void reset(){
+		currentTime = 0;
+	}
+	
+	public void pause(){
+		memoState = state;
+		state = IntervalBase.State.PAUSED;
+	}
+	
+	public void resume(){
+		state = memoState;
+	}
+	
 	public void update(){
+		if(state == IntervalBase.State.DELETED || state == IntervalBase.State.PAUSED){
+			return;
+		}
+		
 		currentTime += Gdx.graphics.getDeltaTime();
 		
 		temp.set(end);
@@ -67,10 +100,14 @@ public class Interval extends IntervalBase{
 		temp.add(start);
 		
 		transformable.setRealPosition(new Point2f(temp.x, temp.y));
-		//System.out.println(currentTime + "   ------>  " + temp);
 
 		if(alpha == 1){
-			IntervalMgr.deleteLater(this);
+			if(state == IntervalBase.State.PLAYING_ONCE){
+				IntervalMgr.deleteLater(this);
+			}
+			else if(state == IntervalBase.State.LOOPING){
+				reset();
+			}	
 		}
 		
 	}

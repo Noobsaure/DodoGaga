@@ -9,7 +9,20 @@ public abstract class SceneBase{
 	}
 
 	public void update() {
-		//IntervalMgr.update();
+		updatePre();
+		updateMain();
+		updatePost();
+	}
+	
+	public void updatePre(){
+		IntervalMgr.update();
+	}
+	
+	public void updateMain(){
+		
+	}
+	
+	public void updatePost(){
 		WindowMgr.update();
 	}
 	
