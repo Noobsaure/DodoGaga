@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
@@ -26,26 +25,13 @@ public class SpritesetMap {
 	private SpriteBatch batch;
 	private Point2i highlightedTile = new Point2i(-1,-1);
 
-	//private byte[][] tilemap;
-
 	public SpritesetMap(){
 		createSpriteBatches();
-		//createTilemap();
 	}
 
 	private void createSpriteBatches(){
 		batch = new SpriteBatch();
 	}
-
-	/*
-	private void createTilemap(){
-		tilemap = new byte[Game.map.getMapSize().x][Game.map.getMapSize().y];
-		for(int i=0; i < Game.map.getMapSize().x; i++){
-			for(int j=0; j < Game.map.getMapSize().y; j++){
-				tilemap
-			}
-		}
-	}*/
 
 	public void highlightTile(Point2i p) {
 		highlightedTile = p;

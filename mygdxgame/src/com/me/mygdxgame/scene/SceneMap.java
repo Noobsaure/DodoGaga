@@ -98,7 +98,7 @@ public class SceneMap extends SceneBase implements InputProcessor{
 			
 			int i = (int)(0.5 * (ty/Cst.CELL_HH + tx/Cst.CELL_HW));
 			int j =	(int)(0.5 * (ty/Cst.CELL_HH - tx/Cst.CELL_HW));
-			
+			System.out.println(i+" ; "+j);
 			Point2i tile = new Point2i(pos.x, pos.y);
 			Point2i cell = new Point2i(i, j);
 			System.out.println("Deplacement en Tile: " + tile + "   Cell: " + cell);
