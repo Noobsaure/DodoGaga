@@ -93,7 +93,7 @@ public class SceneMap extends SceneBase implements InputProcessor{
 			Ray pickRay = Game.cam.getPickRay(x, y);
 			Intersector.intersectRayPlane(pickRay, Cst.XY_PLANE, highlight);
 			Point2i pos = GameMap.isoToTile(highlight.x, highlight.y);
-			float tx = x - (Cst.TILE_W * pos.x + (pos.y % 2) * Cst.TILE_HW);
+			float tx = x - (Cst.TILE_W * pos.x + (pos.y % 2) * Cst.TILE_HW) - Cst.TILE_HW;
 			float ty = y - Cst.TILE_HH * pos.y;
 			
 			int i = (int)(0.5 * (ty/Cst.CELL_HH + tx/Cst.CELL_HW));
