@@ -21,6 +21,10 @@ public abstract class IntervalBase {
 		
 	}
 	
+	public void update(){
+		
+	}
+	
 }
 
     

@@ -21,6 +21,7 @@ import com.me.mygdxgame.utils.Cst;
 import com.me.mygdxgame.utils.Point2f;
 import com.me.mygdxgame.utils.Point2i;
 import com.me.mygdxgame.utils.interval.Interval;
+import com.me.mygdxgame.utils.interval.Sequence;
 
 public class SceneMap extends SceneBase implements InputProcessor{
 	
@@ -31,19 +32,28 @@ public class SceneMap extends SceneBase implements InputProcessor{
 	
 	SpritesetMap spriteset;
 	
+	Interval intervalTest;
+	Sequence sequenceTest;
+	
 	public SceneMap(){
 		Game.map.setup(0);
 		spriteset = new SpritesetMap();
 		
+		intervalTest = new Interval(Game.map.movableBattlerTest, 0.5f, new Vector2(50,50), new Vector2(1000,1000), "linear");
+		sequenceTest = new Sequence();
+		sequenceTest.add(new Interval(Game.map.movableBattlerTest, 0.5f, new Vector2(200,200), new Vector2(200,400), "circleIn"));
+		sequenceTest.add(new Interval(Game.map.movableBattlerTest, 0.5f, new Vector2(200,400), new Vector2(800,400), "swingIn"));
+		sequenceTest.add(new Interval(Game.map.movableBattlerTest, 0.5f, new Vector2(800,400), new Vector2(800,200), "swing"));
+		sequenceTest.add(new Interval(Game.map.movableBattlerTest, 0.5f, new Vector2(800,200), new Vector2(200,200), "swingOut"));
+		
 		Gdx.input.setInputProcessor(this); //enable event handling
 	}
 	
-	public void update(){
-		IntervalMgr.update();
-		Game.cam.update();
+	public void updateMain(){
+		super.updateMain();
+		Game.camera.update();
 		Game.map.update();
 		spriteset.update();
-		super.update();
 	}
 
 	public void terminate() {
@@ -53,13 +63,22 @@ public class SceneMap extends SceneBase implements InputProcessor{
 
 	@Override
 	public boolean keyDown(int keycode) {
-		if(keycode == Keys.P){
+		if(keycode == Keys.S){
+
+			sequenceTest.loop();
+			/*
 			Random rand = new Random();
 			
 			Point2i tile = new Point2i(rand.nextInt(5), rand.nextInt(10));
 			Point2i cell = new Point2i(rand.nextInt(Cst.NB_CELL), rand.nextInt(Cst.NB_CELL));
 			
-			Game.map.movableBattlerTest.startIntervalToTile(tile, cell);
+			Game.map.movableBattlerTest.startIntervalToTile(tile, cell);*/
+			//Game.map.movableBattlerTest.setRealPosition(new Point2f(900,300));
+			//Interval interval = new Interval(Game.map.movableBattlerTest, 1, new Vector2(600,300), new Vector2(1000,1000), "pow5Out");
+			//interval.start();
+		}
+		else if(keycode == Keys.P){
+			sequenceTest.tooglePauseResume();
 			//Game.map.movableBattlerTest.setRealPosition(new Point2f(900,300));
 			//Interval interval = new Interval(Game.map.movableBattlerTest, 1, new Vector2(600,300), new Vector2(1000,1000), "pow5Out");
 			//interval.start();
@@ -76,10 +95,10 @@ public class SceneMap extends SceneBase implements InputProcessor{
 	@Override
 	public boolean keyTyped(char character) {
 		if(Gdx.input.isKeyPressed(Keys.A)){
-			Game.cam.zoom += 0.1;
+			Game.camera.zoom += 0.1;
 		}
 		else if(Gdx.input.isKeyPressed(Keys.Q)){
-			Game.cam.zoom -= 0.1;
+			Game.camera.zoom -= 0.1;
 		}
 		
 		return false;
@@ -90,7 +109,7 @@ public class SceneMap extends SceneBase implements InputProcessor{
 		
 		if(button == Buttons.LEFT) {
 			
-			Ray pickRay = Game.cam.getPickRay(x, y);
+			Ray pickRay = Game.camera.getPickRay(x, y);
 			Intersector.intersectRayPlane(pickRay, Cst.XY_PLANE, highlight);
 			Point2i pos = GameMap.isoToTile(highlight.x, highlight.y);
 			float tx = x - (Cst.TILE_W * pos.x + (pos.y % 2) * Cst.TILE_HW) - Cst.TILE_HW;
@@ -137,14 +156,14 @@ public class SceneMap extends SceneBase implements InputProcessor{
 	public boolean touchDragged(int x, int y, int pointer) {
 		if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT) || Gdx.input.isTouched(1)){
 
-			Ray pickRay = Game.cam.getPickRay(Gdx.input.getX(), Gdx.input.getY());
+			Ray pickRay = Game.camera.getPickRay(Gdx.input.getX(), Gdx.input.getY());
 			Intersector.intersectRayPlane(pickRay, Cst.XY_PLANE, curr);
 	 
 			if(!(last.x == -1 && last.y == -1 && last.z == -1)) {
-				pickRay = Game.cam.getPickRay(last.x, last.y);
+				pickRay = Game.camera.getPickRay(last.x, last.y);
 				Intersector.intersectRayPlane(pickRay, Cst.XY_PLANE, delta);			
 				delta.sub(curr);
-				Game.cam.position.add(delta.x, delta.y, delta.z);
+				Game.camera.position.add(delta.x, delta.y, delta.z);
 			}
 			last.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 		}
@@ -165,7 +184,7 @@ public class SceneMap extends SceneBase implements InputProcessor{
 
 	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
-		Ray pickRay = Game.cam.getPickRay(screenX, screenY);
+		Ray pickRay = Game.camera.getPickRay(screenX, screenY);
 		Intersector.intersectRayPlane(pickRay, Cst.XY_PLANE, highlight);
 		spriteset.highlightTile(GameMap.isoToTile(highlight.x, highlight.y));
 		return true;

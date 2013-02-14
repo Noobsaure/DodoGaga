@@ -41,22 +41,22 @@ public class SpritesetMap {
 	public void update(){
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
-		batch.setProjectionMatrix(Game.cam.combined);
+		batch.setProjectionMatrix(Game.camera.combined);
 		batch.begin();
 
 		Vector3 inter = new Vector3();
 
-		Ray pickRay = Game.cam.getPickRay(0, 0);
+		Ray pickRay = Game.camera.getPickRay(0, 0);
 		Intersector.intersectRayPlane(pickRay, Cst.XY_PLANE, inter);
 
 		float sx = inter.x;
 		float sy = inter.y;
 
-		pickRay = Game.cam.getPickRay(Gdx.graphics.getWidth(), 0);
+		pickRay = Game.camera.getPickRay(Gdx.graphics.getWidth(), 0);
 		Intersector.intersectRayPlane(pickRay, Cst.XY_PLANE, inter);
 		float sw = inter.x;
 
-		pickRay = Game.cam.getPickRay(0, Gdx.graphics.getHeight());
+		pickRay = Game.camera.getPickRay(0, Gdx.graphics.getHeight());
 		Intersector.intersectRayPlane(pickRay, Cst.XY_PLANE, inter);
 		float sh = inter.y;
 
