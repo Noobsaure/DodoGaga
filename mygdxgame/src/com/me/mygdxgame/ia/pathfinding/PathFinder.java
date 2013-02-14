@@ -26,5 +26,5 @@ public interface PathFinder {
 	 * @param ty Teh y coordinate of the target location
 	 * @return The path found from start to end, or null if no path can be found.
 	 */
-	public Path findPath(Mover mover, int sx, int sy, int tx, int ty);
+	public Path findPath(Mover mover, int sx, int sy, int cx, int cy, int tx, int ty, int ctx, int cty);
 }

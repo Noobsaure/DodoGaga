@@ -1,12 +1,13 @@
 package com.me.mygdxgame.game;
 
+import com.me.mygdxgame.data.Data;
+import com.me.mygdxgame.data.DataMap;
 import com.me.mygdxgame.ia.pathfinding.Mover;
 import com.me.mygdxgame.ia.pathfinding.TileBasedMap;
 
 public class GameMap extends GameMapBase implements TileBasedMap {
 
 	private boolean[][] visited;
-	//private final BufferedImage mouseMap = new Bu;
 	
 	public GameMap(){
 		super();
@@ -36,24 +37,14 @@ public class GameMap extends GameMapBase implements TileBasedMap {
 
 	public boolean blocked(Mover mover, int x, int y) {
 		
-		return false;
+		return getDataMap().isWall(x, y);
 	}
 
 	public float getCost(Mover mover, int sx, int sy, int tx, int ty) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int getWidthInTiles() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int getHeightInTiles() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 	
+	public DataMap getDataMap() {
+		return Data.maps.get(mapId);
+	}
 }

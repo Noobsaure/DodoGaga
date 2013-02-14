@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import com.me.mygdxgame.ia.pathfinding.heuristics.ClosestHeuristic;
+import com.me.mygdxgame.utils.Cst;
 
 
 /**
@@ -25,7 +26,7 @@ public class AStarPathFinder implements PathFinder {
 	private int maxSearchDistance;
 	
 	/** The complete set of nodes across the map */
-	private Node[][] nodes;
+	private Node[][][][] nodes;
 	/** True if we allow diaganol movement */
 	private boolean allowDiagMovement;
 	/** The heuristic we're applying to determine which nodes to search first */
@@ -57,18 +58,23 @@ public class AStarPathFinder implements PathFinder {
 		this.maxSearchDistance = maxSearchDistance;
 		this.allowDiagMovement = allowDiagMovement;
 		
-		nodes = new Node[map.getWidthInTiles()][map.getHeightInTiles()];
-		for (int x=0;x<map.getWidthInTiles();x++) {
-			for (int y=0;y<map.getHeightInTiles();y++) {
-				nodes[x][y] = new Node(x,y);
+		nodes = new Node[map.getMapSize().x][map.getMapSize().y][Cst.NB_CELL][Cst.NB_CELL];
+		for (int x=0;x<map.getMapSize().x;x++) {
+			for (int y=0;y<map.getMapSize().y;y++) {
+				for(int i=0;i<Cst.NB_CELL;i++) {
+					for(int j=0;j<Cst.NB_CELL;j++) {
+						nodes[x][y][i][j] = new Node(x,y,i,j);
+					}
+				}
+				
 			}
 		}
 	}
 	
 	/**
-	 * @see PathFinder#findPath(Mover, int, int, int, int)
+	 * @see PathFinder#findPath(Mover, int, int, int, int, int, int)
 	 */
-	public Path findPath(Mover mover, int sx, int sy, int tx, int ty) {
+	public Path findPath(Mover mover, int sx, int sy, int cx, int cy, int tx, int ty, int ctx, int cty) {
 		// easy first check, if the destination is blocked, we can't get there
 		if (map.blocked(mover, tx, ty)) {
 			return null;
@@ -76,13 +82,13 @@ public class AStarPathFinder implements PathFinder {
 		
 		// initial state for A*. The closed group is empty. Only the starting
 		// tile is in the open list and it's cost is zero, i.e. we're already there
-		nodes[sx][sy].cost = 0;
-		nodes[sx][sy].depth = 0;
+		nodes[sx][sy][cx][cy].cost = 0;
+		nodes[sx][sy][cx][cy].depth = 0;
 		closed.clear();
 		open.clear();
 		open.add(nodes[sx][sy]);
 		
-		nodes[tx][ty].parent = null;
+		nodes[tx][ty][ctx][cty].parent = null;
 		
 		// while we haven't found the goal and haven't exceeded our max search depth
 		int maxDepth = 0;
@@ -90,7 +96,7 @@ public class AStarPathFinder implements PathFinder {
 			// pull out the first node in our open list, this is determined to 
 			// be the most likely to be the next step based on our heuristic
 			Node current = getFirstInOpen();
-			if (current == nodes[tx][ty]) {
+			if (current == nodes[tx][ty][ctx][cty]) {
 				break;
 			}
 			
@@ -99,27 +105,6 @@ public class AStarPathFinder implements PathFinder {
 			
 			// search through all the neighbours of the current node evaluating
 			// them as next steps
-			//TODO : déterminer le voisins dans un switch pour plus de rapidité,
-			//haut = 0, bas = 1, gauche = 0, droite = 1, i = haut/bas, j = gauche/droite
-			//for(int i de 0 à 1) do
-			//	for(int j de 0 à 1) do
-			//		switch(i * 8 + j * 4 + current.innerTilePosition.x * 2 + current.innerTilePosition.y)
-			//		0 => haut gauche, inner(0.0)
-			//		1 => haut gauche, inner(0.1)
-			//		3 => haut gauche, inner(1.0)
-			//		4 => haut gauche, inner(1.1)
-			//		5 => haut droite, inner(0.0)
-			//		6 => haut droite, inner(0.1)
-			//		7 => haut droite, inner(1.0)
-			//		8 => haut droite, inner(1.1)
-			//		9 =>  bas gauche, inner(0.0)
-			//	   10 =>  bas gauche, inner(0.1)
-			//	   11 =>  bas gauche, inner(1.0)
-			//	   12 =>  bas gauche, inner(1.1)
-			//	   13 =>  bas droite, inner(0.0)
-			//	   14 =>  bas droite, inner(0.1)
-			//	   15 =>  bas droite, inner(1.0)
-			//	   16 =>  bas droite, inner(1.1)
 			for (int x=-1;x<2;x++) {
 				for (int y=-1;y<2;y++) {
 					// not a neighbour, its the current tile
@@ -147,7 +132,7 @@ public class AStarPathFinder implements PathFinder {
 						Node neighbour = nodes[xp][yp];
 						map.pathFinderVisited(xp, yp);
 						
-						// if the new cost we've determined for this node is lower than 
+						// if the new cost we've determined for this node is lower than
 						// it has been previously makes sure the node hasn't been discarded. We've
 						// determined that there might have been a better path to get to
 						// this node so it needs to be re-evaluated
@@ -272,7 +257,7 @@ public class AStarPathFinder implements PathFinder {
 	 * @return True if the location is valid for the given mover
 	 */
 	protected boolean isValidLocation(Mover mover, int sx, int sy, int x, int y) {
-		boolean invalid = (x < 0) || (y < 0) || (x >= map.getWidthInTiles()) || (y >= map.getHeightInTiles());
+		boolean invalid = (x < 0) || (y < 0) || (x >= map.getMapSize().x) || (y >= map.getMapSize().y);
 		
 		if ((!invalid) && ((sx != x) || (sy != y))) {
 			invalid = map.blocked(mover, x, y);
@@ -380,8 +365,10 @@ public class AStarPathFinder implements PathFinder {
 	private class Node implements Comparable {
 		/** The x coordinate of the node */
 		private int x;
+		private int i;
 		/** The y coordinate of the node */
 		private int y;
+		private int j;
 		/** The path cost for this node */
 		private float cost;
 		/** The parent of this node, how we reached it in the search */
@@ -397,9 +384,11 @@ public class AStarPathFinder implements PathFinder {
 		 * @param x The x coordinate of the node
 		 * @param y The y coordinate of the node
 		 */
-		public Node(int x, int y) {
+		public Node(int x, int y, int i, int j) {
 			this.x = x;
 			this.y = y;
+			this.i = i;
+			this.j = j;
 		}
 		
 		/**

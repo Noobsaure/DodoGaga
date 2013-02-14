@@ -1,5 +1,7 @@
 package com.me.mygdxgame.ia.pathfinding;
 
+import com.me.mygdxgame.utils.Point2i;
+
 
 /**
  * The description for the data we're pathfinding over. This provides the contract
@@ -45,7 +47,5 @@ public interface TileBasedMap {
 	 */
 	public float getCost(Mover mover, int sx, int sy, int tx, int ty);
 
-	public int getWidthInTiles();
-
-	public int getHeightInTiles();
+	public Point2i getMapSize();
 }
