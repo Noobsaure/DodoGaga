@@ -6,7 +6,7 @@ import java.util.List;
 import com.me.mygdxgame.utils.interval.interfaces.IntervalPlayable;
 import com.me.mygdxgame.utils.interval.interfaces.IntervalTransformable;
 
-public abstract class IntervalContainer extends TransformableContainer{
+public abstract class IntervalContainer extends IntervalBase{
 
 	protected List<IntervalPlayable> intervals;
 	protected int index;

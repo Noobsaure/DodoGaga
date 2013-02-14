@@ -7,9 +7,6 @@ public class Sequence extends IntervalContainer{
 
 	
 	public void updateMain(){
-		if(state == IntervalBase.State.DELETED || state == IntervalBase.State.PAUSED){
-			return;
-		}
 		
 		IntervalPlayable interval = getCurrentInterval();
 		interval.update();
@@ -17,6 +14,7 @@ public class Sequence extends IntervalContainer{
 		if(interval.isFinished()){
 			index += 1;
 		}
+		
 	}
 	
 }

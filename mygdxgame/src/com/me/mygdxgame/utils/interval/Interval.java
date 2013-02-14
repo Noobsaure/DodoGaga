@@ -17,7 +17,7 @@ import com.me.mygdxgame.utils.interval.interfaces.IntervalTransformable;
 		"linear", "pow2", "pow2In", "pow2Out", "pow3", "pow3In", "pow3Out", "pow4", "pow4In", "pow4Out", "pow5", "pow5In",
 		"pow5Out", "sine", "sineIn", "sineOut", "swing", "swingIn", "swingOut"};
  */
-public class Interval extends TransformableContainer{
+public class Interval extends IntervalBase{
 
 	private float duration;
 	private float currentTime;
@@ -59,10 +59,7 @@ public class Interval extends TransformableContainer{
 	}
 	
 	public void updateMain(){
-		if(state == IntervalBase.State.DELETED || state == IntervalBase.State.PAUSED){
-			return;
-		}
-		
+
 		currentTime += Gdx.graphics.getDeltaTime();
 		
 		temp.set(end);

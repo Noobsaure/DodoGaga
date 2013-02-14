@@ -23,6 +23,9 @@ public abstract class IntervalBase implements IntervalPlayable{
 	}
 	
 	public void update(){
+		if(state == IntervalBase.State.DELETED || state == IntervalBase.State.PAUSED){
+			return;
+		}
 		updateMain();
 		updatePost();
 	}
