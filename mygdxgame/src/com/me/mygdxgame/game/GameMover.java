@@ -66,7 +66,7 @@ public abstract class GameMover extends GameEvent implements IntervalTransformab
 		destination.x = x+resultX;
 		destination.y = y+resultY;
 		
-		System.out.println("Deplacement en Tile: " + tile + "   Cell: " + cell);
+		//System.out.println("Deplacement en Tile: " + tile + "   Cell: " + cell);
 		Interval interval = new Interval(this, 0.5f, realPosition, destination, "linear");
 		interval.start();
 	}

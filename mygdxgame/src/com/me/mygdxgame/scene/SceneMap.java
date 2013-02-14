@@ -4,6 +4,7 @@ import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Intersector;
@@ -87,6 +88,22 @@ public class SceneMap extends SceneBase implements InputProcessor{
 	@Override
 	public boolean touchDown(int x, int y, int pointer, int button) {
 		
+		if(button == Buttons.LEFT) {
+			
+			Ray pickRay = Game.cam.getPickRay(x, y);
+			Intersector.intersectRayPlane(pickRay, Cst.XY_PLANE, highlight);
+			Point2i pos = GameMap.isoToTile(highlight.x, highlight.y);
+			float tx = x - (Cst.TILE_W * pos.x + (pos.y % 2) * Cst.TILE_HW);
+			float ty = y - Cst.TILE_HH * pos.y;
+			
+			int i = (int)(0.5 * (ty/Cst.CELL_HH + tx/Cst.CELL_HW));
+			int j =	(int)(0.5 * (ty/Cst.CELL_HH - tx/Cst.CELL_HW));
+			
+			Point2i tile = new Point2i(pos.x, pos.y);
+			Point2i cell = new Point2i(i, j);
+			System.out.println("Deplacement en Tile: " + tile + "   Cell: " + cell);
+			Game.map.movableBattlerTest.startIntervalToTile(tile, cell);
+		}
 		/*
 		
 			SceneMap scene = (SceneMap) SceneMgr.scene;
