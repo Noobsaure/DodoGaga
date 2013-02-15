@@ -37,7 +37,7 @@ public abstract class IntervalBase implements IntervalPlayable{
 	public void updatePost(){
 		if(isFinished()){
 			if(state == IntervalBase.State.PLAYING_ONCE){
-				stopAndDeleteLater();
+				stopAndRemoveLater();
 				//IntervalMgr.deleteLater(this);
 			}
 			else if(state == IntervalBase.State.LOOPING){
@@ -90,7 +90,7 @@ public abstract class IntervalBase implements IntervalPlayable{
 		IntervalMgr.remove(this);
 	}
 	
-	public void stopAndDeleteLater(){
+	public void stopAndRemoveLater(){
 		state = IntervalBase.State.STOPPED;
 		IntervalMgr.removeLater(this);
 	}

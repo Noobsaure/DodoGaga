@@ -84,11 +84,11 @@ public abstract class IntervalContainer extends IntervalBase{
 		super.stopAndRemove();
 	}
 	
-	public void stopAndDeleteLater(){
+	public void stopAndRemoveLater(){
 		for(IntervalPlayable interval : intervals){
-			interval.stopAndDeleteLater();
+			interval.stopAndRemoveLater();
 		}
-		super.stopAndRemove();
+		super.stopAndRemoveLater();
 	}
 	
 }
