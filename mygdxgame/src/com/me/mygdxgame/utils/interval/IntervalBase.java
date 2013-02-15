@@ -1,24 +1,16 @@
 package com.me.mygdxgame.utils.interval;
 
 import com.me.mygdxgame.mgr.IntervalMgr;
-import com.me.mygdxgame.utils.interval.interfaces.IntervalPlayable;
+import com.me.mygdxgame.utils.interval.interfaces.AbstractInterval;
 
 
-public abstract class IntervalBase implements IntervalPlayable{
-
-	public class State{
-		public final static byte STOPPED = 0;
-		public final static byte PLAYING_ONCE = 1;
-		public final static byte LOOPING = 2;
-		public final static byte PAUSED = 3;
-		//public final static byte DELETED = 4;
-	}
+public abstract class IntervalBase implements AbstractInterval{
 	
 	protected int state;
 	protected int memoState;
 	
 	public IntervalBase(){
-		state = IntervalBase.State.STOPPED;
+		state = Interval.State.STOPPED;
 		memoState = state;
 	}
 	
@@ -27,7 +19,7 @@ public abstract class IntervalBase implements IntervalPlayable{
 	}
 	
 	public void update(){
-		if(state == IntervalBase.State.STOPPED || state == IntervalBase.State.PAUSED){
+		if(state == Interval.State.STOPPED || state == Interval.State.PAUSED){
 			return;
 		}
 		updateMain();
@@ -36,11 +28,11 @@ public abstract class IntervalBase implements IntervalPlayable{
 	
 	public void updatePost(){
 		if(isFinished()){
-			if(state == IntervalBase.State.PLAYING_ONCE){
+			if(state == Interval.State.PLAYING_ONCE){
 				stopAndRemoveLater();
 				//IntervalMgr.deleteLater(this);
 			}
-			else if(state == IntervalBase.State.LOOPING){
+			else if(state == Interval.State.LOOPING){
 				reset();
 			}	
 		}
@@ -50,7 +42,7 @@ public abstract class IntervalBase implements IntervalPlayable{
 		stopAndRemove();
 		//resume();
 		reset();
-		state = IntervalBase.State.PLAYING_ONCE;
+		state = Interval.State.PLAYING_ONCE;
 		launch();
 	}
 	
@@ -58,7 +50,7 @@ public abstract class IntervalBase implements IntervalPlayable{
 		stopAndRemove();
 		//resume();
 		reset();
-		state = IntervalBase.State.LOOPING;
+		state = Interval.State.LOOPING;
 		launch();
 	}
 	
@@ -69,7 +61,7 @@ public abstract class IntervalBase implements IntervalPlayable{
 
 	public void pause(){
 		memoState = state;
-		state = IntervalBase.State.PAUSED;
+		state = Interval.State.PAUSED;
 	}
 	
 	public void resume(){
@@ -77,7 +69,7 @@ public abstract class IntervalBase implements IntervalPlayable{
 	}
 	
 	public void tooglePauseResume(){
-		if(state == IntervalBase.State.PAUSED){
+		if(state == Interval.State.PAUSED){
 			resume();
 		}
 		else{
@@ -86,21 +78,21 @@ public abstract class IntervalBase implements IntervalPlayable{
 	}
 	
 	public void stopAndRemove(){
-		state = IntervalBase.State.STOPPED;
+		state = Interval.State.STOPPED;
 		IntervalMgr.remove(this);
 	}
 	
 	public void stopAndRemoveLater(){
-		state = IntervalBase.State.STOPPED;
+		state = Interval.State.STOPPED;
 		IntervalMgr.removeLater(this);
 	}
 	
 	public boolean isPlaying(){
-		return (state == IntervalBase.State.PLAYING_ONCE || state == IntervalBase.State.LOOPING);
+		return (state == Interval.State.PLAYING_ONCE || state == Interval.State.LOOPING);
 	}
 	
 	public boolean isStopped(){
-		return state == IntervalBase.State.STOPPED;
+		return state == Interval.State.STOPPED;
 	}
 	
 }

@@ -1,14 +1,14 @@
 package com.me.mygdxgame.utils.interval;
 
 
-import com.me.mygdxgame.utils.interval.interfaces.IntervalPlayable;
+import com.me.mygdxgame.utils.interval.interfaces.AbstractInterval;
 
 public class Sequence extends IntervalContainer{
 
 	
 	public void updateMain(){
 		//System.out.println(index);
-		IntervalPlayable interval = getCurrentInterval();
+		AbstractInterval interval = getCurrentInterval();
 		
 
 		//interval.update();

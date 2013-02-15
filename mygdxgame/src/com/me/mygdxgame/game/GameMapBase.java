@@ -21,7 +21,8 @@ public abstract class GameMapBase {
 	private Map<String, List<GameEvent>> tileEvents;
 	private List<GameEvent> events;
 	private static Pixmap mouseMap = new Pixmap(Gdx.files.internal("mouseMapIso.png"));
-	public static GameMover movableBattlerTest = new GameBattler(3, new Point2f(600, 300));
+	public static List<GameBattler> movableBattlerTest = new ArrayList<GameBattler>();
+	
 	
 	public void setup(int mapId) {
 		this.mapId = mapId;
@@ -47,6 +48,10 @@ public abstract class GameMapBase {
 			event = new GameEvent(spriteId,tilePosition,innerTilePosition);
 			//refreshEventPosition(tilePosition.x, tilePosition.y, event);
 			addEventToTile(tilePosition,event);
+		}
+		
+		for(int i=0; i<50; i++){
+			movableBattlerTest.add(new GameBattler(3, new Point2f(200+rand.nextInt(600),200+rand.nextInt(600))));
 		}
 	}
 	
@@ -153,7 +158,9 @@ public abstract class GameMapBase {
 	public void update(){
 		updateEvents();
 		//System.out.println(tileEvents.size());
-		movableBattlerTest.update();
+		for(GameBattler battler : movableBattlerTest){
+			battler.update();
+		}
 	}
 	
 	public void updateEvents(){

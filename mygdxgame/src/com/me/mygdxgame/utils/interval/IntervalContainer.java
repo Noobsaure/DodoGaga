@@ -4,23 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.me.mygdxgame.mgr.IntervalMgr;
-import com.me.mygdxgame.utils.interval.interfaces.IntervalPlayable;
+import com.me.mygdxgame.utils.interval.interfaces.AbstractInterval;
 import com.me.mygdxgame.utils.interval.interfaces.IntervalTransformable;
 
 public abstract class IntervalContainer extends IntervalBase{
 
-	protected List<IntervalPlayable> intervals;
+	protected List<AbstractInterval> intervals;
 	protected int index;
 	
 	public IntervalContainer(){
-		intervals = new ArrayList<IntervalPlayable>();
+		intervals = new ArrayList<AbstractInterval>();
 	}
 	
-	public IntervalPlayable getCurrentInterval(){
+	public AbstractInterval getCurrentInterval(){
 		return intervals.get(index);
 	}
 	
-	public void add(IntervalPlayable interval){
+	public void add(AbstractInterval interval){
 		intervals.add(interval);
 	}
 	
@@ -32,7 +32,7 @@ public abstract class IntervalContainer extends IntervalBase{
 	
 	public void reset() {
 		index = 0;
-		for(IntervalPlayable interval : intervals){
+		for(AbstractInterval interval : intervals){
 			interval.reset();
 		}
 	}
@@ -65,27 +65,27 @@ public abstract class IntervalContainer extends IntervalBase{
 
 	public void pause(){
 		super.pause();
-		for(IntervalPlayable interval : intervals){
+		for(AbstractInterval interval : intervals){
 			interval.pause();
 		}
 	}
 	
 	public void resume(){
 		super.resume();
-		for(IntervalPlayable interval : intervals){
+		for(AbstractInterval interval : intervals){
 			interval.resume();
 		}
 	}
 	
 	public void stopAndRemove(){
-		for(IntervalPlayable interval : intervals){
+		for(AbstractInterval interval : intervals){
 			interval.stopAndRemove();
 		}
 		super.stopAndRemove();
 	}
 	
 	public void stopAndRemoveLater(){
-		for(IntervalPlayable interval : intervals){
+		for(AbstractInterval interval : intervals){
 			interval.stopAndRemoveLater();
 		}
 		super.stopAndRemoveLater();

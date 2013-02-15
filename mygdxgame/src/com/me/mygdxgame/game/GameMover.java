@@ -4,7 +4,9 @@ import com.me.mygdxgame.utils.Cst;
 import com.me.mygdxgame.utils.Point2f;
 import com.me.mygdxgame.utils.Point2i;
 import com.me.mygdxgame.utils.interval.Interval;
+import com.me.mygdxgame.utils.interval.interfaces.IntervalPlayable;
 import com.me.mygdxgame.utils.interval.interfaces.IntervalTransformable;
+import com.me.mygdxgame.utils.interval.transform.PosInterval;
 
 public abstract class GameMover extends GameEvent implements IntervalTransformable {
 
@@ -23,6 +25,38 @@ public abstract class GameMover extends GameEvent implements IntervalTransformab
 		setPosition(realPosition);
 	}
 
+	public void setTransform(int type, float x, float y){
+		switch(type){
+		case Interval.TransformType.POS: {
+			setPosition(x, y);
+			break;
+		}
+		case Interval.TransformType.ROT: {
+			//setPosition(x, y);
+			break;
+		}
+		case Interval.TransformType.SCALE: {
+			//setPosition(x, y);
+			break;
+		}
+		}
+	}
+	
+	public Point2f getTransform(int type){
+		switch(type){
+		case Interval.TransformType.POS: {
+			return realPosition;
+		}
+		case Interval.TransformType.ROT: {
+			return null;
+		}
+		case Interval.TransformType.SCALE: {
+			return null;
+		}
+		}
+		return null;
+	}
+	
 	public Point2f getPosition() {return realPosition;}
 	
 	public void setPosition(Point2f realPosition){
@@ -76,7 +110,7 @@ public abstract class GameMover extends GameEvent implements IntervalTransformab
 		destination.y = y+resultY;
 		
 		//System.out.println("Deplacement en Tile: " + tile + "   Cell: " + cell);
-		Interval interval = new Interval(this, 0.5f, destination, "linear", "linear");
+		IntervalPlayable interval = new PosInterval(this, 0.5f, destination, "linear", "linear");
 		interval.start();
 	}
 }

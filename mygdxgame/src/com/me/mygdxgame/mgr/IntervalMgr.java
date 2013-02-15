@@ -7,20 +7,20 @@ import java.util.List;
 import java.util.Map;
 
 import com.me.mygdxgame.utils.interval.Interval;
-import com.me.mygdxgame.utils.interval.interfaces.IntervalPlayable;
+import com.me.mygdxgame.utils.interval.interfaces.AbstractInterval;
 import com.me.mygdxgame.utils.interval.interfaces.IntervalTransformable;
 
 public class IntervalMgr {
 
-	private static List<IntervalPlayable> intervals = new ArrayList<IntervalPlayable>();
-	private static List<IntervalPlayable> finishedIntervals = new ArrayList<IntervalPlayable>();
-	private static List<IntervalPlayable> waitingForStartIntervals = new ArrayList<IntervalPlayable>();
+	private static List<AbstractInterval> intervals = new ArrayList<AbstractInterval>();
+	private static List<AbstractInterval> finishedIntervals = new ArrayList<AbstractInterval>();
+	private static List<AbstractInterval> waitingForStartIntervals = new ArrayList<AbstractInterval>();
 	//private static Map<IntervalTransformable, IntervalPlayable> intervalsTransformable = new Hashtable<IntervalTransformable, IntervalPlayable>();
 	
 	
 	public static void update(){
 		//System.out.println(intervals.size());
-		for(IntervalPlayable interval : intervals){
+		for(AbstractInterval interval : intervals){
 			interval.update();
 		}
 		
@@ -34,7 +34,7 @@ public class IntervalMgr {
 	}
 	
 	private static void removeFinishedIntervals(){
-		for(IntervalPlayable interval : finishedIntervals){
+		for(AbstractInterval interval : finishedIntervals){
 			intervals.remove(interval);
 			//for(IntervalTransformable transformable : interval.getTransformables()){
 			//	intervalsTransformable.remove(transformable);
@@ -44,21 +44,21 @@ public class IntervalMgr {
 	}
 	
 	private static void addIntervals(){
-		for(IntervalPlayable interval : waitingForStartIntervals){
+		for(AbstractInterval interval : waitingForStartIntervals){
 			intervals.add(interval);
 		}
 		waitingForStartIntervals.clear();
 	}
 	
-	public static void removeLater(IntervalPlayable interval){
+	public static void removeLater(AbstractInterval interval){
 		finishedIntervals.add(interval);
 	}
 	
-	public static void remove(IntervalPlayable interval){
+	public static void remove(AbstractInterval interval){
 		intervals.remove(interval);
 	}
 	
-	public static void addInterval(IntervalPlayable interval){
+	public static void addInterval(AbstractInterval interval){
 		waitingForStartIntervals.add(interval);
 		/*
 		for(IntervalTransformable transformable : interval.getTransformables()){

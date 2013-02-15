@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.me.mygdxgame.game.Game;
+import com.me.mygdxgame.game.GameBattler;
 import com.me.mygdxgame.game.GameEvent;
 import com.me.mygdxgame.game.GameMap;
 import com.me.mygdxgame.mgr.IntervalMgr;
@@ -22,6 +23,7 @@ import com.me.mygdxgame.utils.Point2f;
 import com.me.mygdxgame.utils.Point2i;
 import com.me.mygdxgame.utils.interval.Interval;
 import com.me.mygdxgame.utils.interval.Sequence;
+import com.me.mygdxgame.utils.interval.transform.PosInterval;
 
 public class SceneMap extends SceneBase implements InputProcessor{
 	
@@ -38,14 +40,14 @@ public class SceneMap extends SceneBase implements InputProcessor{
 	public SceneMap(){
 		Game.map.setup(0);
 		spriteset = new SpritesetMap();
-		
-		intervalTest = new Interval(Game.map.movableBattlerTest, 0.5f, new Point2f(200,200), "linear", "linear");
+		/*
+		intervalTest = new PosInterval(Game.map.movableBattlerTest, 0.5f, new Point2f(200,200), "linear", "linear");
 		sequenceTest = new Sequence();
-		sequenceTest.add(new Interval(Game.map.movableBattlerTest, 0.5f, new Point2f(200,400), "circleIn", "circleIn"));
-		sequenceTest.add(new Interval(Game.map.movableBattlerTest, 0.5f, new Point2f(800,400), "swingIn", "swingIn"));
-		sequenceTest.add(new Interval(Game.map.movableBattlerTest, 0.5f, new Point2f(800,200), "swing", "swing"));
-		sequenceTest.add(new Interval(Game.map.movableBattlerTest, 0.5f, new Point2f(200,200), "swingOut", "swingOut"));
-		
+		sequenceTest.add(new PosInterval(Game.map.movableBattlerTest, 0.5f, new Point2f(200,400), "circleIn", "circleIn"));
+		sequenceTest.add(new PosInterval(Game.map.movableBattlerTest, 0.5f, new Point2f(800,400), "swingIn", "swingIn"));
+		sequenceTest.add(new PosInterval(Game.map.movableBattlerTest, 0.5f, new Point2f(800,200), "swing", "swing"));
+		sequenceTest.add(new PosInterval(Game.map.movableBattlerTest, 0.5f, new Point2f(200,200), "swingOut", "swingOut"));
+		*/
 		Gdx.input.setInputProcessor(this); //enable event handling
 	}
 	
@@ -64,7 +66,19 @@ public class SceneMap extends SceneBase implements InputProcessor{
 	@Override
 	public boolean keyDown(int keycode) {
 		if(keycode == Keys.S){
-			sequenceTest.start();
+			Random rand = new Random();
+			for(int i=0; i<Game.map.movableBattlerTest.size(); i++){
+				GameBattler battler = Game.map.movableBattlerTest.get(i);
+				Point2f startPos = battler.getPosition();
+				Sequence seq = new Sequence();
+				seq.add(new PosInterval(battler, 0.5f, new Point2f(200+rand.nextInt(600),200+rand.nextInt(600)), "linear", "linear"));
+				seq.add(new PosInterval(battler, 0.5f, new Point2f(200+rand.nextInt(600),200+rand.nextInt(600)), "linear", "linear"));
+				seq.add(new PosInterval(battler, 0.5f, new Point2f(200+rand.nextInt(600),200+rand.nextInt(600)), "linear", "linear"));
+				seq.add(new PosInterval(battler, 0.5f, startPos, "linear", "linear"));
+				seq.loop();
+			}
+
+			//sequenceTest.start();
 			/*
 			Random rand = new Random();
 			
@@ -120,7 +134,7 @@ public class SceneMap extends SceneBase implements InputProcessor{
 			Point2i tile = new Point2i(pos.x, pos.y);
 			Point2i cell = new Point2i(i, j);
 			System.out.println("Deplacement en Tile: " + tile + "   Cell: " + cell);
-			Game.map.movableBattlerTest.startIntervalToTile(tile, cell);
+			Game.map.movableBattlerTest.get(0).startIntervalToTile(tile, cell);
 		}
 		/*
 		
