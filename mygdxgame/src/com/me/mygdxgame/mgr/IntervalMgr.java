@@ -24,8 +24,8 @@ public class IntervalMgr {
 		if(finishedIntervals.size() > 0){
 			deleteFinishedIntervals();
 		}
-		System.out.println(intervals.size());
-		System.out.println(intervalsTransformable.size());
+		//System.out.println(intervals.size());
+		//System.out.println(intervalsTransformable.size());
 	}
 	
 	private static void deleteFinishedIntervals(){

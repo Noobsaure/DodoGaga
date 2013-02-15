@@ -20,11 +20,20 @@ public abstract class GameMover extends GameEvent implements IntervalTransformab
 	public GameMover(int id, Point2f realPosition) {
 		super(id);
 		this.realPosition = realPosition;
-		setRealPosition(realPosition);
+		setPosition(realPosition);
 	}
 
-	public Point2f getRealPosition() {return realPosition;}
-	public void setRealPosition(Point2f realPosition) {this.realPosition = realPosition;this.hasChanged = true;}
+	public Point2f getPosition() {return realPosition;}
+	
+	public void setPosition(Point2f realPosition){
+		setPosition(realPosition.x, realPosition.y);
+	}
+	
+	public void setPosition(float x, float y){
+		this.realPosition.x = x;
+		this.realPosition.y = y;
+		this.hasChanged = true;
+	}
 	
 	@Override
 	public void update() {
@@ -67,7 +76,7 @@ public abstract class GameMover extends GameEvent implements IntervalTransformab
 		destination.y = y+resultY;
 		
 		//System.out.println("Deplacement en Tile: " + tile + "   Cell: " + cell);
-		Interval interval = new Interval(this, 0.5f, realPosition, destination, "linear");
+		Interval interval = new Interval(this, 0.5f, destination, "linear", "linear");
 		interval.start();
 	}
 }

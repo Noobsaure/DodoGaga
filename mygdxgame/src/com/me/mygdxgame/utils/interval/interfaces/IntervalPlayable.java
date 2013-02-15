@@ -3,7 +3,7 @@ package com.me.mygdxgame.utils.interval.interfaces;
 import java.util.List;
 
 
-public interface IntervalPlayable{// extends IntervalContainable{
+public interface IntervalPlayable{
 
 	public boolean isPlaying();
 	public boolean isFinished();

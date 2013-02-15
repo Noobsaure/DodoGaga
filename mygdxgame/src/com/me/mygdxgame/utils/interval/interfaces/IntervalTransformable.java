@@ -4,6 +4,7 @@ import com.me.mygdxgame.utils.Point2f;
 
 public interface IntervalTransformable {
 
-	public void setRealPosition(Point2f realPosition);
+	public void setPosition(float x, float y);
+	public Point2f getPosition();
 	
 }

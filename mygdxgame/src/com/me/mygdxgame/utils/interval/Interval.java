@@ -22,32 +22,41 @@ public class Interval extends IntervalBase{
 	private float duration;
 	private float currentTime;
 	
-	private Interpolation interpolation;
-	Vector2 temp;
-	Vector2 start;
-	Vector2 end;
+	private Interpolation xInterpolation;
+	private Interpolation yInterpolation;
+	float distanceX;
+	float distanceY;
+	//Vector2 temp;
+	Point2f start;
+	//Vector2 end;
 	IntervalTransformable transformable;
+	boolean startLocal = false;
 	
-	public Interval(IntervalTransformable transformable, float duration, Point2f start, Point2f end, String interpolation){
-		this(transformable, duration, new Vector2(start.x, start.y), new Vector2(end.x, end.y), interpolation);
+	public Interval(IntervalTransformable transformable, float duration, Point2f end, String xInterpolation, String yInterpolation){
+		
+		//Point2f start = transformable.getPosition();
+		this(transformable, duration, end, xInterpolation, yInterpolation, transformable.getPosition());
+		startLocal = true;
 	}
 	
-	public Interval(IntervalTransformable transformable, float duration, Vector2 start, Vector2 end, String interpolation){
+	public Interval(IntervalTransformable transformable, float duration, Point2f end, String xInterpolation, String yInterpolation, Point2f start){
 		super();
 		this.transformable = transformable;
-		//transformables.add(transformable);
 		this.duration = duration;
 		currentTime = 0;
-		this.start = start;
-		this.end = end;
+		this.start = new Point2f(start.x, start.y);
+		distanceX = end.x - start.x;
+		distanceY = end.y - start.y;
+		System.out.println(distanceX + " " + distanceY);
+		System.out.println(start);
 		
 		try {
-			this.interpolation =  (Interpolation)Interpolation.class.getField(interpolation).get(null);
+			this.xInterpolation =  (Interpolation)Interpolation.class.getField(xInterpolation).get(null);
+			this.yInterpolation =  (Interpolation)Interpolation.class.getField(yInterpolation).get(null);
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}
 		
-		temp = new Vector2();
 	}
 	
 	public void reset(){
@@ -62,15 +71,16 @@ public class Interval extends IntervalBase{
 
 		currentTime += Gdx.graphics.getDeltaTime();
 		
-		temp.set(end);
-		temp.sub(start);
-		
+		float x = distanceX;
+		float y = distanceY;
+
 		float alpha = Math.min(1, currentTime / duration);
-		temp.mul(interpolation.apply(alpha));
-		temp.add(start);
 		
-		getTransformable().setRealPosition(new Point2f(temp.x, temp.y));
+		x *= xInterpolation.apply(alpha);
+		y *= yInterpolation.apply(alpha);
 		
+		transformable.setPosition(start.x + x, start.y + y);
+		System.out.println(transformable.getPosition());
 	}
 	
 	public IntervalTransformable getTransformable(){
