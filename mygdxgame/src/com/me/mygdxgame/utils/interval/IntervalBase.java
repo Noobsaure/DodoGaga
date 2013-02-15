@@ -22,6 +22,10 @@ public abstract class IntervalBase implements IntervalPlayable{
 		memoState = state;
 	}
 	
+	public int getState(){
+		return state;
+	}
+	
 	public void update(){
 		if(state == IntervalBase.State.STOPPED || state == IntervalBase.State.PAUSED){
 			return;
@@ -43,14 +47,16 @@ public abstract class IntervalBase implements IntervalPlayable{
 	}
 	
 	public void start(){
-		resume();
+		stopAndRemove();
+		//resume();
 		reset();
 		state = IntervalBase.State.PLAYING_ONCE;
 		launch();
 	}
 	
 	public void loop(){
-		resume();
+		stopAndRemove();
+		//resume();
 		reset();
 		state = IntervalBase.State.LOOPING;
 		launch();
@@ -79,14 +85,14 @@ public abstract class IntervalBase implements IntervalPlayable{
 		}
 	}
 	
-	public void stopAndDelete(){
+	public void stopAndRemove(){
 		state = IntervalBase.State.STOPPED;
-		IntervalMgr.delete(this);
+		IntervalMgr.remove(this);
 	}
 	
-	private void stopAndDeleteLater(){
+	public void stopAndDeleteLater(){
 		state = IntervalBase.State.STOPPED;
-		IntervalMgr.deleteLater(this);
+		IntervalMgr.removeLater(this);
 	}
 	
 	public boolean isPlaying(){

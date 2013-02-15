@@ -64,7 +64,6 @@ public class SceneMap extends SceneBase implements InputProcessor{
 	@Override
 	public boolean keyDown(int keycode) {
 		if(keycode == Keys.S){
-			sequenceTest.stopAndDelete();
 			sequenceTest.loop();
 			/*
 			Random rand = new Random();

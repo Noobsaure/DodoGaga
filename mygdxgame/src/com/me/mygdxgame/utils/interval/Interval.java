@@ -114,11 +114,11 @@ public class Interval extends IntervalBase{
 		return currentTime >= duration;
 	}
 
-	@Override
+	/*
 	public List<IntervalTransformable> getTransformables() {
 		List<IntervalTransformable> transformables = new ArrayList<IntervalTransformable>();
 		transformables.add(transformable);
 		return transformables;
-	}
+	}*/
 	
 }

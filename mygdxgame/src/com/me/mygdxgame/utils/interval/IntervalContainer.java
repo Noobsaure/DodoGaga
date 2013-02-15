@@ -3,6 +3,7 @@ package com.me.mygdxgame.utils.interval;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.me.mygdxgame.mgr.IntervalMgr;
 import com.me.mygdxgame.utils.interval.interfaces.IntervalPlayable;
 import com.me.mygdxgame.utils.interval.interfaces.IntervalTransformable;
 
@@ -44,6 +45,7 @@ public abstract class IntervalContainer extends IntervalBase{
 		return super.isPlaying() && index < intervals.size();
 	}
 
+	/*
 	public List<IntervalTransformable> getTransformables(){
 		List<IntervalTransformable> result = new ArrayList<IntervalTransformable>();
 		getTransformablesRec(result);
@@ -59,8 +61,8 @@ public abstract class IntervalContainer extends IntervalBase{
 				getTransformablesRec(result);
 			}
 		}
-	}
-	
+	}*/
+
 	public void pause(){
 		super.pause();
 		for(IntervalPlayable interval : intervals){
@@ -73,6 +75,20 @@ public abstract class IntervalContainer extends IntervalBase{
 		for(IntervalPlayable interval : intervals){
 			interval.resume();
 		}
+	}
+	
+	public void stopAndRemove(){
+		for(IntervalPlayable interval : intervals){
+			interval.stopAndRemove();
+		}
+		super.stopAndRemove();
+	}
+	
+	public void stopAndDeleteLater(){
+		for(IntervalPlayable interval : intervals){
+			interval.stopAndDeleteLater();
+		}
+		super.stopAndRemove();
 	}
 	
 }

@@ -16,7 +16,7 @@ public class Sequence extends IntervalContainer{
 		if(interval.isFinished()){
 			index += 1;
 		}
-		
+		//System.out.println(getCurrentInterval().getState());
 		if(!isFinished() && getCurrentInterval().isStopped()){
 			getCurrentInterval().start();
 		}

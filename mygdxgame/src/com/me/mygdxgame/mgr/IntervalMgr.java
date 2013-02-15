@@ -28,13 +28,12 @@ public class IntervalMgr {
 			addIntervals();
 		}
 		if(finishedIntervals.size() > 0){
-			deleteFinishedIntervals();
+			removeFinishedIntervals();
 		}
 		//System.out.println(intervals.size());
-		//System.out.println(intervalsTransformable.size());
 	}
 	
-	private static void deleteFinishedIntervals(){
+	private static void removeFinishedIntervals(){
 		for(IntervalPlayable interval : finishedIntervals){
 			intervals.remove(interval);
 			//for(IntervalTransformable transformable : interval.getTransformables()){
@@ -51,11 +50,11 @@ public class IntervalMgr {
 		waitingForStartIntervals.clear();
 	}
 	
-	public static void deleteLater(IntervalPlayable interval){
+	public static void removeLater(IntervalPlayable interval){
 		finishedIntervals.add(interval);
 	}
 	
-	public static void delete(IntervalPlayable interval){
+	public static void remove(IntervalPlayable interval){
 		intervals.remove(interval);
 	}
 	
