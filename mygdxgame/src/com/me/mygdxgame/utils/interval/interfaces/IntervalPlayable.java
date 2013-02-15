@@ -7,6 +7,7 @@ public interface IntervalPlayable{
 
 	public boolean isPlaying();
 	public boolean isFinished();
+	public boolean isStopped();
 	
 	public void update();
 	public void updateMain();

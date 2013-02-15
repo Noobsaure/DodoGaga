@@ -28,15 +28,16 @@ public class Interval extends IntervalBase{
 	float distanceY;
 	//Vector2 temp;
 	Point2f start;
+	Point2f end;
 	//Vector2 end;
 	IntervalTransformable transformable;
-	boolean startLocal = false;
+	//boolean startLocal = false;
 	
 	public Interval(IntervalTransformable transformable, float duration, Point2f end, String xInterpolation, String yInterpolation){
 		
 		//Point2f start = transformable.getPosition();
-		this(transformable, duration, end, xInterpolation, yInterpolation, transformable.getPosition());
-		startLocal = true;
+		this(transformable, duration, end, xInterpolation, yInterpolation, null);
+		//startLocal = true;
 	}
 	
 	public Interval(IntervalTransformable transformable, float duration, Point2f end, String xInterpolation, String yInterpolation, Point2f start){
@@ -44,12 +45,12 @@ public class Interval extends IntervalBase{
 		this.transformable = transformable;
 		this.duration = duration;
 		currentTime = 0;
-		this.start = new Point2f(start.x, start.y);
-		distanceX = end.x - start.x;
-		distanceY = end.y - start.y;
-		System.out.println(distanceX + " " + distanceY);
-		System.out.println(start);
+		this.end = new Point2f(end.x, end.y);
+		if(start != null){
+			this.start = new Point2f(start.x, start.y);
+		}
 		
+		//determineStart();
 		try {
 			this.xInterpolation =  (Interpolation)Interpolation.class.getField(xInterpolation).get(null);
 			this.yInterpolation =  (Interpolation)Interpolation.class.getField(yInterpolation).get(null);
@@ -59,12 +60,31 @@ public class Interval extends IntervalBase{
 		
 	}
 	
+	public void start(){
+		determineStart();
+		super.start();
+	}
+	
+	public void loop(){
+		determineStart();
+		super.loop();
+	}
+	
+	private void determineStart(){
+		if(start == null){
+			this.start = new Point2f(transformable.getPosition().x, transformable.getPosition().y);
+		}
+		distanceX = end.x - start.x;
+		distanceY = end.y - start.y;
+	}
+	
 	public void reset(){
 		currentTime = 0;
 	}
 	
 	public void finish(){
 		currentTime = duration;
+		update();
 	}
 	
 	public void updateMain(){
@@ -80,7 +100,6 @@ public class Interval extends IntervalBase{
 		y *= yInterpolation.apply(alpha);
 		
 		transformable.setPosition(start.x + x, start.y + y);
-		System.out.println(transformable.getPosition());
 	}
 	
 	public IntervalTransformable getTransformable(){
@@ -88,7 +107,7 @@ public class Interval extends IntervalBase{
 	}
 	
 	public boolean isPlaying(){
-		return currentTime < duration;
+		return super.isPlaying() && currentTime < duration;
 	}
 
 	public boolean isFinished(){

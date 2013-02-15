@@ -7,14 +7,19 @@ public class Sequence extends IntervalContainer{
 
 	
 	public void updateMain(){
-		
+		//System.out.println(index);
 		IntervalPlayable interval = getCurrentInterval();
-		interval.update();
+		
+
+		//interval.update();
 		
 		if(interval.isFinished()){
 			index += 1;
 		}
 		
+		if(!isFinished() && getCurrentInterval().isStopped()){
+			getCurrentInterval().start();
+		}
 	}
 	
 }

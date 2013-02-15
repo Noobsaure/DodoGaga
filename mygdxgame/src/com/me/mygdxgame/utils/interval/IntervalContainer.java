@@ -41,9 +41,9 @@ public abstract class IntervalContainer extends IntervalBase{
 	}
 
 	public boolean isPlaying() {
-		return index < intervals.size();
+		return super.isPlaying() && index < intervals.size();
 	}
-	
+
 	public List<IntervalTransformable> getTransformables(){
 		List<IntervalTransformable> result = new ArrayList<IntervalTransformable>();
 		getTransformablesRec(result);
@@ -58,6 +58,20 @@ public abstract class IntervalContainer extends IntervalBase{
 			else{
 				getTransformablesRec(result);
 			}
+		}
+	}
+	
+	public void pause(){
+		super.pause();
+		for(IntervalPlayable interval : intervals){
+			interval.pause();
+		}
+	}
+	
+	public void resume(){
+		super.resume();
+		for(IntervalPlayable interval : intervals){
+			interval.resume();
 		}
 	}
 	

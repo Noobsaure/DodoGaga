@@ -7,23 +7,23 @@ import com.me.mygdxgame.utils.interval.interfaces.IntervalPlayable;
 public abstract class IntervalBase implements IntervalPlayable{
 
 	public class State{
-		public final static byte JUST_CREATED = 0;
+		public final static byte STOPPED = 0;
 		public final static byte PLAYING_ONCE = 1;
 		public final static byte LOOPING = 2;
 		public final static byte PAUSED = 3;
-		public final static byte DELETED = 4;
+		//public final static byte DELETED = 4;
 	}
 	
 	protected int state;
 	protected int memoState;
 	
 	public IntervalBase(){
-		state = IntervalBase.State.JUST_CREATED;
+		state = IntervalBase.State.STOPPED;
 		memoState = state;
 	}
 	
 	public void update(){
-		if(state == IntervalBase.State.DELETED || state == IntervalBase.State.PAUSED){
+		if(state == IntervalBase.State.STOPPED || state == IntervalBase.State.PAUSED){
 			return;
 		}
 		updateMain();
@@ -33,7 +33,8 @@ public abstract class IntervalBase implements IntervalPlayable{
 	public void updatePost(){
 		if(isFinished()){
 			if(state == IntervalBase.State.PLAYING_ONCE){
-				IntervalMgr.deleteLater(this);
+				stopAndDeleteLater();
+				//IntervalMgr.deleteLater(this);
 			}
 			else if(state == IntervalBase.State.LOOPING){
 				reset();
@@ -42,12 +43,14 @@ public abstract class IntervalBase implements IntervalPlayable{
 	}
 	
 	public void start(){
+		resume();
 		reset();
 		state = IntervalBase.State.PLAYING_ONCE;
 		launch();
 	}
 	
 	public void loop(){
+		resume();
 		reset();
 		state = IntervalBase.State.LOOPING;
 		launch();
@@ -77,8 +80,21 @@ public abstract class IntervalBase implements IntervalPlayable{
 	}
 	
 	public void stopAndDelete(){
-		state = IntervalBase.State.DELETED;
+		state = IntervalBase.State.STOPPED;
+		IntervalMgr.delete(this);
+	}
+	
+	private void stopAndDeleteLater(){
+		state = IntervalBase.State.STOPPED;
 		IntervalMgr.deleteLater(this);
+	}
+	
+	public boolean isPlaying(){
+		return (state == IntervalBase.State.PLAYING_ONCE || state == IntervalBase.State.LOOPING);
+	}
+	
+	public boolean isStopped(){
+		return state == IntervalBase.State.STOPPED;
 	}
 	
 }

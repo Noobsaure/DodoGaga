@@ -39,12 +39,12 @@ public class SceneMap extends SceneBase implements InputProcessor{
 		Game.map.setup(0);
 		spriteset = new SpritesetMap();
 		
-		intervalTest = new Interval(Game.map.movableBattlerTest, 0.5f, new Point2f(50,50), "linear", "linear");
-		/*sequenceTest = new Sequence();
-		sequenceTest.add(new Interval(Game.map.movableBattlerTest, 0.5f, new Vector2(200,200), new Vector2(200,400), "circleIn"));
-		sequenceTest.add(new Interval(Game.map.movableBattlerTest, 0.5f, new Vector2(200,400), new Vector2(800,400), "swingIn"));
-		sequenceTest.add(new Interval(Game.map.movableBattlerTest, 0.5f, new Vector2(800,400), new Vector2(800,200), "swing"));
-		sequenceTest.add(new Interval(Game.map.movableBattlerTest, 0.5f, new Vector2(800,200), new Vector2(200,200), "swingOut"));*/
+		intervalTest = new Interval(Game.map.movableBattlerTest, 0.5f, new Point2f(200,200), "linear", "linear");
+		sequenceTest = new Sequence();
+		sequenceTest.add(new Interval(Game.map.movableBattlerTest, 0.5f, new Point2f(200,400), "circleIn", "circleIn"));
+		sequenceTest.add(new Interval(Game.map.movableBattlerTest, 0.5f, new Point2f(800,400), "swingIn", "swingIn"));
+		sequenceTest.add(new Interval(Game.map.movableBattlerTest, 0.5f, new Point2f(800,200), "swing", "swing"));
+		sequenceTest.add(new Interval(Game.map.movableBattlerTest, 0.5f, new Point2f(200,200), "swingOut", "swingOut"));
 		
 		Gdx.input.setInputProcessor(this); //enable event handling
 	}
@@ -64,8 +64,8 @@ public class SceneMap extends SceneBase implements InputProcessor{
 	@Override
 	public boolean keyDown(int keycode) {
 		if(keycode == Keys.S){
-
-			intervalTest.loop();
+			sequenceTest.stopAndDelete();
+			sequenceTest.loop();
 			/*
 			Random rand = new Random();
 			
@@ -78,7 +78,7 @@ public class SceneMap extends SceneBase implements InputProcessor{
 			//interval.start();
 		}
 		else if(keycode == Keys.P){
-			intervalTest.tooglePauseResume();
+			sequenceTest.tooglePauseResume();
 			//Game.map.movableBattlerTest.setRealPosition(new Point2f(900,300));
 			//Interval interval = new Interval(Game.map.movableBattlerTest, 1, new Vector2(600,300), new Vector2(1000,1000), "pow5Out");
 			//interval.start();
