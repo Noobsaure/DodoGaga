@@ -6,12 +6,9 @@ import com.me.mygdxgame.utils.interval.interfaces.IntervalTransformable;
 
 public class PosInterval extends TransformIntervalBase2{
 
-	public PosInterval(IntervalTransformable transformable, float duration, Point2f end, String xInterpolation, String yInterpolation) {
-		this(transformable, duration, end, xInterpolation, yInterpolation, null);
-	}
 	
-	public PosInterval(IntervalTransformable transformable, float duration, Point2f end, String xInterpolation, String yInterpolation, Point2f start) {
-		super(transformable, duration, end, xInterpolation, yInterpolation, start);
+	public PosInterval(IntervalTransformable transformable, float duration, Point2f start, Point2f end, String xInterpolation, String yInterpolation) {
+		super(transformable, duration, start, end, xInterpolation, yInterpolation);
 		transformType = Interval.TransformType.POS;
 	}
 	

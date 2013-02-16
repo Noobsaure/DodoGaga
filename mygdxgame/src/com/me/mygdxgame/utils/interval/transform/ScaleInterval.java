@@ -6,12 +6,8 @@ import com.me.mygdxgame.utils.interval.interfaces.IntervalTransformable;
 
 public class ScaleInterval extends TransformIntervalBase2{
 	
-	public ScaleInterval(IntervalTransformable transformable, float duration, Point2f end, String xInterpolation, String yInterpolation) {
-		this(transformable, duration, end, xInterpolation, yInterpolation, null);
-	}
-	
-	public ScaleInterval(IntervalTransformable transformable, float duration, Point2f end, String xInterpolation, String yInterpolation, Point2f start) {
-		super(transformable, duration, end, xInterpolation, yInterpolation, start);
+	public ScaleInterval(IntervalTransformable transformable, float duration, Point2f start, Point2f end, String xInterpolation, String yInterpolation) {
+		super(transformable, duration, start, end, xInterpolation, yInterpolation);
 		transformType = Interval.TransformType.SCALE;
 	}
 
