@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
@@ -17,6 +18,7 @@ import com.me.mygdxgame.game.GameEvent;
 import com.me.mygdxgame.game.GameMap;
 import com.me.mygdxgame.mgr.IntervalMgr;
 import com.me.mygdxgame.mgr.SceneMgr;
+import com.me.mygdxgame.mgr.WindowMgr;
 import com.me.mygdxgame.sprite.SpritesetMap;
 import com.me.mygdxgame.utils.Cst;
 import com.me.mygdxgame.utils.Point2f;
@@ -49,7 +51,11 @@ public class SceneMap extends SceneBase implements InputProcessor{
 		sequenceTest.add(new PosInterval(Game.map.movableBattlerTest, 0.5f, new Point2f(800,200), "swing", "swing"));
 		sequenceTest.add(new PosInterval(Game.map.movableBattlerTest, 0.5f, new Point2f(200,200), "swingOut", "swingOut"));
 		*/
-		Gdx.input.setInputProcessor(this); //enable event handling
+		InputMultiplexer plex = new InputMultiplexer();
+		plex.addProcessor(this);
+		plex.addProcessor(WindowMgr.stage);
+		Gdx.input.setInputProcessor(plex);
+		//Gdx.input.setInputProcessor(this); //enable event handling
 	}
 	
 	public void updateMain(){

@@ -1,0 +1,30 @@
+package com.me.mygdxgame.ui;
+
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.me.mygdxgame.mgr.WindowMgr;
+import com.me.mygdxgame.utils.interval.IntervalTransformValue;
+import com.me.mygdxgame.utils.interval.interfaces.IntervalTransformable;
+
+public class WindowBase extends Window implements IntervalTransformable{
+
+	public WindowBase(String title, Skin skin) {
+		super(title, skin);
+		WindowMgr.add(this);
+	}
+
+	@Override
+	public void setTransform(int type, IntervalTransformValue value) {
+		
+	}
+
+	@Override
+	public IntervalTransformValue getTransform(int type) {
+		return null;
+	}
+	
+	public void update(){
+		
+	}
+
+}
