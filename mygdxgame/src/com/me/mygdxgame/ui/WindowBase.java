@@ -10,6 +10,7 @@ public class WindowBase extends Window implements IntervalTransformable{
 
 	public WindowBase(String title, Skin skin) {
 		super(title, skin);
+		//pad(16);
 		WindowMgr.add(this);
 	}
 

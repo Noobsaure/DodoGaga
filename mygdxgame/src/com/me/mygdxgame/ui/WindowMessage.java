@@ -23,18 +23,28 @@ public class WindowMessage extends WindowBase{
 	public WindowMessage(String title, Skin skin) {
 		super(title, skin);
 		waitInterval = new WaitInterval(0.01f);
-		text = "Ceci est un test d'un\nmessage type RPG fait\nen 2 minutes !";
+		text = "";
 		index = 0;
 		textLabel = new Label("", WindowMgr.skin);
 		
 		setPosition(0, 0);
-		setWidth(200);
+		defaults().pad(6);
+		//setWidth(200);
+		//row().fill().pad(6);
 		row().fill().expand(true, true);
+		
 		textLabel.setAlignment(Align.left | Align.top);
 		add(textLabel);
-		row();
+		//row();
 		
 		setTitleAlignment(Align.left);
+	}
+	
+	public void startText(String text){
+		this.text = text;
+		textLabel.setText(text);
+		this.pack();
+		textLabel.setText("");
 	}
 	
 	public String currentText(){
