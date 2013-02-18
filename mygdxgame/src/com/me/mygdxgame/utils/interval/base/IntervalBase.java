@@ -1,10 +1,16 @@
-package com.me.mygdxgame.utils.interval;
+package com.me.mygdxgame.utils.interval.base;
 
 import com.me.mygdxgame.mgr.IntervalMgr;
-import com.me.mygdxgame.utils.interval.interfaces.AbstractInterval;
+import com.me.mygdxgame.utils.interval.interfaces.Interval;
 
+/*
+static private final String[] interpolators = new String[] {"bounce", "bounceIn", "bounceOut", "circle", "circleIn",
+	"circleOut", "elastic", "elasticIn", "elasticOut", "exp10", "exp10In", "exp10Out", "exp5", "exp5In", "exp5Out", "fade",
+	"linear", "pow2", "pow2In", "pow2Out", "pow3", "pow3In", "pow3Out", "pow4", "pow4In", "pow4Out", "pow5", "pow5In",
+	"pow5Out", "sine", "sineIn", "sineOut", "swing", "swingIn", "swingOut"};
+*/
 
-public abstract class IntervalBase implements AbstractInterval{
+public abstract class IntervalBase implements Interval{
 	
 	protected int state;
 	protected int memoState;
@@ -30,7 +36,6 @@ public abstract class IntervalBase implements AbstractInterval{
 		if(isFinished()){
 			if(state == Interval.State.PLAYING_ONCE){
 				stopAndRemoveLater();
-				//IntervalMgr.deleteLater(this);
 			}
 			else if(state == Interval.State.LOOPING){
 				reset();
@@ -57,6 +62,7 @@ public abstract class IntervalBase implements AbstractInterval{
 	private void launch(){
 		//IntervalMgr.removeTransformables(getTransformables());
 		IntervalMgr.addInterval(this);
+		update();
 	}
 
 	public void pause(){
@@ -93,6 +99,18 @@ public abstract class IntervalBase implements AbstractInterval{
 	
 	public boolean isStopped(){
 		return state == Interval.State.STOPPED;
+	}
+	
+	public boolean isFinishedAndStart(){
+		if(isFinished()){
+			start();
+			return true;
+		}
+		if(isStopped()){
+			start();
+			return false;
+		}
+		return false;
 	}
 	
 }

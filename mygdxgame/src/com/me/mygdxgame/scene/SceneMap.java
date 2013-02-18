@@ -23,8 +23,8 @@ import com.me.mygdxgame.sprite.SpritesetMap;
 import com.me.mygdxgame.utils.Cst;
 import com.me.mygdxgame.utils.Point2f;
 import com.me.mygdxgame.utils.Point2i;
-import com.me.mygdxgame.utils.interval.Interval;
-import com.me.mygdxgame.utils.interval.Sequence;
+import com.me.mygdxgame.utils.interval.base.TimeBasedInterval;
+import com.me.mygdxgame.utils.interval.container.Sequence;
 import com.me.mygdxgame.utils.interval.special.WaitInterval;
 import com.me.mygdxgame.utils.interval.transform.PosInterval;
 
@@ -37,7 +37,7 @@ public class SceneMap extends SceneBase implements InputProcessor{
 	
 	SpritesetMap spriteset;
 	
-	Interval intervalTest;
+	TimeBasedInterval intervalTest;
 	Sequence sequenceTest;
 	
 	public SceneMap(){
@@ -78,11 +78,11 @@ public class SceneMap extends SceneBase implements InputProcessor{
 				GameBattler battler = Game.map.movableBattlerTest.get(i);
 				Point2f startPos = battler.getPosition();
 				Sequence seq = new Sequence();
-				seq.add(new PosInterval(battler, 0.5f, null, new Point2f(200+rand.nextInt(600),200+rand.nextInt(600)), "linear", "linear"));
+				seq.add(new PosInterval(battler, 0.5f, null, new Point2f(200+rand.nextInt(600),200+rand.nextInt(600)), "linear"));
 				seq.add(new WaitInterval(1));
-				seq.add(new PosInterval(battler, 0.5f, null, new Point2f(200+rand.nextInt(600),200+rand.nextInt(600)), "linear", "linear"));
-				seq.add(new PosInterval(battler, 0.5f, null, new Point2f(200+rand.nextInt(600),200+rand.nextInt(600)), "linear", "linear"));
-				seq.add(new PosInterval(battler, 0.5f, null, startPos, "linear", "linear"));
+				seq.add(new PosInterval(battler, 0.5f, null, new Point2f(200+rand.nextInt(600),200+rand.nextInt(600)), "linear"));
+				seq.add(new PosInterval(battler, 0.5f, null, new Point2f(200+rand.nextInt(600),200+rand.nextInt(600)), "linear"));
+				seq.add(new PosInterval(battler, 0.5f, null, startPos, "linear"));
 				seq.loop();
 			}
 

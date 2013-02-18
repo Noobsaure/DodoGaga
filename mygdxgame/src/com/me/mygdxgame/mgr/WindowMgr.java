@@ -19,10 +19,10 @@ import com.me.mygdxgame.ui.Table2;
 import com.me.mygdxgame.ui.WindowBase;
 import com.me.mygdxgame.ui.WindowMessage;
 import com.me.mygdxgame.utils.Point2f;
-import com.me.mygdxgame.utils.interval.Interval;
-import com.me.mygdxgame.utils.interval.IntervalTransformValue;
-import com.me.mygdxgame.utils.interval.interfaces.IntervalPlayable;
+import com.me.mygdxgame.utils.interval.base.TimeBasedInterval;
+import com.me.mygdxgame.utils.interval.interfaces.Interval;
 import com.me.mygdxgame.utils.interval.interfaces.IntervalTransformable;
+import com.me.mygdxgame.utils.interval.transform.IntervalTransformValue;
 import com.me.mygdxgame.utils.interval.transform.PosInterval;
 import com.me.mygdxgame.utils.interval.transform.ScaleInterval;
 

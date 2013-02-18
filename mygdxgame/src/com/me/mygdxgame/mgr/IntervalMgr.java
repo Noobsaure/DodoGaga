@@ -6,21 +6,21 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.me.mygdxgame.utils.interval.Interval;
-import com.me.mygdxgame.utils.interval.interfaces.AbstractInterval;
+import com.me.mygdxgame.utils.interval.base.TimeBasedInterval;
+import com.me.mygdxgame.utils.interval.interfaces.Interval;
 import com.me.mygdxgame.utils.interval.interfaces.IntervalTransformable;
 
 public class IntervalMgr {
 
-	private static List<AbstractInterval> intervals = new ArrayList<AbstractInterval>();
-	private static List<AbstractInterval> finishedIntervals = new ArrayList<AbstractInterval>();
-	private static List<AbstractInterval> waitingForStartIntervals = new ArrayList<AbstractInterval>();
+	private static List<Interval> intervals = new ArrayList<Interval>();
+	private static List<Interval> finishedIntervals = new ArrayList<Interval>();
+	private static List<Interval> waitingForStartIntervals = new ArrayList<Interval>();
 	//private static Map<IntervalTransformable, IntervalPlayable> intervalsTransformable = new Hashtable<IntervalTransformable, IntervalPlayable>();
 	
 	
 	public static void update(){
 		//System.out.println(intervals.size());
-		for(AbstractInterval interval : intervals){
+		for(Interval interval : intervals){
 			interval.update();
 		}
 		
@@ -34,7 +34,7 @@ public class IntervalMgr {
 	}
 	
 	private static void removeFinishedIntervals(){
-		for(AbstractInterval interval : finishedIntervals){
+		for(Interval interval : finishedIntervals){
 			intervals.remove(interval);
 			//for(IntervalTransformable transformable : interval.getTransformables()){
 			//	intervalsTransformable.remove(transformable);
@@ -44,21 +44,21 @@ public class IntervalMgr {
 	}
 	
 	private static void addIntervals(){
-		for(AbstractInterval interval : waitingForStartIntervals){
+		for(Interval interval : waitingForStartIntervals){
 			intervals.add(interval);
 		}
 		waitingForStartIntervals.clear();
 	}
 	
-	public static void removeLater(AbstractInterval interval){
+	public static void removeLater(Interval interval){
 		finishedIntervals.add(interval);
 	}
 	
-	public static void remove(AbstractInterval interval){
+	public static void remove(Interval interval){
 		intervals.remove(interval);
 	}
 	
-	public static void addInterval(AbstractInterval interval){
+	public static void addInterval(Interval interval){
 		waitingForStartIntervals.add(interval);
 		/*
 		for(IntervalTransformable transformable : interval.getTransformables()){

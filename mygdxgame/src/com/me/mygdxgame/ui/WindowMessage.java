@@ -1,21 +1,24 @@
 package com.me.mygdxgame.ui;
 
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.me.mygdxgame.mgr.WindowMgr;
-import com.me.mygdxgame.utils.interval.interfaces.IntervalPlayable;
+import com.me.mygdxgame.utils.interval.interfaces.Interval;
 import com.me.mygdxgame.utils.interval.special.WaitInterval;
 
 public class WindowMessage extends WindowBase{
 
 	int messageSpeed;
-	IntervalPlayable waitInterval;
+	Interval waitInterval;
 	int index;
 	String text;
 	Label textLabel;
+	
+	long time;
 	
 	public WindowMessage(String title, Skin skin) {
 		super(title, skin);
@@ -51,19 +54,15 @@ public class WindowMessage extends WindowBase{
 			return;
 		}
 		
-		
 		if(currentCharacter() == ' '){
 			index += 1;
 		}
 		
-		if(waitInterval.isFinished()){
+		if(waitInterval.isFinishedAndStart()){
 			index += 1;
 			textLabel.setText(currentText());
 		}
-		
-		if(waitInterval.isStopped()){
-			waitInterval.start();
-		}
+
 	}
 
 }

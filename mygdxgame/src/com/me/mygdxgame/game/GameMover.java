@@ -3,10 +3,10 @@ package com.me.mygdxgame.game;
 import com.me.mygdxgame.utils.Cst;
 import com.me.mygdxgame.utils.Point2f;
 import com.me.mygdxgame.utils.Point2i;
-import com.me.mygdxgame.utils.interval.Interval;
-import com.me.mygdxgame.utils.interval.IntervalTransformValue;
-import com.me.mygdxgame.utils.interval.interfaces.IntervalPlayable;
+import com.me.mygdxgame.utils.interval.base.TimeBasedInterval;
+import com.me.mygdxgame.utils.interval.interfaces.Interval;
 import com.me.mygdxgame.utils.interval.interfaces.IntervalTransformable;
+import com.me.mygdxgame.utils.interval.transform.IntervalTransformValue;
 import com.me.mygdxgame.utils.interval.transform.PosInterval;
 
 public abstract class GameMover extends GameEvent implements IntervalTransformable {
@@ -28,7 +28,7 @@ public abstract class GameMover extends GameEvent implements IntervalTransformab
 
 	public void setTransform(int type, IntervalTransformValue value){
 		switch(type){
-		case Interval.TransformType.POS: {
+		case TimeBasedInterval.TYPE.POS: {
 			setPosition(value.x, value.y);
 			break;
 		}
@@ -37,7 +37,7 @@ public abstract class GameMover extends GameEvent implements IntervalTransformab
 	
 	public IntervalTransformValue getTransform(int type){
 		switch(type){
-		case Interval.TransformType.POS: {
+		case TimeBasedInterval.TYPE.POS: {
 			return new IntervalTransformValue(realPosition.x, realPosition.y);
 		}
 		}
@@ -97,7 +97,7 @@ public abstract class GameMover extends GameEvent implements IntervalTransformab
 		destination.y = y+resultY;
 		
 		//System.out.println("Deplacement en Tile: " + tile + "   Cell: " + cell);
-		IntervalPlayable interval = new PosInterval(this, 0.5f, null, destination, "linear", "linear");
+		Interval interval = new PosInterval(this, 0.5f, null, destination, "linear");
 		interval.start();
 	}
 }

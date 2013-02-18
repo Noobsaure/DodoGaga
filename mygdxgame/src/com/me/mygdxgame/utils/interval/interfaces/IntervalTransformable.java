@@ -1,6 +1,6 @@
 package com.me.mygdxgame.utils.interval.interfaces;
 
-import com.me.mygdxgame.utils.interval.IntervalTransformValue;
+import com.me.mygdxgame.utils.interval.transform.IntervalTransformValue;
 
 public interface IntervalTransformable {
 

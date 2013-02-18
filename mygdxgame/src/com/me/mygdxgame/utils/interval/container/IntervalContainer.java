@@ -1,26 +1,25 @@
-package com.me.mygdxgame.utils.interval;
+package com.me.mygdxgame.utils.interval.container;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.me.mygdxgame.mgr.IntervalMgr;
-import com.me.mygdxgame.utils.interval.interfaces.AbstractInterval;
-import com.me.mygdxgame.utils.interval.interfaces.IntervalTransformable;
+import com.me.mygdxgame.utils.interval.base.IntervalBase;
+import com.me.mygdxgame.utils.interval.interfaces.Interval;
 
 public abstract class IntervalContainer extends IntervalBase{
 
-	protected List<AbstractInterval> intervals;
+	protected List<Interval> intervals;
 	protected int index;
 	
 	public IntervalContainer(){
-		intervals = new ArrayList<AbstractInterval>();
+		intervals = new ArrayList<Interval>();
 	}
 	
-	public AbstractInterval getCurrentInterval(){
+	public Interval getCurrentInterval(){
 		return intervals.get(index);
 	}
 	
-	public void add(AbstractInterval interval){
+	public void add(Interval interval){
 		intervals.add(interval);
 	}
 	
@@ -32,7 +31,7 @@ public abstract class IntervalContainer extends IntervalBase{
 	
 	public void reset() {
 		index = 0;
-		for(AbstractInterval interval : intervals){
+		for(Interval interval : intervals){
 			interval.reset();
 		}
 	}
@@ -65,27 +64,27 @@ public abstract class IntervalContainer extends IntervalBase{
 
 	public void pause(){
 		super.pause();
-		for(AbstractInterval interval : intervals){
+		for(Interval interval : intervals){
 			interval.pause();
 		}
 	}
 	
 	public void resume(){
 		super.resume();
-		for(AbstractInterval interval : intervals){
+		for(Interval interval : intervals){
 			interval.resume();
 		}
 	}
 	
 	public void stopAndRemove(){
-		for(AbstractInterval interval : intervals){
+		for(Interval interval : intervals){
 			interval.stopAndRemove();
 		}
 		super.stopAndRemove();
 	}
 	
 	public void stopAndRemoveLater(){
-		for(AbstractInterval interval : intervals){
+		for(Interval interval : intervals){
 			interval.stopAndRemoveLater();
 		}
 		super.stopAndRemoveLater();

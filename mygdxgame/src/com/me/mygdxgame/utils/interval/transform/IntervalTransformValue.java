@@ -1,4 +1,4 @@
-package com.me.mygdxgame.utils.interval;
+package com.me.mygdxgame.utils.interval.transform;
 
 public class IntervalTransformValue {
 

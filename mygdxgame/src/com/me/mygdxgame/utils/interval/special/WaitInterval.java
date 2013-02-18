@@ -1,20 +1,11 @@
 package com.me.mygdxgame.utils.interval.special;
 
-import com.me.mygdxgame.utils.interval.Interval;
-import com.me.mygdxgame.utils.interval.interfaces.IntervalTransformable;
+import com.me.mygdxgame.utils.interval.base.TimeBasedInterval;
 
-public class WaitInterval extends Interval{
+public class WaitInterval extends TimeBasedInterval{
 
 	public WaitInterval(float duration){
 		super(null, duration);
-	}
-
-	@Override
-	public void determineStartKind() {
-	}
-
-	@Override
-	public void applyTransform() {
 	}
 	
 }

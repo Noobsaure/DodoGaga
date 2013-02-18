@@ -1,14 +1,14 @@
-package com.me.mygdxgame.utils.interval;
+package com.me.mygdxgame.utils.interval.container;
 
 
-import com.me.mygdxgame.utils.interval.interfaces.AbstractInterval;
+import com.me.mygdxgame.utils.interval.interfaces.Interval;
 
 public class Sequence extends IntervalContainer{
 
 	
 	public void updateMain(){
 		//System.out.println(index);
-		AbstractInterval interval = getCurrentInterval();
+		Interval interval = getCurrentInterval();
 		
 
 		//interval.update();
@@ -20,6 +20,12 @@ public class Sequence extends IntervalContainer{
 		if(!isFinished() && getCurrentInterval().isStopped()){
 			getCurrentInterval().start();
 		}
+	}
+
+	@Override
+	public float getCurrentTime() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 }

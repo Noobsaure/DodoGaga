@@ -3,8 +3,8 @@ package com.me.mygdxgame.ui;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.me.mygdxgame.mgr.WindowMgr;
-import com.me.mygdxgame.utils.interval.IntervalTransformValue;
 import com.me.mygdxgame.utils.interval.interfaces.IntervalTransformable;
+import com.me.mygdxgame.utils.interval.transform.IntervalTransformValue;
 
 public class WindowBase extends Window implements IntervalTransformable{
 
