@@ -30,14 +30,26 @@ public class DataMgr {
 			DataMap data = new DataMap(0, "Map000", Cst.MAP_SIZE);
 			Random rand = new Random();
 			int height;
-			for(int i=0; i < data.tileSize.x; i++){
+			/*for(int i=0; i < data.tileSize.x; i++){
 				for(int j=0; j < data.tileSize.y; j++){
 					data.tilemap[i][j] = Cst.FLOOR;
-					height = rand.nextInt(6);
+					height = rand.nextInt(3);
 					data.heightmap[i][j] = (byte)height;
 					if(height > data.maximumHeight) {
 						data.maximumHeight = height;
 					}
+				}
+			}*/
+			int tmplol = 0;
+			for(int i=data.tileSize.x-1; i >= 0; i--){
+				for(int j=data.tileSize.y-1; j >= 0; j--){
+					data.tilemap[i][j] = Cst.FLOOR;
+					height = rand.nextInt(3+tmplol);
+					data.heightmap[i][j] = (byte)height;
+					if(height > data.maximumHeight) {
+						data.maximumHeight = height;
+					}
+					tmplol = Math.max(tmplol, rand.nextInt(tmplol+2));
 				}
 			}
 			Data.maps.add(data);
@@ -67,7 +79,15 @@ public class DataMgr {
 			Data.sprites.add(dataSprite);
 			
 			//sprite 1 (wall)
-			dataSprite = new DataSprite(5, "WallLeft", "wallRight.png");
+			dataSprite = new DataSprite(5, "WallLeft2", "wallLeft2.png");
+			Data.sprites.add(dataSprite);
+			
+			//sprite 1 (wall)
+			dataSprite = new DataSprite(6, "WallRight", "wallRight.png");
+			Data.sprites.add(dataSprite);
+			
+			//sprite 1 (wall)
+			dataSprite = new DataSprite(7, "WallRight2", "wallRight2.png");
 			Data.sprites.add(dataSprite);
 			
 		//Load tiles database

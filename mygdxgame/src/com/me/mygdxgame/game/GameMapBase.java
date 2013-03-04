@@ -63,20 +63,24 @@ public abstract class GameMapBase {
 		int mapHeight;
 		int tmpHeight = mapData.maximumHeight;
 		while(tmpHeight >= 0) {
-			tmp = isoToTile(p.x,p.y + tmpHeight);
-			mapHeight = mapData.heightmap[tmp.x][tmp.y];
-			if(mapHeight == tmpHeight) {
-				res = tmp;
-				break;
-			} else if(mapData.heightmap[tmp.x][tmp.y] > tmpHeight) {
-				break;
-			} else {
+			tmp = isoToTile(p.x,p.y + tmpHeight * Cst.TILE_WALL_H);
+			if(tmp.x >= mapData.tileSize.x || tmp.y >= mapData.tileSize.y || tmp.x < 0 || tmp.y < 0)
 				tmpHeight--;
+			else {
+				mapHeight = mapData.heightmap[tmp.x][tmp.y];
+				if(mapHeight == tmpHeight) {
+					res = tmp;
+					break;
+				} else if(mapData.heightmap[tmp.x][tmp.y] > tmpHeight) {
+					break;
+				} else {
+					tmpHeight--;
+				}
 			}
 		}
 		return res;
 	}
-	
+
 	public Point2i heightIsoToTile(float x, float y) {
 		return heightIsoToTile(new Point2f(x,y));
 	}

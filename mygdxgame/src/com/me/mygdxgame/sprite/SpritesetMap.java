@@ -106,8 +106,9 @@ public class SpritesetMap {
 				if(heightDiff > 0) {
 					for(int k=0;k<heightDiff;k++) {
 						sprite = SpriteMgr.getStatic(4); //wallLeft
-						sprite.setPosition(pos.x + Cst.TILE_WALL_HW, pos.y + 96 + Cst.TILE_WALL_H * (k+2));
+						sprite.setPosition(pos.x + Cst.TILE_WALL_HW, pos.y + sprite.getHeight() + Cst.TILE_WALL_H * (k+2));
 						sprite.draw(batch);
+						nbrendered++;
 					}
 				}
 
@@ -118,9 +119,10 @@ public class SpritesetMap {
 
 				if(heightDiff > 0) {
 					for(int k=0;k<heightDiff;k++) {
-						sprite = SpriteMgr.getStatic(5); //wallRight
-						sprite.setPosition(pos.x + Cst.TILE_WALL_HW + Cst.TILE_HW, pos.y + 96 + Cst.TILE_WALL_H * (k+2));
+						sprite = SpriteMgr.getStatic(6); //wallRight
+						sprite.setPosition(pos.x + Cst.TILE_WALL_HW + Cst.TILE_HW, pos.y + sprite.getHeight() + Cst.TILE_WALL_H * (k+2));
 						sprite.draw(batch);
+						nbrendered++;
 					}
 				}				
 
