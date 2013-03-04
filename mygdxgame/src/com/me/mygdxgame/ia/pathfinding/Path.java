@@ -12,7 +12,6 @@ import java.util.ArrayList;
  */
 public class Path {
 	/** The list of steps building up this path */
-	@SuppressWarnings("rawtypes")
 	private ArrayList steps = new ArrayList();
 	
 	/**
@@ -68,7 +67,6 @@ public class Path {
 	 * @param x The x coordinate of the new step
 	 * @param y The y coordinate of the new step
 	 */
-	@SuppressWarnings("unchecked")
 	public void appendStep(int x, int y) {
 		steps.add(new Step(x,y));
 	}
@@ -79,7 +77,6 @@ public class Path {
 	 * @param x The x coordinate of the new step
 	 * @param y The y coordinate of the new step
 	 */
-	@SuppressWarnings("unchecked")
 	public void prependStep(int x, int y) {
 		steps.add(0, new Step(x, y));
 	}

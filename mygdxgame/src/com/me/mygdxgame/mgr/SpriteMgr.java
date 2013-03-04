@@ -1,6 +1,12 @@
 package com.me.mygdxgame.mgr;
 
+import java.util.Hashtable;
+import java.util.Map;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.me.mygdxgame.sprite.SpriteAnimated;
+import com.me.mygdxgame.sprite.SpriteBase;
 import com.me.mygdxgame.sprite.SpriteStatic;
 import com.me.mygdxgame.sprite.SpriteTile;
 import com.me.mygdxgame.data.Data;
@@ -57,6 +63,7 @@ public class SpriteMgr {
 		addStatic(id);
 		return (SpriteStatic) statics[id].clone();
 		//return new SpriteStatic(statics[id].getTextureName(),statics[id].getElevation(),statics[id].getColor());
+		
 	}
 	
 	public static SpriteAnimated getAnimated(int id){

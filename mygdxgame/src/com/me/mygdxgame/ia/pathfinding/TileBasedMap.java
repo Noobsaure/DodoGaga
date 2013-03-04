@@ -1,6 +1,5 @@
 package com.me.mygdxgame.ia.pathfinding;
 
-import com.me.mygdxgame.game.GameMover;
 import com.me.mygdxgame.utils.Point2i;
 
 
@@ -32,7 +31,7 @@ public interface TileBasedMap {
 	 * @param y The y coordinate of the tile to check
 	 * @return True if the location is blocked
 	 */
-	public boolean blocked(GameMover mover, int x, int y);
+	public boolean blocked(Mover mover, int x, int y);
 	
 	/**
 	 * Get the cost of moving through the given tile. This can be used to 
@@ -46,7 +45,7 @@ public interface TileBasedMap {
 	 * @param ty The y coordinate of the tile we're moving to
 	 * @return The relative cost of moving across the given tile
 	 */
-	public float getCost(GameMover mover, int sx, int sy, int tx, int ty);
+	public float getCost(Mover mover, int sx, int sy, int tx, int ty);
 
 	public Point2i getMapSize();
 }

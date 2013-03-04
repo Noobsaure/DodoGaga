@@ -8,8 +8,8 @@ public class GameEvent extends GameEntity{
 		super(spriteId);
 	}
 	
-	public GameEvent(int spriteId, Point2i tilePosition) {
-		super(spriteId,tilePosition);
+	public GameEvent(int spriteId, Point2i tilePosition, Point2i innerTilePosition) {
+		super(spriteId,tilePosition,innerTilePosition);
 	}
 	
 	public void update(){
