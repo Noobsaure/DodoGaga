@@ -83,17 +83,46 @@ public class SpritesetMap {
 			for(int i=0; i < Game.map.getMapSize().x; i++) {
 
 				pos = GameMap.tileToIsoi(i,j);
-				
+				pos.y = pos.y - Cst.TILE_WALL_H * Game.map.mapData.heightmap[i][j];
+
 				spriteTile = SpriteMgr.getTile(Game.map.mapData.tilemap[i][j], false);
 
 				if(i == highlightedTile.x && j == highlightedTile.y) {
 					highlightedSpriteTile = SpriteTile.getHighlightedTile(spriteTile);
-					highlightedSpriteTile.setPosition(pos.x - Cst.TILE_HW, pos.y - spriteTile.getElevation());
+					highlightedSpriteTile.setPosition(pos.x, pos.y);// - Cst.TILE_WALL_H * Game.map.mapData.heightmap[i][j]);
 					highlightedSpriteTile.draw(batch);
 				} else {
-					spriteTile.setPosition(pos.x - Cst.TILE_HW, pos.y - spriteTile.getElevation());
+					spriteTile.setPosition(pos.x, pos.y);// - Cst.TILE_WALL_H * Game.map.mapData.heightmap[i][j]);
 					spriteTile.draw(batch);
 				}
+
+				int heightDiff;
+
+				if(j < Game.map.getMapSize().y - 1)
+					heightDiff = Game.map.mapData.heightmap[i][j] - Game.map.mapData.heightmap[i][j+1];
+				else
+					heightDiff = Game.map.mapData.heightmap[i][j];
+
+				if(heightDiff > 0) {
+					for(int k=0;k<heightDiff;k++) {
+						sprite = SpriteMgr.getStatic(4); //wallLeft
+						sprite.setPosition(pos.x + Cst.TILE_WALL_HW, pos.y + 96 + Cst.TILE_WALL_H * (k+2));
+						sprite.draw(batch);
+					}
+				}
+
+				if(i < Game.map.getMapSize().x - 1)
+					heightDiff = Game.map.mapData.heightmap[i][j] - Game.map.mapData.heightmap[i+1][j];
+				else
+					heightDiff = Game.map.mapData.heightmap[i][j];
+
+				if(heightDiff > 0) {
+					for(int k=0;k<heightDiff;k++) {
+						sprite = SpriteMgr.getStatic(5); //wallRight
+						sprite.setPosition(pos.x + Cst.TILE_WALL_HW + Cst.TILE_HW, pos.y + 96 + Cst.TILE_WALL_H * (k+2));
+						sprite.draw(batch);
+					}
+				}				
 
 				nbrendered++;
 
@@ -114,7 +143,7 @@ public class SpritesetMap {
 						}
 					}
 				}
-				
+
 				/*if(path != null) {
 					Step step;
 					for(int a=0;a<path.getLength();a++) {
@@ -142,7 +171,7 @@ public class SpritesetMap {
 			}
 		}
 
-		
+
 
 		WindowMgr.spriteNumberLabel.setText("Draw number: " + nbrendered);
 

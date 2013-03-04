@@ -29,13 +29,14 @@ public class DataMgr {
 			//Map 0
 			DataMap data = new DataMap(0, "Map000", Cst.MAP_SIZE);
 			Random rand = new Random();
+			int height;
 			for(int i=0; i < data.tileSize.x; i++){
 				for(int j=0; j < data.tileSize.y; j++){
-					int n = rand.nextInt(255);
-					if(n < 200){
-						data.tilemap[i][j] = Cst.FLOOR;
-					} else{
-						data.tilemap[i][j] = Cst.WALL;
+					data.tilemap[i][j] = Cst.FLOOR;
+					height = rand.nextInt(6);
+					data.heightmap[i][j] = (byte)height;
+					if(height > data.maximumHeight) {
+						data.maximumHeight = height;
 					}
 				}
 			}
@@ -46,7 +47,7 @@ public class DataMgr {
 		DataSprite dataSprite;
 			
 			//sprite 0  (floor)
-			dataSprite = new DataSprite(0, "Floor", "floor.png");
+			dataSprite = new DataSprite(0, "Floor", "greenTile.png");
 			Data.sprites.add(dataSprite);
 			
 			//sprite 1 (wall)
@@ -59,6 +60,14 @@ public class DataMgr {
 			
 			//sprite 3 (character big)
 			dataSprite = new DataSprite(3, "characterBig", "characterBig.png");
+			Data.sprites.add(dataSprite);
+			
+			//sprite 1 (wall)
+			dataSprite = new DataSprite(4, "WallLeft", "wallLeft.png");
+			Data.sprites.add(dataSprite);
+			
+			//sprite 1 (wall)
+			dataSprite = new DataSprite(5, "WallLeft", "wallRight.png");
 			Data.sprites.add(dataSprite);
 			
 		//Load tiles database

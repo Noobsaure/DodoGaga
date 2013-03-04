@@ -25,9 +25,9 @@ public class SpriteMgr {
 			DataTile dataTile = Data.tiles.get(id);
 			DataSprite dataSprite = Data.sprites.get(dataTile.spriteId);
 			SpriteTile sprite = new SpriteTile(dataSprite.textureFilename);
-			if(dataTile.isWall){
+			/*if(dataTile.isWall){
 				sprite.setElevation(Cst.TILE_WALL_H);
-			}
+			}*/
 			tiles[id] = sprite;
 		}
 	}

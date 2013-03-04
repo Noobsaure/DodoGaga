@@ -21,38 +21,66 @@ public abstract class GameMapBase {
 	private Map<String, List<GameEvent>> tileEvents;
 	private List<GameEvent> events;
 	private List<GameBattler> gameBattlers = new ArrayList<GameBattler>();
-	
-	
+
+
 	public void setup(int mapId) {
 		this.mapId = mapId;
 		this.mapData = Data.maps.get(mapId);
 		setupEvents();
 	}
-	
+
 	public void setupEvents(){
 		tileEvents = new Hashtable<String, List<GameEvent>>();
 		events = new ArrayList<GameEvent>();
 		gameBattlers.add(new GameBattler(3, new Point2i(1,1)));
 	}
-	
+
 	public static Point2f tileToIsof(int i, int j) {
 		float x = i * Cst.TILE_HW - j * Cst.TILE_HW;
 		float y = i * Cst.TILE_HH + j * Cst.TILE_HH;
 		return new Point2f(x,y);
 	}
-	
+
 	public static Point2i tileToIsoi(int i, int j) {
 		int x = i * Cst.TILE_HW - j * Cst.TILE_HW;
 		int y = i * Cst.TILE_HH + j * Cst.TILE_HH;
 		return new Point2i(x,y);
 	}
-	
+
 	public static Point2i isoToTile(float x, float y) {
-		int i = (int)(0.5 * (y/Cst.TILE_HH + x/Cst.TILE_HW));
-		int j = (int)(0.5 * (y/Cst.TILE_HH - x/Cst.TILE_HW));
+		int i = (int)(y/Cst.TILE_H + (x - Cst.TILE_HW)/Cst.TILE_W);
+		int j = (int)(y/Cst.TILE_H - (x - Cst.TILE_HW)/Cst.TILE_W);
 		return new Point2i(i,j);
 	}
+
+	public static Point2i isoToTile(Point2f p) {
+		return isoToTile(p.x,p.y);
+	}
+
+	public Point2i heightIsoToTile(Point2f p) {
+		Point2i res = new Point2i(-1,-1);
+		Point2i tmp;
+		int mapHeight;
+		int tmpHeight = mapData.maximumHeight;
+		while(tmpHeight >= 0) {
+			tmp = isoToTile(p.x,p.y + tmpHeight);
+			mapHeight = mapData.heightmap[tmp.x][tmp.y];
+			if(mapHeight == tmpHeight) {
+				res = tmp;
+				break;
+			} else if(mapData.heightmap[tmp.x][tmp.y] > tmpHeight) {
+				break;
+			} else {
+				tmpHeight--;
+			}
+		}
+		return res;
+	}
 	
+	public Point2i heightIsoToTile(float x, float y) {
+		return heightIsoToTile(new Point2f(x,y));
+	}
+
 	public void removeEventFromTile(Point2i tile, GameEvent ev) {
 		List<GameEvent> evs = eventsAt(tile);
 		if(evs != null){
@@ -62,7 +90,7 @@ public abstract class GameMapBase {
 			}
 		}
 	}
-	
+
 	public void addEventToTile(Point2i tile, GameEvent ev) {
 		List<GameEvent> evs = eventsAt(tile);
 		if(evs == null) {
@@ -71,16 +99,16 @@ public abstract class GameMapBase {
 		}
 		evs.add(ev);
 	}
-	
+
 	public List<GameEvent> eventsAt(int tileX, int tileY){
 		Point2i tilePosition = new Point2i(tileX, tileY);
 		return eventsAt(tilePosition);
 	}
-	
+
 	public List<GameEvent> eventsAt(Point2i tilePosition){
 		return tileEvents.get(tilePosition.getHashCode());
 	}
-	
+
 	public void update(){
 		updateEvents();
 		//System.out.println(tileEvents.size());
@@ -88,13 +116,13 @@ public abstract class GameMapBase {
 			battler.update();
 		}
 	}
-	
+
 	public void updateEvents(){
 		for(GameEvent event : events){
 			event.update();
 		}
 	}
-	
+
 	public Point2i getMapSize() {return mapData.tileSize;}	
 	public List<GameBattler> getGameBattlers() {return gameBattlers;}
 

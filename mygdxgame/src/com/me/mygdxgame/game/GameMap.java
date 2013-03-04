@@ -42,7 +42,7 @@ public class GameMap extends GameMapBase implements TileBasedMap {
 	}
 
 	public float getCost(GameMover mover, int sx, int sy, int tx, int ty) {
-		return 0;
+		return (Math.abs(sx-tx) + Math.abs(sy-ty));
 	}
 	
 	public float getCost(GameMover mover, Point2i start, Point2i finish) {
