@@ -4,6 +4,7 @@ import com.me.mygdxgame.data.Data;
 import com.me.mygdxgame.data.DataMap;
 import com.me.mygdxgame.ia.pathfinding.Mover;
 import com.me.mygdxgame.ia.pathfinding.TileBasedMap;
+import com.me.mygdxgame.utils.Point2i;
 
 public class GameMap extends GameMapBase implements TileBasedMap {
 
@@ -35,13 +36,17 @@ public class GameMap extends GameMapBase implements TileBasedMap {
 		
 	}
 
-	public boolean blocked(Mover mover, int x, int y) {
+	public boolean blocked(GameMover mover, int x, int y) {
 		
 		return getDataMap().isWall(x, y);
 	}
 
-	public float getCost(Mover mover, int sx, int sy, int tx, int ty) {
+	public float getCost(GameMover mover, int sx, int sy, int tx, int ty) {
 		return 0;
+	}
+	
+	public float getCost(GameMover mover, Point2i start, Point2i finish) {
+		return getCost(mover,start.x,start.y,finish.x, finish.y);
 	}
 	
 	public DataMap getDataMap() {

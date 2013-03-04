@@ -14,7 +14,9 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.me.mygdxgame.game.Game;
 import com.me.mygdxgame.game.GameEvent;
+import com.me.mygdxgame.game.GameMap;
 import com.me.mygdxgame.game.GameMover;
+import com.me.mygdxgame.ia.pathfinding.Path;
 import com.me.mygdxgame.mgr.SpriteMgr;
 import com.me.mygdxgame.mgr.WindowMgr;
 import com.me.mygdxgame.utils.Cst;
@@ -25,18 +27,16 @@ public class SpritesetMap {
 	private SpriteBatch batch;
 	private Point2i highlightedTile = new Point2i(-1,-1);
 
-	public SpritesetMap(){
-		createSpriteBatches();
-	}
+	private Path path;
 
-	private void createSpriteBatches(){
-		batch = new SpriteBatch();
-	}
+	public Point2i getHighlightedTile() {return highlightedTile;}
+	public void setHighlightedTile(Point2i highlightedTile) {this.highlightedTile = highlightedTile;}
+	public Path getPath() {return path;}
+	public void setPath(Path path) {this.path = path;}
 
-	public void highlightTile(Point2i p) {
-		highlightedTile = p;
-	}
+	public SpritesetMap(){createSpriteBatches();}
 
+	private void createSpriteBatches(){batch = new SpriteBatch();}
 
 	public void update(){
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
@@ -66,47 +66,43 @@ public class SpritesetMap {
 		SpriteStatic sprite;
 		List<GameEvent> events;
 		List<SpriteBase> list = new ArrayList<SpriteBase>();
-		
-		int iStart = (int) (sx/Cst.TILE_W) - 1;
-		int jStart = (int) (sy/Cst.TILE_HH) - 1;
-		int iEnd = (int) (sw/Cst.TILE_W) + 1;
-		int jEnd = (int) (sh/Cst.TILE_HH) + 1;
-		
+
+		int iStart = (int) (sx/Cst.TILE_W);
+		int jStart = (int) (sy/Cst.TILE_HH);
+		int iEnd = (int) (sw/Cst.TILE_W);
+		int jEnd = (int) (sh/Cst.TILE_HH);
+
 		iStart = Math.max(iStart, 0);
 		jStart = Math.max(jStart, 0);
 		iEnd = Math.min(iEnd, Game.map.getMapSize().x);
 		jEnd = Math.min(jEnd, Game.map.getMapSize().y);
-		
+
 		int nbrendered = 0;
-		
-		for(int j=jStart; j < jEnd; j++) {
-			for(int i=iStart; i < iEnd; i++) {
-			
-				pos.x = i*Cst.TILE_W + Cst.TILE_HW * (j % 2);
-				pos.y = j*Cst.TILE_HH;
-				
+
+		for(int j=0; j < Game.map.getMapSize().y; j++) {
+			for(int i=0; i < Game.map.getMapSize().x; i++) {
+
+				pos = GameMap.tileToIsoi(i,j);
 				
 				spriteTile = SpriteMgr.getTile(Game.map.mapData.tilemap[i][j], false);
-				
+
 				if(i == highlightedTile.x && j == highlightedTile.y) {
 					highlightedSpriteTile = SpriteTile.getHighlightedTile(spriteTile);
-					highlightedSpriteTile.setPosition(pos.x, pos.y - spriteTile.getElevation());
+					highlightedSpriteTile.setPosition(pos.x - Cst.TILE_HW, pos.y - spriteTile.getElevation());
 					highlightedSpriteTile.draw(batch);
 				} else {
-					spriteTile.setPosition(pos.x, pos.y - spriteTile.getElevation());
+					spriteTile.setPosition(pos.x - Cst.TILE_HW, pos.y - spriteTile.getElevation());
 					spriteTile.draw(batch);
 				}
-				
+
 				nbrendered++;
-				
+
 				events = Game.map.eventsAt(i,j);
 				if(events != null){
 					for(GameEvent event : events){
 						if(event instanceof GameMover){
 							SpriteAnimated spriteAnim = SpriteMgr.getAnimated(event.getSpriteId());
-							//System.out.println(event.getClass());
-							//System.out.println(((GameMovable) event).getRealPosition());
-							//sprite.setElevation(spriteTile.getElevation());
+							//spriteAnim.setElevation(spriteTile.getElevation());
 							spriteAnim.update((GameMover) event);
 							list.add(spriteAnim);
 						}
@@ -119,7 +115,18 @@ public class SpritesetMap {
 					}
 				}
 				
-				
+				/*if(path != null) {
+					Step step;
+					for(int a=0;a<path.getLength();a++) {
+						step = path.getStep(a);
+						SpriteStatic spr = SpriteMgr.getStatic(4);
+						spr.setColor(1, 1, 1, 0.25f);
+						pos = GameMap.tileToIsoi(step.getX(),step.getY());
+						spr.setPosition(pos.x - Cst.TILE_HW, pos.y + Cst.TILE_H);
+						list.add(spr);
+					}
+				}*/
+
 				Collections.sort(list, new Comparator<Sprite>() {
 					@Override public int compare(Sprite s1, Sprite s2) {
 						return (int) (s1.getY() - s2.getY());
@@ -130,16 +137,15 @@ public class SpritesetMap {
 					spr.draw(batch);
 					nbrendered++;
 				}
-				
+
 				list.clear();
-				
 			}
 		}
+
 		
+
 		WindowMgr.spriteNumberLabel.setText("Draw number: " + nbrendered);
-		
+
 		batch.end();
-
 	}
-
 }

@@ -1,5 +1,7 @@
 package com.me.mygdxgame.ia.pathfinding;
 
+import com.me.mygdxgame.game.GameMover;
+
 
 /**
  * A description of an implementation that can find a path from one 
@@ -26,5 +28,7 @@ public interface PathFinder {
 	 * @param ty Teh y coordinate of the target location
 	 * @return The path found from start to end, or null if no path can be found.
 	 */
-	public Path findPath(Mover mover, int sx, int sy, int cx, int cy, int tx, int ty, int ctx, int cty);
+	public Path findPath(GameMover mover, int sx, int sy, int tx, int ty);
+	
+	public void setMaxSearchDistance(int maxSearchDistance);
 }

@@ -20,10 +20,11 @@ public abstract class GameMover extends GameEvent implements IntervalTransformab
 		//realPosition = new Point2f(0,0);
 	//}
 	
-	public GameMover(int id, Point2f realPosition) {
-		super(id);
-		this.realPosition = realPosition;
-		setPosition(realPosition);
+	public GameMover(int id, Point2i tilePosition) {
+		super(id,tilePosition);
+		this.realPosition = GameMap.tileToIsof(tilePosition.x, tilePosition.y);
+		Game.map.addEventToTile(tilePosition, this);
+		hasChanged = true;
 	}
 
 	public void setTransform(int type, IntervalTransformValue value){
@@ -60,13 +61,7 @@ public abstract class GameMover extends GameEvent implements IntervalTransformab
 	public void update() {
 		if(hasChanged) {
 			hasChanged = false;
-			Point2i pos = GameMap.isoToTile(realPosition.x, realPosition.y);
-			float x = realPosition.x - (Cst.TILE_W * pos.x + (pos.y % 2) * Cst.TILE_HW);
-			float y = realPosition.y - Cst.TILE_HH * pos.y;
-			
-			this.innerTilePosition = new Point2i((int)(0.5 * (y/Cst.CELL_HH + x/Cst.CELL_HW)),
-					(int)(0.5 * (y/Cst.CELL_HH - x/Cst.CELL_HW)));
-			
+			Point2i pos = GameMap.isoToTile(realPosition.x, realPosition.y);			
 			if(!pos.equals(tilePosition)) {
 				Game.map.removeEventFromTile(tilePosition, this);
 				Game.map.addEventToTile(pos, this);
