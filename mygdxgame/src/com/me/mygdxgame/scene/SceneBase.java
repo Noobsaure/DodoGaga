@@ -15,7 +15,7 @@ public abstract class SceneBase{
 	}
 	
 	public void updatePre(){
-		IntervalMgr.update();
+		//IntervalMgr.update();
 	}
 	
 	public void updateMain(){

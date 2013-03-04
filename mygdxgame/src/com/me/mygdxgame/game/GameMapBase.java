@@ -32,7 +32,7 @@ public abstract class GameMapBase {
 	public void setupEvents(){
 		tileEvents = new Hashtable<String, List<GameEvent>>();
 		events = new ArrayList<GameEvent>();
-		gameBattlers.add(new GameBattler(3, new Point2i(1,1)));
+		gameBattlers.add(new GameBattler(3, new Point2i(mapData.tileSize.x-1,mapData.tileSize.y-1)));
 	}
 
 	public static Point2f tileToIsof(int i, int j) {
@@ -68,8 +68,12 @@ public abstract class GameMapBase {
 	public static Point2i isoToTile(Point2f p) {
 		return isoToTile(p.x,p.y);
 	}
-
+	
 	public Point2i heightIsoToTile(Point2f p) {
+		return heightIsoToTile(p, true);
+	}
+
+	public Point2i heightIsoToTile(Point2f p, boolean ignoreCliff) {
 		Point2i res = new Point2i(-1,-1);
 		Point2i tmp;
 		int mapHeight;
@@ -84,6 +88,8 @@ public abstract class GameMapBase {
 					res = tmp;
 					break;
 				} else if(mapData.heightmap[tmp.x][tmp.y] > tmpHeight) {
+					if(!ignoreCliff)
+						res = tmp;
 					break;
 				} else {
 					tmpHeight--;
@@ -95,6 +101,10 @@ public abstract class GameMapBase {
 
 	public Point2i heightIsoToTile(float x, float y) {
 		return heightIsoToTile(new Point2f(x,y));
+	}
+	
+	public Point2i heightIsoToTile(float x, float y, boolean ignoreCliff) {
+		return heightIsoToTile(new Point2f(x,y), ignoreCliff);
 	}
 
 	public void removeEventFromTile(Point2i tile, GameEvent ev) {

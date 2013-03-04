@@ -34,7 +34,7 @@ public class DataMgr {
 			for(int i=data.tileSize.x-1; i >= 0; i--){
 				for(int j=data.tileSize.y-1; j >= 0; j--){
 					data.tilemap[i][j] = Cst.FLOOR;
-					height = rand.nextInt(3+tmplol);
+					height = rand.nextInt(3);//+tmplol);
 					data.heightmap[i][j] = (byte)height;
 					if(height > data.maximumHeight) {
 						data.maximumHeight = height;

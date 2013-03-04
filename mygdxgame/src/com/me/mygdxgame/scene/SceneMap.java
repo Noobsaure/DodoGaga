@@ -1,5 +1,11 @@
 package com.me.mygdxgame.scene;
 
+import aurelienribon.tweenengine.Timeline;
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenManager;
+import aurelienribon.tweenengine.equations.Linear;
+import aurelienribon.tweenengine.equations.Quart;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
@@ -10,8 +16,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.me.mygdxgame.game.Game;
 import com.me.mygdxgame.game.GameBattler;
-import com.me.mygdxgame.game.GameMap;
-import com.me.mygdxgame.game.GameMapBase;
+import com.me.mygdxgame.game.GameMover;
+import com.me.mygdxgame.game.GameMoverAccessor;
 import com.me.mygdxgame.ia.pathfinding.AStarPathFinder;
 import com.me.mygdxgame.ia.pathfinding.Path;
 import com.me.mygdxgame.ia.pathfinding.Path.Step;
@@ -20,9 +26,8 @@ import com.me.mygdxgame.ia.pathfinding.heuristics.ManhattanHeuristic;
 import com.me.mygdxgame.mgr.WindowMgr;
 import com.me.mygdxgame.sprite.SpritesetMap;
 import com.me.mygdxgame.utils.Cst;
+import com.me.mygdxgame.utils.Point2f;
 import com.me.mygdxgame.utils.Point2i;
-import com.me.mygdxgame.utils.interval.container.Sequence;
-import com.me.mygdxgame.utils.interval.transform.PosInterval;
 
 public class SceneMap extends SceneBase implements InputProcessor{
 
@@ -31,11 +36,15 @@ public class SceneMap extends SceneBase implements InputProcessor{
 	final Vector3 delta = new Vector3();
 	final Vector3 highlight = new Vector3();
 	
+	private Point2f target; 
+	
 	private int currentBattlerIndex = 0;
 	private GameBattler currentBattler;
 	
 	private PathFinder finder;
 	private Path path;
+	
+	private TweenManager manager;
 	
 	SpritesetMap spriteset;
 
@@ -48,8 +57,15 @@ public class SceneMap extends SceneBase implements InputProcessor{
 		Gdx.input.setInputProcessor(plex);
 		currentBattler = Game.map.getGameBattlers().get(currentBattlerIndex);
 		finder = new AStarPathFinder(Game.map,0,false,new ManhattanHeuristic(1));
+		manager = new TweenManager();
+		Tween.registerAccessor(GameMover.class, new GameMoverAccessor());
 	}
-
+	/**/
+	public void updatePre(){
+		super.updatePre();
+		manager.update(Gdx.graphics.getDeltaTime());
+	}
+	/**/
 	public void updateMain(){
 		super.updateMain();
 		Game.camera.update();
@@ -85,14 +101,17 @@ public class SceneMap extends SceneBase implements InputProcessor{
 
 		if(button == Buttons.LEFT && path != null) {
 			Step step;
-			Sequence seq = new Sequence();
-			System.out.println("*********************************");
+			Timeline tlx = Timeline.createSequence();
+			Timeline tly = Timeline.createSequence();
 			for(int i=0;i<path.getLength();i++) {
 				step = path.getStep(i);
-				System.out.println("X = "+step.getX()+"Y = "+step.getY());
-				seq.add(new PosInterval(currentBattler, 0.25f, null,Game.map.heightTileToIsof(step.getX(),step.getY()), "linear"));
+				target = Game.map.heightTileToIsof(step.getX(),step.getY());
+				tlx.push(Tween.to(currentBattler, GameMoverAccessor.POSITION_X, 0.5f).ease(Linear.INOUT).target(target.x));
+				tly.push(Tween.to(currentBattler, GameMoverAccessor.POSITION_Y, 0.35f).ease(Quart.IN).target(target.y-64));
+				tly.push(Tween.to(currentBattler, GameMoverAccessor.POSITION_Y, 0.15f).ease(Quart.IN).target(target.y));
 			}
-			seq.start();
+			tlx.start(manager);
+			tly.start(manager);
 			currentBattlerIndex = (currentBattlerIndex + 1) % Game.map.getGameBattlers().size();
 			currentBattler = Game.map.getGameBattlers().get(currentBattlerIndex);
 		}

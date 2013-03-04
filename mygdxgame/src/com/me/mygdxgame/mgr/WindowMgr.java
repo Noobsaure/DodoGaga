@@ -27,14 +27,10 @@ public class WindowMgr {
 		Gdx.input.setInputProcessor(stage);
 		skin = new Skin(Gdx.files.internal("Graphics/Window/uiskin.json"));
 		
-		
-
-		
 		//table.setFillParent(true);
 		
 		//table.setPosition(-Gdx.graphics.getWidth()/3, Gdx.graphics.getHeight()/2-10);
 		//stage.addActor(table);
-		
 
 		//table.setOrigin(50, 50);
 		

@@ -117,7 +117,7 @@ public class SpritesetMap {
 						nbrendered++;
 					}
 				}
-				
+				float c = Game.map.mapData.heightmap[i][j]/Game.map.mapData.maximumHeight * 0.10f + 0.90f;
 				if(i == highlightedTile.x && j == highlightedTile.y) {
 					highlightedSpriteTile = SpriteTile.getHighlightedTile(spriteTile);
 					highlightedSpriteTile.setPosition(pos.x, pos.y);

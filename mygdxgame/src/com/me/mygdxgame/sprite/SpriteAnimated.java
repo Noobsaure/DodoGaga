@@ -22,7 +22,7 @@ public class SpriteAnimated extends SpriteStatic{
 	
 	
 	public void update(GameMover entity){
-		setPosition(entity.getPosition().x, entity.getPosition().y-getHeight()-getElevation());
+		setPosition(entity.getPosition().x, entity.getPosition().y-getHeight());
 	}
   	
 }
