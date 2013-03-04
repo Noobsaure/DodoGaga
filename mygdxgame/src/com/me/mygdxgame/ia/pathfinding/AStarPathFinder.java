@@ -113,15 +113,6 @@ public class AStarPathFinder implements PathFinder {
 						if(x != 0 && y != 0) {
 							continue;
 						}
-						/*if (current.y % 2 == 0) {
-							if (!((x == -1 && y == -1) || (x == 0 && y == -1) || (x == -1 && y == 1) || (x == 0 && y == 1))) {
-								continue;
-							}
-						} else {
-							if (!((x == 0 && y == -1) || (x == 1 && y == -1) || (x == 0 && y == 1) || (x == 1 && y == 1))) {
-								continue;
-							}
-						}*/
 					}
 					
 					// determine the location of the neighbour and evaluate it

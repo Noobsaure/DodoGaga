@@ -30,16 +30,6 @@ public class DataMgr {
 			DataMap data = new DataMap(0, "Map000", Cst.MAP_SIZE);
 			Random rand = new Random();
 			int height;
-			/*for(int i=0; i < data.tileSize.x; i++){
-				for(int j=0; j < data.tileSize.y; j++){
-					data.tilemap[i][j] = Cst.FLOOR;
-					height = rand.nextInt(3);
-					data.heightmap[i][j] = (byte)height;
-					if(height > data.maximumHeight) {
-						data.maximumHeight = height;
-					}
-				}
-			}*/
 			int tmplol = 0;
 			for(int i=data.tileSize.x-1; i >= 0; i--){
 				for(int j=data.tileSize.y-1; j >= 0; j--){

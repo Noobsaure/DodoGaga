@@ -82,19 +82,11 @@ public class SpritesetMap {
 		for(int j=0; j < Game.map.getMapSize().y; j++) {
 			for(int i=0; i < Game.map.getMapSize().x; i++) {
 
-				pos = GameMap.tileToIsoi(i,j);
-				pos.y = pos.y - Cst.TILE_WALL_H * Game.map.mapData.heightmap[i][j];
+				//pos = GameMap.tileToIsoi(i,j);
+				pos = Game.map.heightTileToIsoi(i,j);
+				//pos.y = pos.y - Cst.TILE_WALL_H * Game.map.mapData.heightmap[i][j];
 
 				spriteTile = SpriteMgr.getTile(Game.map.mapData.tilemap[i][j], false);
-
-				if(i == highlightedTile.x && j == highlightedTile.y) {
-					highlightedSpriteTile = SpriteTile.getHighlightedTile(spriteTile);
-					highlightedSpriteTile.setPosition(pos.x, pos.y);// - Cst.TILE_WALL_H * Game.map.mapData.heightmap[i][j]);
-					highlightedSpriteTile.draw(batch);
-				} else {
-					spriteTile.setPosition(pos.x, pos.y);// - Cst.TILE_WALL_H * Game.map.mapData.heightmap[i][j]);
-					spriteTile.draw(batch);
-				}
 
 				int heightDiff;
 
@@ -124,7 +116,16 @@ public class SpritesetMap {
 						sprite.draw(batch);
 						nbrendered++;
 					}
-				}				
+				}
+				
+				if(i == highlightedTile.x && j == highlightedTile.y) {
+					highlightedSpriteTile = SpriteTile.getHighlightedTile(spriteTile);
+					highlightedSpriteTile.setPosition(pos.x, pos.y);
+					highlightedSpriteTile.draw(batch);
+				} else {
+					spriteTile.setPosition(pos.x, pos.y);
+					spriteTile.draw(batch);
+				}
 
 				nbrendered++;
 
@@ -133,13 +134,11 @@ public class SpritesetMap {
 					for(GameEvent event : events){
 						if(event instanceof GameMover){
 							SpriteAnimated spriteAnim = SpriteMgr.getAnimated(event.getSpriteId());
-							//spriteAnim.setElevation(spriteTile.getElevation());
 							spriteAnim.update((GameMover) event);
 							list.add(spriteAnim);
 						}
 						else if(event instanceof GameEvent){
 							sprite = SpriteMgr.getStatic(event.getSpriteId());
-							//sprite.setElevation(spriteTile.getElevation());
 							sprite.update(event);
 							list.add(sprite);
 						}

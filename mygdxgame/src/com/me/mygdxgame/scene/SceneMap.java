@@ -86,35 +86,17 @@ public class SceneMap extends SceneBase implements InputProcessor{
 		if(button == Buttons.LEFT && path != null) {
 			Step step;
 			Sequence seq = new Sequence();
+			System.out.println("*********************************");
 			for(int i=0;i<path.getLength();i++) {
 				step = path.getStep(i);
-				seq.add(new PosInterval(currentBattler, 0.25f, null,GameMapBase.tileToIsof(step.getX(),step.getY()), "linear"));
+				System.out.println("X = "+step.getX()+"Y = "+step.getY());
+				seq.add(new PosInterval(currentBattler, 0.25f, null,Game.map.heightTileToIsof(step.getX(),step.getY()), "linear"));
 			}
 			seq.start();
 			currentBattlerIndex = (currentBattlerIndex + 1) % Game.map.getGameBattlers().size();
 			currentBattler = Game.map.getGameBattlers().get(currentBattlerIndex);
 		}
-		/*
-
-			SceneMap scene = (SceneMap) SceneMgr.scene;
-
-			Vector3 intersection = new Vector3();
-			Ray pickRay = Game.cam.getPickRay(x, y);
-			Intersector.intersectRayPlane(pickRay, Game.map.xyPlane, intersection);
-			int mX = (int)intersection.x;
-			int mY = (int)intersection.y;
-
-			//Vector2 point = new Vector2();
-			//int x = (int) (mX);// + (Gdx.graphics.getWidth()/2));
-			//int y = (int) (mY);// + (Gdx.graphics.getHeight()/2));
-			//point.x = (y + x/2)/TILE_HEIGHT;
-			//point.y = (y - x/2)/TILE_HEIGHT;
-			//System.out.println(cam.position.x + " " + cam.position.y);
-			//System.out.println(point.x + " " + point.y);
-
-			scene.spriteset.chara.setPosition(mX, mY);
-		 */
-		return false;
+		return true;
 	}
 
 	@Override
@@ -138,7 +120,7 @@ public class SceneMap extends SceneBase implements InputProcessor{
 			}
 			last.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 		}
-		return false;
+		return true;
 	}
 
 	//@Override
@@ -157,7 +139,7 @@ public class SceneMap extends SceneBase implements InputProcessor{
 			Game.camera.zoom -= 0.1;
 			break;
 		}
-		return false;
+		return true;
 	}
 
 	@Override
@@ -165,7 +147,6 @@ public class SceneMap extends SceneBase implements InputProcessor{
 			Ray pickRay = Game.camera.getPickRay(screenX, screenY);
 			Intersector.intersectRayPlane(pickRay, Cst.XY_PLANE, highlight);
 			Point2i currentTile = Game.map.heightIsoToTile(highlight.x, highlight.y);
-			//Point2i currentTile = GameMap.isoToTile(highlight.x, highlight.y);
 			spriteset.setHighlightedTile(currentTile);
 			if(currentBattler.isTileReachable(currentTile)) {
 				finder.setMaxSearchDistance(currentBattler.getMovementPoints());

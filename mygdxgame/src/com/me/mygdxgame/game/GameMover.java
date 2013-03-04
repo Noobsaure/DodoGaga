@@ -14,33 +14,25 @@ public abstract class GameMover extends GameEvent implements IntervalTransformab
 	private Point2f realPosition;
 	private boolean hasChanged = false;
 	
-	//public GameMovable(int id) {
-	//	this(id, new Point2i(0,0), new Point2i(0,0));
-		//super(id);
-		//realPosition = new Point2f(0,0);
-	//}
-	
 	public GameMover(int id, Point2i tilePosition) {
 		super(id,tilePosition);
-		this.realPosition = GameMap.tileToIsof(tilePosition.x, tilePosition.y);
+		this.realPosition = Game.map.heightTileToIsof(tilePosition.x, tilePosition.y);
 		Game.map.addEventToTile(tilePosition, this);
 		hasChanged = true;
 	}
 
 	public void setTransform(int type, IntervalTransformValue value){
 		switch(type){
-		case TimeBasedInterval.TYPE.POS: {
+		case TimeBasedInterval.TYPE.POS: 
 			setPosition(value.x, value.y);
 			break;
-		}
 		}
 	}
 	
 	public IntervalTransformValue getTransform(int type){
 		switch(type){
-		case TimeBasedInterval.TYPE.POS: {
+		case TimeBasedInterval.TYPE.POS: 
 			return new IntervalTransformValue(realPosition.x, realPosition.y);
-		}
 		}
 		return null;
 	}
@@ -61,7 +53,7 @@ public abstract class GameMover extends GameEvent implements IntervalTransformab
 	public void update() {
 		if(hasChanged) {
 			hasChanged = false;
-			Point2i pos = GameMap.isoToTile(realPosition.x, realPosition.y);			
+			Point2i pos = Game.map.heightIsoToTile(realPosition.x, realPosition.y);		
 			if(!pos.equals(tilePosition)) {
 				Game.map.removeEventFromTile(tilePosition, this);
 				Game.map.addEventToTile(pos, this);
@@ -70,9 +62,9 @@ public abstract class GameMover extends GameEvent implements IntervalTransformab
 		}
 	}
 	
-	public void startIntervalToTile(Point2i tile){
+	/*public void startIntervalToTile(Point2i tile){
 		Point2f destination = GameMap.tileToIsof(tile.x,tile.y);
 		Interval interval = new PosInterval(this, 0.5f, null, destination, "linear");
 		interval.start();
-	}
+	}*/
 }

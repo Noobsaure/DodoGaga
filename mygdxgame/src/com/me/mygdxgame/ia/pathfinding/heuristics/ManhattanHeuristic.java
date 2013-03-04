@@ -14,6 +14,5 @@ public class ManhattanHeuristic implements AStarHeuristic {
 
 	public float getCost(TileBasedMap map, GameMover mover, int x, int y, int tx, int ty) {
 		return minimumCost * (Math.abs(x-tx) + Math.abs(y-ty));
-		//return minimumCost * Math.max(Math.abs(y-ty),2*Math.abs(x-tx)-Math.abs((y % 2) - (ty % 2)));
 	}
 }

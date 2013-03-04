@@ -42,8 +42,20 @@ public abstract class GameMapBase {
 	}
 
 	public static Point2i tileToIsoi(int i, int j) {
-		int x = i * Cst.TILE_HW - j * Cst.TILE_HW;
-		int y = i * Cst.TILE_HH + j * Cst.TILE_HH;
+		int x = i * Cst.TILE_HW - (j - 1) * Cst.TILE_HW;
+		int y = (i + 1) * Cst.TILE_HH + j * Cst.TILE_HH;
+		return new Point2i(x,y);
+	}
+	
+	public Point2f heightTileToIsof(int i, int j) {
+		float x = i * Cst.TILE_HW - (j - 2) * Cst.TILE_HW;
+		float y = (i + 2) * Cst.TILE_HH + j * Cst.TILE_HH - mapData.heightmap[i][j] * Cst.TILE_WALL_H;
+		return new Point2f(x,y);
+	}
+
+	public Point2i heightTileToIsoi(int i, int j) {
+		int x = i * Cst.TILE_HW - (j - 1) * Cst.TILE_HW;
+		int y = (i + 1) * Cst.TILE_HH + j * Cst.TILE_HH - mapData.heightmap[i][j] * Cst.TILE_WALL_H;
 		return new Point2i(x,y);
 	}
 
@@ -63,7 +75,7 @@ public abstract class GameMapBase {
 		int mapHeight;
 		int tmpHeight = mapData.maximumHeight;
 		while(tmpHeight >= 0) {
-			tmp = isoToTile(p.x,p.y + tmpHeight * Cst.TILE_WALL_H);
+			tmp = isoToTile(p.x-Cst.TILE_HW,p.y - Cst.TILE_HH + tmpHeight * Cst.TILE_WALL_H);
 			if(tmp.x >= mapData.tileSize.x || tmp.y >= mapData.tileSize.y || tmp.x < 0 || tmp.y < 0)
 				tmpHeight--;
 			else {
