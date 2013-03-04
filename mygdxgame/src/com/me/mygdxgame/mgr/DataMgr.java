@@ -1,7 +1,6 @@
 package com.me.mygdxgame.mgr;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import com.me.mygdxgame.data.Data;
 import com.me.mygdxgame.data.DataMap;
@@ -10,8 +9,6 @@ import com.me.mygdxgame.data.DataTile;
 import com.me.mygdxgame.game.Game;
 import com.me.mygdxgame.game.GameCamera;
 import com.me.mygdxgame.game.GameMap;
-import com.me.mygdxgame.sprite.SpriteStatic;
-import com.me.mygdxgame.sprite.SpriteTile;
 import com.me.mygdxgame.utils.Cst;
 
 public class DataMgr {
@@ -28,15 +25,10 @@ public class DataMgr {
 		
 			//Map 0
 			DataMap data = new DataMap(0, "Map000", Cst.MAP_SIZE);
-			Random rand = new Random();
 			for(int i=0; i < data.tileSize.x; i++){
 				for(int j=0; j < data.tileSize.y; j++){
-					int n = rand.nextInt(255);
-					if(n < 200){
-						data.tilemap[i][j] = Cst.FLOOR;
-					} else{
-						data.tilemap[i][j] = Cst.WALL;
-					}
+						if((i+j)%4 == 0) data.tilemap[i][j] = Cst.WALL;
+						else data.tilemap[i][j] = Cst.FLOOR;
 				}
 			}
 			Data.maps.add(data);
@@ -59,6 +51,10 @@ public class DataMgr {
 			
 			//sprite 3 (character big)
 			dataSprite = new DataSprite(3, "characterBig", "characterBig.png");
+			Data.sprites.add(dataSprite);
+			
+			//sprite 4 (move)
+			dataSprite = new DataSprite(4, "move", "move.png");
 			Data.sprites.add(dataSprite);
 			
 		//Load tiles database
@@ -84,6 +80,7 @@ public class DataMgr {
 	public static void createGameObjects(){
 		Game.camera = new GameCamera();
 		Game.map = new GameMap();
+		
 	}
 	
 }

@@ -1,10 +1,10 @@
 package com.me.mygdxgame.utils.interval.interfaces;
 
-import com.me.mygdxgame.utils.interval.transform.IntervalTransformValue;
+import com.me.mygdxgame.utils.Point2f;
 
 public interface IntervalTransformable {
 
-	public void setTransform(int type, IntervalTransformValue value);
-	public IntervalTransformValue getTransform(int type); 
+	public void setTransform(int type, float x, float y);
+	public Point2f getTransform(int type);
 	
 }

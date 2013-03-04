@@ -28,5 +28,11 @@ public class Table2 extends Table implements IntervalTransformable{
 		}
 		return null;
 	}
+
+	@Override
+	public void setTransform(int type, float x, float y) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

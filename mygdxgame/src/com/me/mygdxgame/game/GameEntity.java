@@ -5,16 +5,16 @@ import com.me.mygdxgame.utils.Point2i;
 public class GameEntity{
 	
 	protected Point2i tilePosition;
-	protected Point2i innerTilePosition;
 	private int spriteId;
 	
 	public GameEntity(int spriteId){
-		this(spriteId, new Point2i(0, 0), new Point2i(0, 0));
+		this(spriteId, new Point2i(0, 0));
 	}
 	
-	public GameEntity(int spriteId, Point2i tilePosition, Point2i innerTilePosition){
-		this.tilePosition = tilePosition;
-		this.innerTilePosition = innerTilePosition;
+	public GameEntity(int spriteId, Point2i tilePosition){
+		int x = tilePosition.x;
+		int y = tilePosition.y;
+		this.tilePosition = new Point2i(x,y);
 		this.spriteId = spriteId;
 	}
 	
@@ -22,20 +22,13 @@ public class GameEntity{
 		return this.tilePosition;
 	}
 	
-	public Point2i getInnerTilePosition(){
-		return this.innerTilePosition;
-	}
-	
-	public void setPosition(int x, int y, int xi, int yi){
+	public void setPosition(int x, int y){
 		this.tilePosition.x = x;
 		this.tilePosition.y = y;
-		this.innerTilePosition.x = xi;
-		this.innerTilePosition.y = yi;
 	}
 	
-	public void setPosition(Point2i tilePosition, Point2i innerTilePosition){
+	public void setPosition(Point2i tilePosition){
 		this.tilePosition = tilePosition;
-		this.innerTilePosition = innerTilePosition;
 	}
 	
 	public int getSpriteId() {return this.spriteId;}

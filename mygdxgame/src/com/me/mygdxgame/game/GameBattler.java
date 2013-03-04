@@ -1,20 +1,23 @@
 package com.me.mygdxgame.game;
 
-import com.me.mygdxgame.utils.Point2f;
 import com.me.mygdxgame.utils.Point2i;
 
 public class GameBattler extends GameMover{
 	
-	public GameBattler(int id, Point2f realPosition) {
-		super(id, realPosition);
+	private int movementPoints = 3;
+	
+	public GameBattler(int id, Point2i tilePosition) {
+		super(id,tilePosition);
 	}
 	
-	//public GameBattler(int id, Point2i tilePosition, Point2i innerTilePosition) {
-	//	super(id,tilePosition,innerTilePosition);
-	//}
+	public boolean isTileReachable(Point2i tile) {
+		return !(tile.x < 0 || tile.y < 0 || tile.x >= Game.map.getMapSize().x || tile.y >= Game.map.getMapSize().y || Game.map.getCost(this,getTilePosition(),tile) > movementPoints);
+	}
+	
+	public int getMovementPoints() {return movementPoints;}
+	public void setMovementPoints(int movementPoints) {this.movementPoints = movementPoints;}
 	
 	public void update() {
 		super.update();
-		//TODO check si les x prochaines cases du chemin sont libres. Retrouver un chemin via A* si c'est pas le cas.
 	}
 }

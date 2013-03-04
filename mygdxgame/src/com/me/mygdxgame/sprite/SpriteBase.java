@@ -3,9 +3,8 @@ package com.me.mygdxgame.sprite;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.utils.Disposable;
-import com.me.mygdxgame.game.GameEvent;
 import com.me.mygdxgame.mgr.TextureMgr;
+import com.me.mygdxgame.utils.Point2f;
 
 public class SpriteBase extends Sprite implements Cloneable{
 
@@ -21,7 +20,7 @@ public class SpriteBase extends Sprite implements Cloneable{
 		this.setColor(color);
 	}
 	
-	@Override
+	/*@Override
 	public float getX(){
 		return super.getX() + getOriginX();
 	}
@@ -44,14 +43,18 @@ public class SpriteBase extends Sprite implements Cloneable{
 	@Override
 	public void setPosition(float x, float y){
 		super.setPosition(x - getOriginX(), y - getOriginY());
+	}*/
+	
+	public void setPosition(Point2f p){
+		setPosition(p.x,p.y);
 	}
 	
-	@Override
+	/*@Override
 	public void setOrigin(float originX, float originY) {
 		setPosition(getX() + getOriginX(), getY() + getOriginY());
 		super.setOrigin(originX, originY);
 		setPosition(getX() - getOriginX(), getY() - getOriginY());
-	}
+	}*/
 	
 	public void setTexture(String textureFilename){
 		Texture texture = TextureMgr.get(textureFilename);
@@ -67,7 +70,7 @@ public class SpriteBase extends Sprite implements Cloneable{
 	}
 	
   	public SpriteBase clone() {
-  		try { return (SpriteBase) super.clone(); } catch(CloneNotSupportedException cnse) { return null; }
+  		try {return (SpriteBase) super.clone();} catch(CloneNotSupportedException cnse) {return null;}
   	}
 	
 }

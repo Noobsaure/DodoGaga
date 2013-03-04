@@ -2,7 +2,7 @@ package com.me.mygdxgame;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.me.mygdxgame.mgr.DataMgr;
 import com.me.mygdxgame.mgr.SceneMgr;
 import com.me.mygdxgame.mgr.WindowMgr;
@@ -10,20 +10,16 @@ import com.me.mygdxgame.mgr.WindowMgr;
 
 public class App implements ApplicationListener{
 	
-	
-	
 	@Override 
 	public void create() {
 		DataMgr.init();
 		WindowMgr.init();
 		SceneMgr.init();
-		
 	}
 	
 	@Override
 	public void render() {
 		SceneMgr.update();
-		//System.out.println(Gdx.graphics.getFramesPerSecond());
 	}
 		
 	@Override

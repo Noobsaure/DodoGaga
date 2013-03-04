@@ -28,4 +28,10 @@ public class WindowBase extends Window implements IntervalTransformable{
 		
 	}
 
+	@Override
+	public void setTransform(int type, float x, float y) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

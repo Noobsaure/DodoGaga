@@ -2,8 +2,8 @@ package com.me.mygdxgame.game;
 
 import com.me.mygdxgame.data.Data;
 import com.me.mygdxgame.data.DataMap;
-import com.me.mygdxgame.ia.pathfinding.Mover;
 import com.me.mygdxgame.ia.pathfinding.TileBasedMap;
+import com.me.mygdxgame.utils.Point2i;
 
 public class GameMap extends GameMapBase implements TileBasedMap {
 
@@ -31,17 +31,22 @@ public class GameMap extends GameMapBase implements TileBasedMap {
 	}
 
 	public void pathFinderVisited(int x, int y) {
-		// TODO Auto-generated method stub
-		
+		if(visited == null)
+			visited = new boolean[getMapSize().x][getMapSize().y];
+		visited[x][y] = true;
 	}
 
-	public boolean blocked(Mover mover, int x, int y) {
-		
+	public boolean blocked(GameMover mover, int x, int y) {
 		return getDataMap().isWall(x, y);
 	}
 
-	public float getCost(Mover mover, int sx, int sy, int tx, int ty) {
-		return 0;
+	public float getCost(GameMover mover, int sx, int sy, int tx, int ty) {
+		//return Math.max(Math.abs(sy-ty),2*Math.abs(sx-tx)-Math.abs((sy % 2) - (ty % 2)));
+		return Math.abs(sx-tx) + Math.abs(sy-ty);
+	}
+	
+	public float getCost(GameMover mover, Point2i start, Point2i end) {
+		return getCost(mover, start.x, start.y, end.x, end.y);
 	}
 	
 	public DataMap getDataMap() {

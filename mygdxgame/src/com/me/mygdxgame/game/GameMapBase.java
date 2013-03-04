@@ -4,10 +4,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.me.mygdxgame.data.Data;
 import com.me.mygdxgame.data.DataMap;
 import com.me.mygdxgame.utils.Cst;
@@ -20,10 +17,8 @@ public abstract class GameMapBase {
 	public DataMap mapData;
 	private Map<String, List<GameEvent>> tileEvents;
 	private List<GameEvent> events;
-	private static Pixmap mouseMap = new Pixmap(Gdx.files.internal("mouseMapIso.png"));
-	public static List<GameBattler> movableBattlerTest = new ArrayList<GameBattler>();
-	
-	
+	private List<GameBattler> gameBattlers = new ArrayList<GameBattler>();
+
 	public void setup(int mapId) {
 		this.mapId = mapId;
 		this.mapData = Data.maps.get(mapId);
@@ -33,97 +28,26 @@ public abstract class GameMapBase {
 	public void setupEvents(){
 		tileEvents = new Hashtable<String, List<GameEvent>>();
 		events = new ArrayList<GameEvent>();
-		
-		Random rand = new Random();
-		GameEvent event;
-		Point2i tilePosition;
-		Point2i innerTilePosition;	
-		
-		for(int i=0; i<100; i++){
-			tilePosition = new Point2i(0, 0);
-			//innerTilePosition = new Point2i(1, 1);
-			//tilePosition = new Point2i(rand.nextInt(getMapSize().x),rand.nextInt(getMapSize().y));
-			innerTilePosition = new Point2i(rand.nextInt(Cst.NB_CELL),rand.nextInt(Cst.NB_CELL));
-			int spriteId = 2;//2+rand.nextInt(2)
-			event = new GameEvent(spriteId,tilePosition,innerTilePosition);
-			//refreshEventPosition(tilePosition.x, tilePosition.y, event);
-			addEventToTile(tilePosition,event);
-		}
-		
-		for(int i=0; i<50; i++){
-			movableBattlerTest.add(new GameBattler(3, new Point2f(200+rand.nextInt(600),200+rand.nextInt(600))));
-		}
+		gameBattlers.add(new GameBattler(3, new Point2i(1,1)));
+	}
+	
+	public static Point2f tileToIsof(int i, int j) {
+		float x = i * Cst.TILE_HW - j * Cst.TILE_HW;
+		float y = i * Cst.TILE_HH + j * Cst.TILE_HH;
+		return new Point2f(x,y);
+	}
+	
+	public static Point2i tileToIsoi(int i, int j) {
+		int x = i * Cst.TILE_HW - j * Cst.TILE_HW;
+		int y = i * Cst.TILE_HH + j * Cst.TILE_HH;
+		return new Point2i(x,y);
 	}
 	
 	public static Point2i isoToTile(float x, float y) {
-		int innerX = (int) (x % Cst.TILE_W);
-		int innerY = (int) (y % Cst.TILE_H);
-		
-		Point2i res = new Point2i((int) x / Cst.TILE_W ,  (2 * ((int)y / Cst.TILE_H)));
-		//System.out.println(res.x+" ; "+res.y);
-		switch(mouseMap.getPixel(innerX, innerY)) {
-		case -16776961://haut gauche
-			res.y = res.y - 1;
-			res.x = res.x - 1;
-			break;
-		case -65281://haut droite
-			res.y = res.y - 1;
-			break;
-		case 16711935://bas gauche
-			res.x = res.x - 1;
-			res.y = res.y + 1;
-			break;
-		case 65535://bas droite
-			res.y = res.y + 1;
-			break;
-		case -1://milieu
-			break;
-			default:
-				res.x = -1;
-				res.y = -1;
-		}
-		return res;
+		int i = (int)(0.5 * (y/Cst.TILE_HH + x/Cst.TILE_HW));
+		int j = (int)(0.5 * (y/Cst.TILE_HH - x/Cst.TILE_HW));
+		return new Point2i(i,j);
 	}
-	/*
-	public void convertToScreen(Vector2 point){
-		float x = point.x / Cst.TILE_W;
-		float y = point.y / Cst.TILE_H;
-		point.x = - (y * Cst.TILE_HW) + (x * Cst.TILE_HW);
-		point.y = (y * Cst.TILE_HH) + (x * Cst.TILE_HH);
-	}
-	
-	public void convertToScreen(Point2f point){
-		float x = point.x / Cst.TILE_W;
-		float y = point.y / Cst.TILE_H;
-		point.x = - (y * Cst.TILE_HW) + (x * Cst.TILE_HW);
-		point.y = (y * Cst.TILE_HH) + (x * Cst.TILE_HH);
-	}
-	
-	public void convertToScreen(Point2i point){
-		int x = point.x / Cst.TILE_W;
-		int y = point.y / Cst.TILE_H;
-		point.x = - (y * Cst.TILE_HW) + (x * Cst.TILE_HW);
-		point.y = (y * Cst.TILE_HH) + (x * Cst.TILE_HH);
-	}
-	
-	public void refreshEventPosition(int tileX, int tileY, GameEvent ev){
-		List<GameEvent> evs;
-		
-		evs = eventsAt(ev.getTilePosition());
-		if(evs != null){
-			//evs.remove(ev);
-			if(evs.size() == 0){
-				//tileEvents.remove((new Point2i(tileX, tileY)).getHashCode());
-			}
-		}
-		
-		evs = eventsAt(tileX, tileY);
-		if(evs == null){
-			evs = new ArrayList<GameEvent>();
-			tileEvents.put(new Point2i(tileX, tileY).getHashCode(), evs);
-		}
-		evs.add(ev);
-	}*/
 	
 	public void removeEventFromTile(Point2i tile, GameEvent ev) {
 		List<GameEvent> evs = eventsAt(tile);
@@ -133,7 +57,6 @@ public abstract class GameMapBase {
 				tileEvents.remove(tile.getHashCode());
 			}
 		}
-		//System.out.println(tile);
 	}
 	
 	public void addEventToTile(Point2i tile, GameEvent ev) {
@@ -143,7 +66,6 @@ public abstract class GameMapBase {
 			tileEvents.put(tile.getHashCode(), evs);
 		}
 		evs.add(ev);
-		//System.out.println(tile);
 	}
 	
 	public List<GameEvent> eventsAt(int tileX, int tileY){
@@ -157,8 +79,7 @@ public abstract class GameMapBase {
 	
 	public void update(){
 		updateEvents();
-		//System.out.println(tileEvents.size());
-		for(GameBattler battler : movableBattlerTest){
+		for(GameBattler battler : gameBattlers){
 			battler.update();
 		}
 	}
@@ -169,8 +90,7 @@ public abstract class GameMapBase {
 		}
 	}
 	
-	public Point2i getMapSize() {
-		return mapData.tileSize;
-	}
+	public Point2i getMapSize() {return mapData.tileSize;}	
+	public List<GameBattler> getGameBattlers() {return gameBattlers;}
 
 }

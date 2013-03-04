@@ -1,5 +1,6 @@
 package com.me.mygdxgame.ia.pathfinding.heuristics;
 
+import com.me.mygdxgame.game.GameMover;
 import com.me.mygdxgame.ia.pathfinding.AStarHeuristic;
 import com.me.mygdxgame.ia.pathfinding.Mover;
 import com.me.mygdxgame.ia.pathfinding.TileBasedMap;
@@ -17,7 +18,7 @@ public class ClosestSquaredHeuristic implements AStarHeuristic {
 	/**
 	 * @see AStarHeuristic#getCost(TileBasedMap, Mover, int, int, int, int)
 	 */
-	public float getCost(TileBasedMap map, Mover mover, int x, int y, int tx, int ty) {		
+	public float getCost(TileBasedMap map, GameMover mover, int x, int y, int tx, int ty) {		
 		float dx = tx - x;
 		float dy = ty - y;
 		
