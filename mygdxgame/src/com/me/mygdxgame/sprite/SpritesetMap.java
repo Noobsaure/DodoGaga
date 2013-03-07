@@ -13,17 +13,27 @@ import com.badlogic.gdx.math.collision.Ray;
 import com.me.mygdxgame.game.Game;
 import com.me.mygdxgame.ia.pathfinding.Path;
 import com.me.mygdxgame.utils.Cst;
+import com.me.mygdxgame.utils.DecalMgr;
 import com.me.mygdxgame.utils.Point2i;
 
 public class SpritesetMap {
 
-	private Point2i highlightedTile = new Point2i(-1,-1);
-
+	private Decal highlightedTile;
+	private boolean highlight = false;
+	
 	private Path path;
 	private DecalBatch decalBatch;
 
-	public Point2i getHighlightedTile() {return highlightedTile;}
-	public void setHighlightedTile(Point2i highlightedTile) {this.highlightedTile = highlightedTile;}
+	public void setHighlightedTile(Point2i highlightedTile) {
+		if(highlightedTile.x != -1) {
+			highlight = true;
+			int i = highlightedTile.x;
+			int j = highlightedTile.y;
+			this.highlightedTile.setPosition((i-j) * Cst.TILE_HW,
+					-(i+j) * Cst.TILE_HH + Game.map.mapData.getHeight(i,j) * Cst.TILE_WALL_H,
+					Game.map.mapData.getHeight(i,j) - Game.map.mapData.getMaximumHeight());
+		}
+	}
 	public Path getPath() {return path;}
 	public void setPath(Path path) {this.path = path;}
 
@@ -32,6 +42,8 @@ public class SpritesetMap {
 		Gdx.gl.glDepthFunc(GL10.GL_LESS);
 		GroupStrategy strategy = new SimpleOrthoGroupStrategy();
 		decalBatch = new DecalBatch(strategy);
+		highlightedTile = DecalMgr.build((byte)4);
+		highlightedTile.setDimensions(Cst.TILE_W,Cst.TILE_H);
 	}
 
 	public void update(){
@@ -39,29 +51,33 @@ public class SpritesetMap {
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 		Game.camera.update();
 		Game.camera.apply(gl);
-		
+
 		Vector3 inter = new Vector3();
 
 		Ray pickRay = Game.camera.getPickRay(0, 0);
 		Intersector.intersectRayPlane(pickRay, Cst.XY_PLANE, inter);
 
-		float sx = inter.x - 1;
-		float sy = inter.y + 1;
+		float sx = inter.x - Cst.TILE_W;
+		float sy = inter.y + Cst.TILE_H;
 
 		pickRay = Game.camera.getPickRay(Gdx.graphics.getWidth(), 0);
 		Intersector.intersectRayPlane(pickRay, Cst.XY_PLANE, inter);
-		float sw = inter.x + 1;
+		float sw = inter.x + Cst.TILE_W;
 
 		pickRay = Game.camera.getPickRay(0, Gdx.graphics.getHeight());
 		Intersector.intersectRayPlane(pickRay, Cst.XY_PLANE, inter);
-		float sh = inter.y - 1;
-
+		float sh = inter.y - Cst.TILE_H;
 		
+		
+
 		for(Decal oneDecal : Game.map.mapData.getDecals()) {
 			if(oneDecal.getPosition().x >= sx && oneDecal.getPosition().x < sw
 					&& oneDecal.getPosition().y <= sy && oneDecal.getPosition().y > sh)
-			decalBatch.add(oneDecal);
+				decalBatch.add(oneDecal);
 		}
+		
+		if(highlight)
+			decalBatch.add(highlightedTile);
 
 		decalBatch.flush();
 

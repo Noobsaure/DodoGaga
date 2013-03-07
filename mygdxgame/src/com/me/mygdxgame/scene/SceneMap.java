@@ -165,8 +165,7 @@ public class SceneMap extends SceneBase implements InputProcessor{
 	public boolean mouseMoved(int screenX, int screenY) {
 		Ray pickRay = Game.camera.getPickRay(screenX, screenY);
 		Intersector.intersectRayPlane(pickRay, Cst.XY_PLANE, highlight);
-		System.out.println(highlight.x+" ; "+-highlight.y+ " ; "+highlight.z);
-		Point2i currentTile = Game.map.heightIsoToTile(highlight.x, highlight.y);
+		Point2i currentTile = Game.map.heightIsoToTile(highlight.x - Cst.TILE_HW, -highlight.y - Cst.TILE_HH);
 		spriteset.setHighlightedTile(currentTile);
 		if(currentBattler != null) {
 			if(currentBattler.isTileReachable(currentTile)) {

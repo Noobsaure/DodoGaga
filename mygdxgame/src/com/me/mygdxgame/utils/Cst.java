@@ -13,7 +13,7 @@ public class Cst {
 	public static final int TILE_WALL_W = 128;
 	public static final int TILE_WALL_HW = 64;
 	
-	public static final Point2i MAP_SIZE = new Point2i(500, 500);
+	public static final Point2i MAP_SIZE = new Point2i(100, 100);
 	
 	public static final int TILE_HW = TILE_W / 2;
 	public static final int TILE_HH = TILE_H / 2;

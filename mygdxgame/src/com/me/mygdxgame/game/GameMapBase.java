@@ -77,7 +77,9 @@ public abstract class GameMapBase {
 		int mapHeight;
 		int tmpHeight = mapData.getMaximumHeight();
 		while(tmpHeight >= 0) {
-			tmp = isoToTile(p.x-Cst.TILE_HW,p.y - Cst.TILE_HH + tmpHeight * Cst.TILE_WALL_H);
+			//tmp = isoToTile(p.x-Cst.TILE_HW,p.y - Cst.TILE_HH + tmpHeight * Cst.TILE_WALL_H);
+			tmp = isoToTile(p.x + Cst.TILE_W,p.y + Cst.TILE_H + tmpHeight * Cst.TILE_WALL_H);
+			//TODO inverser if et else
 			if(tmp.x >= mapData.getSizeInTiles().x || tmp.y >= mapData.getSizeInTiles().y || tmp.x < 0 || tmp.y < 0)
 				tmpHeight--;
 			else {

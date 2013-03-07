@@ -23,10 +23,11 @@ public class DataMgr {
 
 		Data.textures = new ArrayList<DataTexture>();
 		//TODO
-		Data.textures.add(new DataTexture(0,"Floor","greenTile.png"));
+		Data.textures.add(new DataTexture(0,"Floor","floor.png"));
 		Data.textures.add(new DataTexture(1,"WallLeft","wallLeft.png"));
 		Data.textures.add(new DataTexture(2,"WallRight","wallRight.png"));
 		Data.textures.add(new DataTexture(3,"Character","characterBig.png"));
+		Data.textures.add(new DataTexture(4,"HighlightedTile","highlightedTile.png"));
 
 		//Load maps database
 		Data.maps = new ArrayList<DataMap>();
@@ -39,7 +40,7 @@ public class DataMgr {
 		for(int i=data.getSizeInTiles().x-1; i >= 0; i--){
 			for(int j=data.getSizeInTiles().y-1; j >= 0; j--){
 				data.setTile(i,j,Cst.FLOOR);
-				height = rand.nextInt(2);//rand.nextInt(tmplol);
+				height = rand.nextInt(5);//rand.nextInt(tmplol);
 				data.setHeight(i,j,(byte)height);
 				if(height > data.getMaximumHeight()) {
 					data.setMaximumHeight(height);
