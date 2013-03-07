@@ -93,7 +93,16 @@ public class SceneMap extends SceneBase implements InputProcessor{
 
 	@Override
 	public boolean keyTyped(char character) {
-		//TODO Auto-generated method stub
+
+		System.out.println(character);
+		switch(character) {
+		case 'a':
+			Game.camera.zoom += 0.1;
+			break;
+		case 'q':
+			Game.camera.zoom -= 0.1;
+			break;
+		}
 		return false;
 	}
 
