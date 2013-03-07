@@ -14,10 +14,6 @@ public class SceneMgr {
 		nextScene = new SceneMap();
 		launchScene();
 	}
-	
-	//public static void exit(){
-	//	scene = null;
-	//}
 		
 	public static void startSceneLater(SceneBase newScene){
 		nextScene = newScene;

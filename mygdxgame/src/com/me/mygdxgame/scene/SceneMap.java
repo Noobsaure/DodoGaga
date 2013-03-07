@@ -11,6 +11,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
@@ -35,17 +36,17 @@ public class SceneMap extends SceneBase implements InputProcessor{
 	final Vector3 last = new Vector3(-1, -1, -1);
 	final Vector3 delta = new Vector3();
 	final Vector3 highlight = new Vector3();
-	
+
 	private Point2f target; 
-	
+
 	private int currentBattlerIndex = 0;
 	private GameBattler currentBattler;
-	
+
 	private PathFinder finder;
 	private Path path;
-	
+
 	private TweenManager manager;
-	
+
 	SpritesetMap spriteset;
 
 	public SceneMap(){
@@ -55,7 +56,7 @@ public class SceneMap extends SceneBase implements InputProcessor{
 		plex.addProcessor(this);
 		plex.addProcessor(WindowMgr.stage);
 		Gdx.input.setInputProcessor(plex);
-		currentBattler = Game.map.getGameBattlers().get(currentBattlerIndex);
+		currentBattler = Game.map.getGameBattler(currentBattlerIndex);
 		finder = new AStarPathFinder(Game.map,0,false,new ManhattanHeuristic(1));
 		manager = new TweenManager();
 		Tween.registerAccessor(GameMover.class, new GameMoverAccessor());
@@ -106,9 +107,9 @@ public class SceneMap extends SceneBase implements InputProcessor{
 			for(int i=0;i<path.getLength();i++) {
 				step = path.getStep(i);
 				target = Game.map.heightTileToIsof(step.getX(),step.getY());
-				tlx.push(Tween.to(currentBattler, GameMoverAccessor.POSITION_X, 0.5f).ease(Linear.INOUT).target(target.x));
-				tly.push(Tween.to(currentBattler, GameMoverAccessor.POSITION_Y, 0.35f).ease(Quart.IN).target(target.y-64));
-				tly.push(Tween.to(currentBattler, GameMoverAccessor.POSITION_Y, 0.15f).ease(Quart.IN).target(target.y));
+				tlx.push(Tween.to(currentBattler, GameMoverAccessor.POSITION_X, 0.25f).ease(Linear.INOUT).target(target.x));
+				tly.push(Tween.to(currentBattler, GameMoverAccessor.POSITION_Y, 0.2f).ease(Quart.OUT).target(target.y-64));
+				tly.push(Tween.to(currentBattler, GameMoverAccessor.POSITION_Y, 0.05f).ease(Linear.INOUT).target(target.y));
 			}
 			tlx.start(manager);
 			tly.start(manager);
@@ -163,10 +164,11 @@ public class SceneMap extends SceneBase implements InputProcessor{
 
 	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
-			Ray pickRay = Game.camera.getPickRay(screenX, screenY);
-			Intersector.intersectRayPlane(pickRay, Cst.XY_PLANE, highlight);
-			Point2i currentTile = Game.map.heightIsoToTile(highlight.x, highlight.y);
-			spriteset.setHighlightedTile(currentTile);
+		Ray pickRay = Game.camera.getPickRay(screenX, screenY);
+		Intersector.intersectRayPlane(pickRay, Cst.XY_PLANE, highlight);
+		Point2i currentTile = Game.map.heightIsoToTile(highlight.x, highlight.y);
+		spriteset.setHighlightedTile(currentTile);
+		if(currentBattler != null) {
 			if(currentBattler.isTileReachable(currentTile)) {
 				finder.setMaxSearchDistance(currentBattler.getMovementPoints());
 				int sx = currentBattler.getTilePosition().x;
@@ -178,6 +180,7 @@ public class SceneMap extends SceneBase implements InputProcessor{
 				path = null;
 			}
 			spriteset.setPath(path);
-			return true;
 		}
+		return true;
+	}
 }

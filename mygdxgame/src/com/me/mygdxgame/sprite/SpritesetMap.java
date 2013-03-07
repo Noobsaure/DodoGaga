@@ -1,47 +1,48 @@
 package com.me.mygdxgame.sprite;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.collision.Ray;
+import com.badlogic.gdx.graphics.g3d.decals.Decal;
+import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
+import com.badlogic.gdx.graphics.g3d.decals.GroupStrategy;
+import com.badlogic.gdx.graphics.g3d.decals.SimpleOrthoGroupStrategy;
 import com.me.mygdxgame.game.Game;
-import com.me.mygdxgame.game.GameEvent;
-import com.me.mygdxgame.game.GameMap;
-import com.me.mygdxgame.game.GameMover;
 import com.me.mygdxgame.ia.pathfinding.Path;
-import com.me.mygdxgame.mgr.SpriteMgr;
-import com.me.mygdxgame.mgr.WindowMgr;
-import com.me.mygdxgame.utils.Cst;
 import com.me.mygdxgame.utils.Point2i;
 
 public class SpritesetMap {
 
-	private SpriteBatch batch;
 	private Point2i highlightedTile = new Point2i(-1,-1);
 
 	private Path path;
+	private DecalBatch decalBatch;
 
 	public Point2i getHighlightedTile() {return highlightedTile;}
 	public void setHighlightedTile(Point2i highlightedTile) {this.highlightedTile = highlightedTile;}
 	public Path getPath() {return path;}
 	public void setPath(Path path) {this.path = path;}
 
-	public SpritesetMap(){createSpriteBatches();}
-
-	private void createSpriteBatches(){batch = new SpriteBatch();}
+	public SpritesetMap(){
+		Gdx.gl.glEnable(GL10.GL_DEPTH_TEST);
+		Gdx.gl.glDepthFunc(GL10.GL_LESS);
+		GroupStrategy strategy = new SimpleOrthoGroupStrategy();
+		decalBatch = new DecalBatch(strategy);
+	}
 
 	public void update(){
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		GL10 gl = Gdx.gl10;
+		gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
+		Game.camera.update();
+		Game.camera.apply(gl);
 
-		batch.setProjectionMatrix(Game.camera.combined);
+		for(Decal oneDecal : Game.map.mapData.getDecals()) {
+			decalBatch.add(oneDecal);
+		}
+
+		decalBatch.flush();
+
+		/*batch.setProjectionMatrix(Game.camera.combined);
 		batch.begin();
 
 		Vector3 inter = new Vector3();
@@ -86,8 +87,9 @@ public class SpritesetMap {
 				pos = Game.map.heightTileToIsoi(i,j);
 				//pos.y = pos.y - Cst.TILE_WALL_H * Game.map.mapData.heightmap[i][j];
 
-				spriteTile = SpriteMgr.getTile(Game.map.mapData.tilemap[i][j], false);
-
+				//spriteTile = SpriteMgr.getTile(Game.map.mapData.tilemap[i][j], false);
+				decal = DecalMgr.build(Game.map.mapData.tilemap[i][j]);
+				decal.setPosition(pos.x, , pos.z);
 				int heightDiff;
 
 				if(j < Game.map.getMapSize().y - 1)
@@ -117,7 +119,6 @@ public class SpritesetMap {
 						nbrendered++;
 					}
 				}
-				float c = Game.map.mapData.heightmap[i][j]/Game.map.mapData.maximumHeight * 0.10f + 0.90f;
 				if(i == highlightedTile.x && j == highlightedTile.y) {
 					highlightedSpriteTile = SpriteTile.getHighlightedTile(spriteTile);
 					highlightedSpriteTile.setPosition(pos.x, pos.y);
@@ -145,7 +146,7 @@ public class SpritesetMap {
 					}
 				}
 
-				/*if(path != null) {
+				if(path != null) {
 					Step step;
 					for(int a=0;a<path.getLength();a++) {
 						step = path.getStep(a);
@@ -155,7 +156,7 @@ public class SpritesetMap {
 						spr.setPosition(pos.x - Cst.TILE_HW, pos.y + Cst.TILE_H);
 						list.add(spr);
 					}
-				}*/
+				}
 
 				Collections.sort(list, new Comparator<Sprite>() {
 					@Override public int compare(Sprite s1, Sprite s2) {
@@ -176,6 +177,6 @@ public class SpritesetMap {
 
 		WindowMgr.spriteNumberLabel.setText("Draw number: " + nbrendered);
 
-		batch.end();
+		batch.end();*/
 	}
 }

@@ -16,7 +16,7 @@ import com.me.mygdxgame.utils.Cst;
 
 public class SpriteMgr {
 
-	private static SpriteTile[] tiles = new SpriteTile[127];
+	/*private static SpriteTile[] tiles = new SpriteTile[127];
 	private static SpriteStatic[] statics = new SpriteStatic[Data.sprites.size()];
 	private static SpriteAnimated[] animateds = new SpriteAnimated[Data.sprites.size()];
 	
@@ -27,7 +27,7 @@ public class SpriteMgr {
 			SpriteTile sprite = new SpriteTile(dataSprite.textureFilename);
 			/*if(dataTile.isWall){
 				sprite.setElevation(Cst.TILE_WALL_H);
-			}*/
+			}
 			tiles[id] = sprite;
 		}
 	}
@@ -74,5 +74,5 @@ public class SpriteMgr {
 		//SpriteAnimated sprite = new SpriteAnimated(animateds[id].getTextureFilename(),animateds[id].getElevation(),animateds[id].getColor());
 		//sprite.setOrigin(sprite.getWidth()/2, 0);//, sprite.getHeight());
 		//return sprite;
-	}
+	}*/
 }
