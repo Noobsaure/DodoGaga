@@ -28,20 +28,54 @@ public class DataMap extends DataBase{
 	}
 
 	public void loadMap() {
-		
+
 		//TODO
 		Decal oneDecal;
+		int nbDecals = 0;
 		for(int j=0; j < sizeInTiles.y; j++) {
 			for(int i=0; i < sizeInTiles.x; i++) {
 				oneDecal = DecalMgr.build(tilemap[i][j]);
 				oneDecal.setDimensions(2f,1f);
 				oneDecal.setPosition((i-j), -(i+j)*0.5f + heightmap[i][j] * 0.25f, heightmap[i][j] - maximumHeight);
-				if(heightmap[i][j] > 0)
-					oneDecal.setColor(0.5f, 0.5f, 0.5f, 1f);
 				decals.add(oneDecal);
-			}
+				nbDecals++;
+
+				int heightDiff;
+
+				if(j < sizeInTiles.y - 1)
+					heightDiff = heightmap[i][j] - heightmap[i][j+1];
+				else
+					heightDiff = heightmap[i][j];
+
+				if(heightDiff > 0) {
+					for(int h=0;h<heightDiff;h++) {
+						oneDecal = DecalMgr.build((byte)1);
+						oneDecal.setDimensions(1f,1f);
+						oneDecal.setPosition((i-j)-0.5f, -(i+j)*0.5f + (heightmap[i][j]-h-1) * 0.25f, (heightmap[i][j]-h) - maximumHeight);
+						decals.add(oneDecal);
+						nbDecals++;
+					}
+				}
+
+				if(i < sizeInTiles.x - 1)
+					heightDiff = heightmap[i][j] - heightmap[i+1][j];
+				else
+					heightDiff = heightmap[i][j];
+
+				if(heightDiff > 0) {
+					for(int h=0;h<heightDiff;h++) {
+						oneDecal = DecalMgr.build((byte)2);
+						oneDecal.setDimensions(1f,1f);
+						oneDecal.setPosition((i-j)+0.5f, -(i+j)*0.5f + (heightmap[i][j]-h-1) * 0.25f, (heightmap[i][j]-h) - maximumHeight);
+						decals.add(oneDecal);
+						nbDecals++;
+					}
+				}
+			}	
 		}
+		System.out.println(nbDecals);
 	}
+
 
 	public boolean isWall(int x, int y) {return getDataTile(x,y).isWall;}
 	public DataTile getDataTile(int x, int y) {return Data.tiles.get(tilemap[x][y]);}
