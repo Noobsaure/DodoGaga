@@ -7,8 +7,12 @@ import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.graphics.g3d.decals.GroupStrategy;
 import com.badlogic.gdx.graphics.g3d.decals.SimpleOrthoGroupStrategy;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.Ray;
 import com.me.mygdxgame.game.Game;
 import com.me.mygdxgame.ia.pathfinding.Path;
+import com.me.mygdxgame.utils.Cst;
 import com.me.mygdxgame.utils.Point2i;
 
 public class SpritesetMap {
@@ -35,9 +39,27 @@ public class SpritesetMap {
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 		Game.camera.update();
 		Game.camera.apply(gl);
+		
+		Vector3 inter = new Vector3();
+
+		Ray pickRay = Game.camera.getPickRay(0, 0);
+		Intersector.intersectRayPlane(pickRay, Cst.XY_PLANE, inter);
+
+		float sx = inter.x - 1;
+		float sy = inter.y + 1;
+
+		pickRay = Game.camera.getPickRay(Gdx.graphics.getWidth(), 0);
+		Intersector.intersectRayPlane(pickRay, Cst.XY_PLANE, inter);
+		float sw = inter.x + 1;
+
+		pickRay = Game.camera.getPickRay(0, Gdx.graphics.getHeight());
+		Intersector.intersectRayPlane(pickRay, Cst.XY_PLANE, inter);
+		float sh = inter.y - 1;
 
 		
 		for(Decal oneDecal : Game.map.mapData.getDecals()) {
+			if(oneDecal.getPosition().x >= sx && oneDecal.getPosition().x < sw
+					&& oneDecal.getPosition().y <= sy && oneDecal.getPosition().y > sh)
 			decalBatch.add(oneDecal);
 		}
 

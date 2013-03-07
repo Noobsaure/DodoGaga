@@ -131,7 +131,6 @@ public class SceneMap extends SceneBase implements InputProcessor{
 
 			Ray pickRay = Game.camera.getPickRay(Gdx.input.getX(), Gdx.input.getY());
 			Intersector.intersectRayPlane(pickRay, Cst.XY_PLANE, curr);
-
 			if(!(last.x == -1 && last.y == -1 && last.z == -1)) {
 				pickRay = Game.camera.getPickRay(last.x, last.y);
 				Intersector.intersectRayPlane(pickRay, Cst.XY_PLANE, delta);			
@@ -166,6 +165,7 @@ public class SceneMap extends SceneBase implements InputProcessor{
 	public boolean mouseMoved(int screenX, int screenY) {
 		Ray pickRay = Game.camera.getPickRay(screenX, screenY);
 		Intersector.intersectRayPlane(pickRay, Cst.XY_PLANE, highlight);
+		System.out.println(highlight.x+" ; "+-highlight.y+ " ; "+highlight.z);
 		Point2i currentTile = Game.map.heightIsoToTile(highlight.x, highlight.y);
 		spriteset.setHighlightedTile(currentTile);
 		if(currentBattler != null) {

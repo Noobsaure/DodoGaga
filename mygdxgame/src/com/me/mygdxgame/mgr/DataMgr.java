@@ -39,7 +39,7 @@ public class DataMgr {
 		for(int i=data.getSizeInTiles().x-1; i >= 0; i--){
 			for(int j=data.getSizeInTiles().y-1; j >= 0; j--){
 				data.setTile(i,j,Cst.FLOOR);
-				height = rand.nextInt(3);//rand.nextInt(tmplol);
+				height = rand.nextInt(2);//rand.nextInt(tmplol);
 				data.setHeight(i,j,(byte)height);
 				if(height > data.getMaximumHeight()) {
 					data.setMaximumHeight(height);
