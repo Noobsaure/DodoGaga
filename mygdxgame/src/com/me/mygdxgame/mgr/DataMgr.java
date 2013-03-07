@@ -24,7 +24,7 @@ public class DataMgr {
 		Debug.debugMsg("Loading database");
 
 		Data.textures = new ArrayList<DataTexture>();
-
+		//TODO
 		Data.textures.add(new DataTexture(0,"Floor","greenTile.png"));
 		Data.textures.add(new DataTexture(1,"WallLeft","wallLeft.png"));
 		Data.textures.add(new DataTexture(2,"WallRight","wallRight.png"));

@@ -29,14 +29,15 @@ public class DataMap extends DataBase{
 
 	public void loadMap() {
 		
-		
+		//TODO
 		Decal oneDecal;
 		for(int j=0; j < sizeInTiles.y; j++) {
 			for(int i=0; i < sizeInTiles.x; i++) {
 				oneDecal = DecalMgr.build(tilemap[i][j]);
-				oneDecal.setDimensions(2f,1);
-				oneDecal.setPosition((i - j)*0.5f + 25, heightmap[i][j]*0.25f, (i + j));
-				oneDecal.setRotationY(90);
+				oneDecal.setDimensions(2f,1f);
+				oneDecal.setPosition((i-j), -(i+j)*0.5f + heightmap[i][j] * 0.25f, heightmap[i][j] - maximumHeight);
+				if(heightmap[i][j] > 0)
+					oneDecal.setColor(0.5f, 0.5f, 0.5f, 1f);
 				decals.add(oneDecal);
 			}
 		}

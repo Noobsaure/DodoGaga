@@ -36,6 +36,7 @@ public class SpritesetMap {
 		Game.camera.update();
 		Game.camera.apply(gl);
 
+		
 		for(Decal oneDecal : Game.map.mapData.getDecals()) {
 			decalBatch.add(oneDecal);
 		}
