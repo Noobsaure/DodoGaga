@@ -32,7 +32,8 @@ public class SpritesetMap {
 			this.highlightedTile.setPosition((i-j) * Cst.TILE_HW,
 					-(i+j) * Cst.TILE_HH + Game.map.mapData.getHeight(i,j) * Cst.TILE_WALL_H,
 					Game.map.mapData.getHeight(i,j) - Game.map.mapData.getMaximumHeight());
-		}
+		} else
+			highlight = false;
 	}
 	public Path getPath() {return path;}
 	public void setPath(Path path) {this.path = path;}
@@ -67,12 +68,10 @@ public class SpritesetMap {
 		pickRay = Game.camera.getPickRay(0, Gdx.graphics.getHeight());
 		Intersector.intersectRayPlane(pickRay, Cst.XY_PLANE, inter);
 		float sh = inter.y - Cst.TILE_H;
-		
-		
 
 		for(Decal oneDecal : Game.map.mapData.getDecals()) {
-			if(oneDecal.getPosition().x >= sx && oneDecal.getPosition().x < sw
-					&& oneDecal.getPosition().y <= sy && oneDecal.getPosition().y > sh)
+			if(oneDecal.getPosition().x >= sx && oneDecal.getPosition().y <= sy
+					&& oneDecal.getPosition().x < sw && oneDecal.getPosition().y > sh)
 				decalBatch.add(oneDecal);
 		}
 		
