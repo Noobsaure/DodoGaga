@@ -33,7 +33,7 @@ public class App implements ApplicationListener{
 	
 	@Override
 	public void resize(int width, int height) {
-		Game.camera = new GameCamera();
+		Game.camera.resize(width,height);
 	}
 	
 	@Override

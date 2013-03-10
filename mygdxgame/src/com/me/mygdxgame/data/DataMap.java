@@ -95,8 +95,19 @@ public class DataMap extends DataBase{
 				+ i;
 		if(dynamic)
 			res += f1 + (f2 + m)/2;
-		return res;
-			
+		return res;	
+	}
+	
+	public int getZOrder(int i, int j, float h, boolean dynamic) {
+		int f1 = sizeInTiles.x*sizeInTiles.y;
+		int m = Math.max(sizeInTiles.x,sizeInTiles.y);
+		int f2 = (f1 + m) / 2;
+		int res = (i+j) * f1
+				+ (int)(h * f2)
+				+ i;
+		if(dynamic)
+			res += f1 + (f2 + m)/2;
+		return res;	
 	}
 
 	public boolean isWall(int x, int y) {return getDataTile(x,y).isWall;}

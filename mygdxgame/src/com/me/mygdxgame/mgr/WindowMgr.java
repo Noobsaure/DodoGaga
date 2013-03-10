@@ -35,10 +35,10 @@ public class WindowMgr {
 		spriteNumberLabel.setAlignment(Align.left | Align.top);
 		spriteNumberLabel.setPosition(0, -20);
 		spriteNumberLabel.setScaleY(3);
-		WindowMessage window = new WindowMessage("Gaga:", skin);
-		stage.addActor(window);
+		//WindowMessage window = new WindowMessage("Gaga:", skin);
+		//stage.addActor(window);
 		String text = "Ceci est un test d'un\nmessage type RPG fait\nen 2 minutes !";
-		window.startText(text);
+		//window.startText(text);
 	}
 
 	public void resize (int width, int height) {
@@ -48,7 +48,7 @@ public class WindowMgr {
 	public static void update(){
 		fpsLabel.setText("FPS: " + Gdx.graphics.getFramesPerSecond() + "          ");
 		for(WindowBase window : windows){
-			window.update();
+			//window.update();
 		}
 		
 		stage.act(Gdx.graphics.getDeltaTime());

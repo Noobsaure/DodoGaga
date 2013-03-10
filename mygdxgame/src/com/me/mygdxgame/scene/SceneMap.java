@@ -2,16 +2,15 @@ package com.me.mygdxgame.scene;
 
 import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenEquation;
 import aurelienribon.tweenengine.TweenManager;
 import aurelienribon.tweenengine.equations.Linear;
-import aurelienribon.tweenengine.equations.Quart;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
@@ -37,7 +36,7 @@ public class SceneMap extends SceneBase implements InputProcessor{
 	final Vector3 delta = new Vector3();
 	final Vector3 highlight = new Vector3();
 
-	private Point2f target; 
+	private Vector3 target; 
 
 	private int currentBattlerIndex = 0;
 	private GameBattler currentBattler;
@@ -110,29 +109,26 @@ public class SceneMap extends SceneBase implements InputProcessor{
 
 		if(button == Buttons.LEFT) {
 			if(path != null) {
-				Step step;
-				Timeline tlx = Timeline.createSequence();
-				Timeline tly = Timeline.createSequence();
-				for(int i=0;i<path.getLength();i++) {
-					step = path.getStep(i);
-					target = Game.map.heightTileToIsof(step.getX(),step.getY());
-					tlx.push(Tween.to(currentBattler, GameMoverAccessor.POSITION_X, 0.5f).ease(Linear.INOUT).target(target.x));
-					//tly.push(Tween.to(currentBattler, GameMoverAccessor.POSITION_Y, 0.8f).ease(Quart.OUT).target(target.y+64));
-					tly.push(Tween.to(currentBattler, GameMoverAccessor.POSITION_Y, 0.5f).ease(Linear.INOUT).target(target.y));
+				Timeline tl = Timeline.createSequence();
+				Step newStep;
+				Step oldStep = path.getStep(0);
+				System.out.println("Position : "+oldStep.getX()+ " ; "+oldStep.getY());
+				target = Game.map.getOffsets(currentBattler.getTilePosition().x,currentBattler.getTilePosition().y,oldStep.getX(),oldStep.getY());
+				tl.push(Tween.to(currentBattler, GameMoverAccessor.ADD_OFFSETS,1.f).ease(Linear.INOUT).target(target.x,target.y));
+				tl.push(Tween.set(currentBattler, GameMoverAccessor.ACCUMULATED_OFFSETS).target(0.f,0.f));
+				for(int i=1;i<path.getLength();i++) {
+					newStep = path.getStep(i);
+					target = Game.map.getOffsets(oldStep.getX(),oldStep.getY(),newStep.getX(),newStep.getY());
+					tl.push(Tween.to(currentBattler, GameMoverAccessor.ADD_OFFSETS,1.f).ease(Linear.INOUT).target(target.x,target.y));
+					tl.push(Tween.set(currentBattler, GameMoverAccessor.ACCUMULATED_OFFSETS).target(0.f,0.f));
+					oldStep = newStep;
+					System.out.println("Position : "+oldStep.getX()+ " ; "+oldStep.getY());
 				}
-				tlx.start(manager);
-				tly.start(manager);
+				tl.start(manager);
 				currentBattlerIndex = (currentBattlerIndex + 1) % Game.map.getGameBattlers().size();
 				currentBattler = Game.map.getGameBattlers().get(currentBattlerIndex);
-			} else {
-				if(currentTile.x != -1 && currentTile.y != -1) {
-					currentBattler.setPosition(currentTile);
-				}
-
 			}
 		}
-
-
 		return true;
 	}
 
@@ -182,20 +178,14 @@ public class SceneMap extends SceneBase implements InputProcessor{
 	public boolean mouseMoved(int screenX, int screenY) {
 		Ray pickRay = Game.camera.getPickRay(screenX, screenY);
 		Intersector.intersectRayPlane(pickRay, Cst.XY_PLANE, highlight);
-		//currentTile = Game.map.heightIsoToTile(highlight.x - Cst.TILE_HW, -highlight.y - Cst.TILE_HH);
 		currentTile = Game.map.heightIsoToTile(highlight.x, highlight.y);
 		if(currentTile.x != -1 && currentTile.y != -1) {
-			//System.out.println(currentTile.x + " ; " + currentTile.y);
 			Point2f posR = Game.map.heightTileToIsof(currentTile.x, currentTile.y);
 			Point2i tmp = Game.map.heightIsoToTile(posR.x, posR.y);
-			if(tmp.x == currentTile.x && tmp.y == currentTile.y)
+			/*if(tmp.x == currentTile.x && tmp.y == currentTile.y)
 				System.out.println(tmp.x + " ; " + tmp.y + " : OK");
 			else
-				System.out.println(tmp.x + " ; " + tmp.y);
-			/*System.out.println(posR.x + " ; " + posR.y);
-			System.out.println(Game.map.mapData.getZOrder(currentTile.x, currentTile.y, Game.map.getHeight(currentTile)));
-			System.out.println(currentBattler.getZOrder());
-			System.out.println("***************************");*/
+				System.out.println(tmp.x + " ; " + tmp.y);*/
 		}
 		spriteset.setHighlightedTile(currentTile);
 		if(currentBattler != null) {

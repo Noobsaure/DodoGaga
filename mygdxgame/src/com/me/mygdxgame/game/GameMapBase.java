@@ -5,6 +5,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
+import com.badlogic.gdx.math.Vector3;
 import com.me.mygdxgame.data.Data;
 import com.me.mygdxgame.data.DataMap;
 import com.me.mygdxgame.utils.Cst;
@@ -25,7 +26,7 @@ public abstract class GameMapBase {
 		this.mapId = mapId;
 		this.mapData = Data.maps.get(mapId);
 		//if(this.mapData == null)
-			setupEvents();
+		setupEvents();
 	}
 
 	public void setupEvents(){
@@ -34,7 +35,7 @@ public abstract class GameMapBase {
 		/*for(int i=2;i<8;i++)
 			for(int j=2;j<8;j++)
 				gameBattlers.add(new GameBattler(3, new Point2i(i,j)));*/
-		gameBattlers.add(new GameBattler(2, new Point2i(0,0)));
+		gameBattlers.add(new GameBattler(2, new Point2i(2,2)));
 	}
 
 	public static Point2f tileToIsof(int i, int j) {
@@ -111,73 +112,37 @@ public abstract class GameMapBase {
 		return heightIsoToTile(new Point2f(x,y), ignoreCliff);
 	}
 
-	/*public Point2i computeTilePosition(Point2f[] p, int length) {
-		Point2i[] posTab = new Point2i[length];
-		for(int i=0;i<length;i++) {
-			posTab[i] = heightIsoToTile(p[i], false);
-		}
-		Point2i res = new Point2i(-1,-1);
-		//Point2i res = posTab[1];
-		switch(length) {
-		case 3:
-			if(posTab[0].equals(posTab[1]) && posTab[1].equals(posTab[2]))
-				res = posTab[0];
-			else if(!posTab[0].equals(posTab[1]) && posTab[1].equals(posTab[2]))
-				switch(relativeTilePosition(posTab[1], posTab[0])) {
-				case 1:
-					res = posTab[1];
-					break;
-				case 4:
-					if(getHeight(posTab[0]) <= getHeight(posTab[1]))
-						res = posTab[0];
-					else
-						res = posTab[1];
-					break;
-				default:
-					res.set(posTab[0].x,posTab[0].y + 1);
-					break;
-				}
-			else if(posTab[0].equals(posTab[1]) && !posTab[1].equals(posTab[2]))
-				switch(relativeTilePosition(posTab[1], posTab[2])) {
-				case 2:
-					if(getHeight(posTab[2]) <= getHeight(posTab[1]))
-						res = posTab[2];
-					else
-						res = posTab[1];
-					break;
-				case 3:
-					res = posTab[1];
-					break;
-				default:
-					res.set(posTab[0].x + 1,posTab[0].y);
-					break;
-				}
-			else if(!posTab[0].equals(posTab[1]) && !posTab[1].equals(posTab[2]))
-				switch(relativeTilePosition(posTab[1], posTab[0])) {
-				case 1:
-					res = posTab[1];
-					break;
-				case 4:
-					if(getHeight(posTab[1]) == getHeight(posTab[0]) && getHeight(posTab[1]) == getHeight(posTab[2]))
-						res = posTab[0];
-					else if(getHeight(posTab[1]) < getHeight(posTab[0]) && getHeight(posTab[1]) < getHeight(posTab[2]))
-						res = posTab[1];
-					else if(getHeight(posTab[1]) < getHeight(posTab[0]))
-						res = posTab[0];
-					else
-						res = posTab[2];
-					break;
-				default:
-					res = posTab[1];
-					break;
-				}
-			else
-				System.out.println("derp");
+	public Vector3 getOffsets(int x, int y, int tx, int ty) {
+		Vector3 res = new Vector3(0,0,0);
+		res.z = mapData.getHeight(x,y) - mapData.getHeight(tx, ty);
+		switch(x-tx) {
+		case -1:
+			res.x = Cst.TILE_HW;
+			res.y = Cst.TILE_HH;
 			break;
-		default: break;
+		case 1:
+			res.x = -Cst.TILE_HW;
+			res.y = -Cst.TILE_HH;
+			break;
+		case 0:
+			switch(y-ty) {
+			case -1:
+				res.x = -Cst.TILE_HW;
+				res.y = Cst.TILE_HH;
+				break;
+			case 1:
+				res.x = +Cst.TILE_HW;
+				res.y = -Cst.TILE_HH;				
+				break;
+			default:
+				break;
+			}
+			break;
+		default:
+			break;
 		}
 		return res;
-	}*/
+	}
 
 	public void removeEventFromTile(Point2i tile, GameEvent ev) {
 		List<GameEvent> evs = eventsAt(tile);

@@ -10,4 +10,8 @@ public class GameCamera extends OrthographicCamera{
 		this.position.set(0,0,1000);
 		this.far = 1000;
 	}
+	
+	public void resize(int width, int height) {
+		
+	}
 }

@@ -52,7 +52,7 @@ public class DataMgr {
 	}
 
 	public static void createGameObjects(){
-		//Game.camera = new GameCamera();
+		Game.camera = new GameCamera();
 		Game.map = new GameMap();
 	}
 
