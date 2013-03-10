@@ -75,8 +75,6 @@ public class DataMap extends DataBase{
 						nbDecals++;
 					}
 				}
-
-
 			}	
 		}
 		System.out.println(nbDecals);

@@ -12,6 +12,8 @@ public class GameCamera extends OrthographicCamera{
 	}
 	
 	public void resize(int width, int height) {
-		
+		this.viewportWidth = 32 * Cst.TILE_HW;
+		this.viewportHeight = 32 * Cst.TILE_HW  * (Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth());
+		update();
 	}
 }

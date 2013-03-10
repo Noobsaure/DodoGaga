@@ -25,7 +25,6 @@ public abstract class GameMapBase {
 	public void setup(int mapId) {
 		this.mapId = mapId;
 		this.mapData = Data.maps.get(mapId);
-		//if(this.mapData == null)
 		setupEvents();
 	}
 
@@ -82,24 +81,19 @@ public abstract class GameMapBase {
 		int mapHeight;
 		int tmpHeight = mapData.getMaximumHeight();
 		while(tmpHeight >= 0) {
-			//tmp = isoToTile(p.x-Cst.TILE_HW,p.y - Cst.TILE_HH + tmpHeight * Cst.TILE_WALL_H);
 			tmp = isoToTile(p.x + Cst.TILE_HW,-p.y + Cst.TILE_HH + tmpHeight * Cst.TILE_WALL_H);
-			//TODO inverser if et else
-			if(tmp.x >= mapData.getSizeInTiles().x || tmp.y >= mapData.getSizeInTiles().y || tmp.x < 0 || tmp.y < 0)
-				tmpHeight--;
-			else {
+			if(tmp.x < mapData.getSizeInTiles().x && tmp.y < mapData.getSizeInTiles().y && tmp.x >= 0 && tmp.y >= 0) {
 				mapHeight = mapData.getHeight(tmp.x,tmp.y);
 				if(mapHeight == tmpHeight) {
 					res = tmp;
 					break;
-				} else if(mapData.getHeight(tmp.x,tmp.y) > tmpHeight) {
+				} else if(mapHeight > tmpHeight) {
 					if(!ignoreCliff)
 						res = tmp;
 					break;
-				} else {
-					tmpHeight--;
 				}
 			}
+			tmpHeight--;
 		}
 		return res;
 	}
@@ -112,9 +106,12 @@ public abstract class GameMapBase {
 		return heightIsoToTile(new Point2f(x,y), ignoreCliff);
 	}
 
-	public Vector3 getOffsets(int x, int y, int tx, int ty) {
+	public Vector3 getOffsets(int x, int y, int tx, int ty, float zOffset) {
 		Vector3 res = new Vector3(0,0,0);
-		res.z = mapData.getHeight(x,y) - mapData.getHeight(tx, ty);
+		/*if(mapData.getHeight(x,y) > mapData.getHeight(tx, ty))
+			res.z = 1;
+		else
+			res.z = mapData.getHeight(tx, ty) - mapData.getHeight(x, y);*/
 		switch(x-tx) {
 		case -1:
 			res.x = Cst.TILE_HW;
@@ -141,6 +138,8 @@ public abstract class GameMapBase {
 		default:
 			break;
 		}
+
+
 		return res;
 	}
 

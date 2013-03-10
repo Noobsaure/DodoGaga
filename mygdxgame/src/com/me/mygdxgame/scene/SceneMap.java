@@ -112,17 +112,32 @@ public class SceneMap extends SceneBase implements InputProcessor{
 				Timeline tl = Timeline.createSequence();
 				Step newStep;
 				Step oldStep = path.getStep(0);
-				System.out.println("Position : "+oldStep.getX()+ " ; "+oldStep.getY());
-				target = Game.map.getOffsets(currentBattler.getTilePosition().x,currentBattler.getTilePosition().y,oldStep.getX(),oldStep.getY());
-				tl.push(Tween.to(currentBattler, GameMoverAccessor.ADD_OFFSETS,1.f).ease(Linear.INOUT).target(target.x,target.y));
-				tl.push(Tween.set(currentBattler, GameMoverAccessor.ACCUMULATED_OFFSETS).target(0.f,0.f));
+				
+				target = Game.map.getOffsets(currentBattler.getTilePosition().x,currentBattler.getTilePosition().y,oldStep.getX(),oldStep.getY(),currentBattler.getOffsetZ());
+				
+				tl.push(Timeline.createSequence().beginParallel()
+					.push(Tween.to(currentBattler, GameMoverAccessor.ADD_OFFSETS,0.5f).ease(Linear.INOUT).target(target.x,target.y))
+					.push(Timeline.createSequence()
+							.push(Tween.to(currentBattler, GameMoverAccessor.ADD_HEIGHT,0.25f).ease(Linear.INOUT).target(target.z))
+							.push(Tween.to(currentBattler, GameMoverAccessor.ADD_HEIGHT,0.25f).ease(Linear.INOUT).target(0)))
+				.end()
+				.push(Tween.set(currentBattler, GameMoverAccessor.ACCUMULATED_OFFSETS).target(0.f,0.f,0.f)));
+
 				for(int i=1;i<path.getLength();i++) {
+					
 					newStep = path.getStep(i);
-					target = Game.map.getOffsets(oldStep.getX(),oldStep.getY(),newStep.getX(),newStep.getY());
-					tl.push(Tween.to(currentBattler, GameMoverAccessor.ADD_OFFSETS,1.f).ease(Linear.INOUT).target(target.x,target.y));
-					tl.push(Tween.set(currentBattler, GameMoverAccessor.ACCUMULATED_OFFSETS).target(0.f,0.f));
+					
+					target = Game.map.getOffsets(oldStep.getX(),oldStep.getY(),newStep.getX(),newStep.getY(),currentBattler.getOffsetZ());
+
+					tl.push(Timeline.createSequence().beginParallel()
+						.push(Tween.to(currentBattler, GameMoverAccessor.ADD_OFFSETS,0.5f).ease(Linear.INOUT).target(target.x,target.y))
+						.push(Timeline.createSequence()
+							.push(Tween.to(currentBattler, GameMoverAccessor.ADD_HEIGHT,0.25f).ease(Linear.INOUT).target(target.z))
+							.push(Tween.to(currentBattler, GameMoverAccessor.ADD_HEIGHT,0.25f).ease(Linear.INOUT).target(0)))
+					.end()
+					.push(Tween.set(currentBattler, GameMoverAccessor.ACCUMULATED_OFFSETS).target(0.f,0.f,0.f)));
+					
 					oldStep = newStep;
-					System.out.println("Position : "+oldStep.getX()+ " ; "+oldStep.getY());
 				}
 				tl.start(manager);
 				currentBattlerIndex = (currentBattlerIndex + 1) % Game.map.getGameBattlers().size();
@@ -179,14 +194,6 @@ public class SceneMap extends SceneBase implements InputProcessor{
 		Ray pickRay = Game.camera.getPickRay(screenX, screenY);
 		Intersector.intersectRayPlane(pickRay, Cst.XY_PLANE, highlight);
 		currentTile = Game.map.heightIsoToTile(highlight.x, highlight.y);
-		if(currentTile.x != -1 && currentTile.y != -1) {
-			Point2f posR = Game.map.heightTileToIsof(currentTile.x, currentTile.y);
-			Point2i tmp = Game.map.heightIsoToTile(posR.x, posR.y);
-			/*if(tmp.x == currentTile.x && tmp.y == currentTile.y)
-				System.out.println(tmp.x + " ; " + tmp.y + " : OK");
-			else
-				System.out.println(tmp.x + " ; " + tmp.y);*/
-		}
 		spriteset.setHighlightedTile(currentTile);
 		if(currentBattler != null) {
 			if(currentBattler.isTileReachable(currentTile)) {

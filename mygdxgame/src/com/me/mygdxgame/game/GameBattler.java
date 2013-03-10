@@ -4,7 +4,7 @@ import com.me.mygdxgame.utils.Point2i;
 
 public class GameBattler extends GameMover{
 	
-	private int movementPoints = 3;
+	private int movementPoints = 10;
 	
 	public GameBattler(int id, Point2i tilePosition) {
 		super(id,tilePosition);
