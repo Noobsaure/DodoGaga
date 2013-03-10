@@ -13,7 +13,6 @@ import com.me.mygdxgame.utils.interval.special.WaitInterval;
 public class WindowMessage extends WindowBase{
 
 	int messageSpeed;
-	Interval waitInterval;
 	int index;
 	String text;
 	Label textLabel;
@@ -22,7 +21,6 @@ public class WindowMessage extends WindowBase{
 	
 	public WindowMessage(String title, Skin skin) {
 		super(title, skin);
-		waitInterval = new WaitInterval(0.01f);
 		text = "";
 		index = 0;
 		textLabel = new Label("", WindowMgr.skin);

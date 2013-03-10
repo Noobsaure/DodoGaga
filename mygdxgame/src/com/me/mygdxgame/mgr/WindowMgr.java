@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WindowMgr {
-
-
 	
 	public static Stage stage;
 	public static Skin skin;
