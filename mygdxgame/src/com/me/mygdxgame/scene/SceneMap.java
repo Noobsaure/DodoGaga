@@ -41,6 +41,7 @@ public class SceneMap extends SceneBase implements InputProcessor{
 
 	private int currentBattlerIndex = 0;
 	private GameBattler currentBattler;
+	private Point2i currentTile;
 
 	private PathFinder finder;
 	private Path path;
@@ -93,8 +94,6 @@ public class SceneMap extends SceneBase implements InputProcessor{
 
 	@Override
 	public boolean keyTyped(char character) {
-
-		System.out.println(character);
 		switch(character) {
 		case 'a':
 			Game.camera.zoom += 0.1;
@@ -109,22 +108,31 @@ public class SceneMap extends SceneBase implements InputProcessor{
 	@Override
 	public boolean touchDown(int x, int y, int pointer, int button) {
 
-		if(button == Buttons.LEFT && path != null) {
-			Step step;
-			Timeline tlx = Timeline.createSequence();
-			Timeline tly = Timeline.createSequence();
-			for(int i=0;i<path.getLength();i++) {
-				step = path.getStep(i);
-				target = Game.map.heightTileToIsof(step.getX(),step.getY());
-				tlx.push(Tween.to(currentBattler, GameMoverAccessor.POSITION_X, 0.25f).ease(Linear.INOUT).target(target.x));
-				tly.push(Tween.to(currentBattler, GameMoverAccessor.POSITION_Y, 0.2f).ease(Quart.OUT).target(target.y-64));
-				tly.push(Tween.to(currentBattler, GameMoverAccessor.POSITION_Y, 0.05f).ease(Linear.INOUT).target(target.y));
+		if(button == Buttons.LEFT) {
+			if(path != null) {
+				Step step;
+				Timeline tlx = Timeline.createSequence();
+				Timeline tly = Timeline.createSequence();
+				for(int i=0;i<path.getLength();i++) {
+					step = path.getStep(i);
+					target = Game.map.heightTileToIsof(step.getX(),step.getY());
+					tlx.push(Tween.to(currentBattler, GameMoverAccessor.POSITION_X, 0.5f).ease(Linear.INOUT).target(target.x));
+					//tly.push(Tween.to(currentBattler, GameMoverAccessor.POSITION_Y, 0.8f).ease(Quart.OUT).target(target.y+64));
+					tly.push(Tween.to(currentBattler, GameMoverAccessor.POSITION_Y, 0.5f).ease(Linear.INOUT).target(target.y));
+				}
+				tlx.start(manager);
+				tly.start(manager);
+				currentBattlerIndex = (currentBattlerIndex + 1) % Game.map.getGameBattlers().size();
+				currentBattler = Game.map.getGameBattlers().get(currentBattlerIndex);
+			} else {
+				if(currentTile.x != -1 && currentTile.y != -1) {
+					currentBattler.setPosition(currentTile);
+				}
+
 			}
-			tlx.start(manager);
-			tly.start(manager);
-			currentBattlerIndex = (currentBattlerIndex + 1) % Game.map.getGameBattlers().size();
-			currentBattler = Game.map.getGameBattlers().get(currentBattlerIndex);
 		}
+
+
 		return true;
 	}
 
@@ -174,7 +182,21 @@ public class SceneMap extends SceneBase implements InputProcessor{
 	public boolean mouseMoved(int screenX, int screenY) {
 		Ray pickRay = Game.camera.getPickRay(screenX, screenY);
 		Intersector.intersectRayPlane(pickRay, Cst.XY_PLANE, highlight);
-		Point2i currentTile = Game.map.heightIsoToTile(highlight.x - Cst.TILE_HW, -highlight.y - Cst.TILE_HH);
+		//currentTile = Game.map.heightIsoToTile(highlight.x - Cst.TILE_HW, -highlight.y - Cst.TILE_HH);
+		currentTile = Game.map.heightIsoToTile(highlight.x, highlight.y);
+		if(currentTile.x != -1 && currentTile.y != -1) {
+			//System.out.println(currentTile.x + " ; " + currentTile.y);
+			Point2f posR = Game.map.heightTileToIsof(currentTile.x, currentTile.y);
+			Point2i tmp = Game.map.heightIsoToTile(posR.x, posR.y);
+			if(tmp.x == currentTile.x && tmp.y == currentTile.y)
+				System.out.println(tmp.x + " ; " + tmp.y + " : OK");
+			else
+				System.out.println(tmp.x + " ; " + tmp.y);
+			/*System.out.println(posR.x + " ; " + posR.y);
+			System.out.println(Game.map.mapData.getZOrder(currentTile.x, currentTile.y, Game.map.getHeight(currentTile)));
+			System.out.println(currentBattler.getZOrder());
+			System.out.println("***************************");*/
+		}
 		spriteset.setHighlightedTile(currentTile);
 		if(currentBattler != null) {
 			if(currentBattler.isTileReachable(currentTile)) {

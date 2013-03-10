@@ -1,19 +1,23 @@
 package com.me.mygdxgame.game;
 
+import com.badlogic.gdx.graphics.g3d.decals.Decal;
+import com.me.mygdxgame.utils.DecalMgr;
 import com.me.mygdxgame.utils.Point2i;
 
 public class GameEntity{
 	
 	protected Point2i tilePosition;
-	private int spriteId;
+	private int textureId;
+	private Decal decal;
 	
-	public GameEntity(int spriteId){
-		this(spriteId, new Point2i(0, 0));
+	public GameEntity(int textureId){
+		this(textureId, new Point2i(0, 0));
 	}
 	
-	public GameEntity(int spriteId, Point2i tilePosition){
+	public GameEntity(int textureId, Point2i tilePosition){
 		this.tilePosition = tilePosition;
-		this.spriteId = spriteId;
+		this.textureId = textureId;
+		this.setDecal(DecalMgr.build((byte)textureId));
 	}
 	
 	public Point2i getTilePosition(){
@@ -25,10 +29,18 @@ public class GameEntity{
 		this.tilePosition.y = y;
 	}
 	
-	public void setPosition(Point2i tilePosition, Point2i innerTilePosition){
+	public void setPosition(Point2i tilePosition){
 		this.tilePosition = tilePosition;
 	}
 	
-	public int getSpriteId() {return this.spriteId;}
+	public int getTextureId() {return this.textureId;}
+
+	public Decal getDecal() {
+		return decal;
+	}
+
+	public void setDecal(Decal decal) {
+		this.decal = decal;
+	}
 	
 }

@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.me.mygdxgame.game.Game;
+import com.me.mygdxgame.game.GameBattler;
 import com.me.mygdxgame.ia.pathfinding.Path;
 import com.me.mygdxgame.utils.Cst;
 import com.me.mygdxgame.utils.DecalMgr;
@@ -20,7 +21,7 @@ public class SpritesetMap {
 
 	private Decal highlightedTile;
 	private boolean highlight = false;
-	
+
 	private Path path;
 	private DecalBatch decalBatch;
 
@@ -29,9 +30,11 @@ public class SpritesetMap {
 			highlight = true;
 			int i = highlightedTile.x;
 			int j = highlightedTile.y;
-			this.highlightedTile.setPosition((i-j) * Cst.TILE_HW,
-					-(i+j) * Cst.TILE_HH + Game.map.mapData.getHeight(i,j) * Cst.TILE_WALL_H,
-					Game.map.mapData.getHeight(i,j) - Game.map.mapData.getMaximumHeight());
+			this.highlightedTile.setPosition(
+					(i-j) * Cst.TILE_HW,
+					-((i+j) * Cst.TILE_HH - (Game.map.getHeight(i, j)) * Cst.TILE_WALL_H),
+					Game.map.mapData.getZOrder(i,j,Game.map.getHeight(i, j)) * 0.000001f
+					);
 		} else
 			highlight = false;
 	}
@@ -43,7 +46,7 @@ public class SpritesetMap {
 		Gdx.gl.glDepthFunc(GL10.GL_LESS);
 		GroupStrategy strategy = new SimpleOrthoGroupStrategy();
 		decalBatch = new DecalBatch(strategy);
-		highlightedTile = DecalMgr.build((byte)4);
+		highlightedTile = DecalMgr.build((byte)3);
 		highlightedTile.setDimensions(Cst.TILE_W,Cst.TILE_H);
 	}
 
@@ -71,14 +74,22 @@ public class SpritesetMap {
 
 		for(Decal oneDecal : Game.map.mapData.getDecals()) {
 			if(oneDecal.getPosition().x >= sx && oneDecal.getPosition().y <= sy
-					&& oneDecal.getPosition().x < sw && oneDecal.getPosition().y > sh)
+					&& oneDecal.getPosition().x < sw && oneDecal.getPosition().y > sh) {
 				decalBatch.add(oneDecal);
+			}
 		}
-		
+
 		if(highlight)
 			decalBatch.add(highlightedTile);
 
+		for(GameBattler oneBattler : Game.map.getGameBattlers()) {
+			decalBatch.add(oneBattler.getDecal());
+		}
+
 		decalBatch.flush();
+
+		//Game.map.mapData.mesh.render(GL10.GL_TRIANGLES, 0, 7);
+
 
 		/*batch.setProjectionMatrix(Game.camera.combined);
 		batch.begin();

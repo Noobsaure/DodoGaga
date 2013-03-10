@@ -37,7 +37,7 @@ public class GameMap extends GameMapBase implements TileBasedMap {
 	}
 
 	public boolean blocked(GameMover mover, int x, int y) {
-		return getDataMap().isWall(x, y);
+		return x == -1 || y == -1;// || getDataMap().isWall(x, y);
 	}
 
 	public float getCost(GameMover mover, int sx, int sy, int tx, int ty) {

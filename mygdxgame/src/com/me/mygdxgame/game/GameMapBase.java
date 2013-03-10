@@ -18,19 +18,23 @@ public abstract class GameMapBase {
 	private Map<String, List<GameEvent>> tileEvents;
 	private List<GameEvent> events;
 	private List<GameBattler> gameBattlers = new ArrayList<GameBattler>();
+	public GameBattler testBattler;
 
 
 	public void setup(int mapId) {
 		this.mapId = mapId;
 		this.mapData = Data.maps.get(mapId);
-		if(this.mapData == null)
+		//if(this.mapData == null)
 			setupEvents();
 	}
 
 	public void setupEvents(){
 		tileEvents = new Hashtable<String, List<GameEvent>>();
 		events = new ArrayList<GameEvent>();
-		//gameBattlers.add(new GameBattler(3, new Point2i(mapData.getSizeInTiles().x-1,mapData.getSizeInTiles().y-1)));
+		/*for(int i=2;i<8;i++)
+			for(int j=2;j<8;j++)
+				gameBattlers.add(new GameBattler(3, new Point2i(i,j)));*/
+		gameBattlers.add(new GameBattler(2, new Point2i(0,0)));
 	}
 
 	public static Point2f tileToIsof(int i, int j) {
@@ -46,14 +50,14 @@ public abstract class GameMapBase {
 	}
 
 	public Point2f heightTileToIsof(int i, int j) {
-		float x = i * Cst.TILE_HW - (j - 2) * Cst.TILE_HW;
-		float y = (i + 2) * Cst.TILE_HH + j * Cst.TILE_HH - mapData.getHeight(i,j) * Cst.TILE_WALL_H;
+		float x = i * Cst.TILE_HW - j * Cst.TILE_HW;
+		float y = -(i * Cst.TILE_HH + j * Cst.TILE_HH - mapData.getHeight(i,j) * Cst.TILE_WALL_H);
 		return new Point2f(x,y);
 	}
 
 	public Point2i heightTileToIsoi(int i, int j) {
-		int x = i * Cst.TILE_HW - (j - 1) * Cst.TILE_HW;
-		int y = (i + 1) * Cst.TILE_HH + j * Cst.TILE_HH - mapData.getHeight(i,j) * Cst.TILE_WALL_H;
+		int x = i * Cst.TILE_HW - j * Cst.TILE_HW;
+		int y = -(i * Cst.TILE_HH + j * Cst.TILE_HH - mapData.getHeight(i,j) * Cst.TILE_WALL_H);
 		return new Point2i(x,y);
 	}
 
@@ -78,7 +82,7 @@ public abstract class GameMapBase {
 		int tmpHeight = mapData.getMaximumHeight();
 		while(tmpHeight >= 0) {
 			//tmp = isoToTile(p.x-Cst.TILE_HW,p.y - Cst.TILE_HH + tmpHeight * Cst.TILE_WALL_H);
-			tmp = isoToTile(p.x + Cst.TILE_W,p.y + Cst.TILE_H + tmpHeight * Cst.TILE_WALL_H);
+			tmp = isoToTile(p.x + Cst.TILE_HW,-p.y + Cst.TILE_HH + tmpHeight * Cst.TILE_WALL_H);
 			//TODO inverser if et else
 			if(tmp.x >= mapData.getSizeInTiles().x || tmp.y >= mapData.getSizeInTiles().y || tmp.x < 0 || tmp.y < 0)
 				tmpHeight--;
@@ -107,7 +111,7 @@ public abstract class GameMapBase {
 		return heightIsoToTile(new Point2f(x,y), ignoreCliff);
 	}
 
-	public Point2i computeTilePosition(Point2f[] p, int length) {
+	/*public Point2i computeTilePosition(Point2f[] p, int length) {
 		Point2i[] posTab = new Point2i[length];
 		for(int i=0;i<length;i++) {
 			posTab[i] = heightIsoToTile(p[i], false);
@@ -173,7 +177,7 @@ public abstract class GameMapBase {
 		default: break;
 		}
 		return res;
-	}
+	}*/
 
 	public void removeEventFromTile(Point2i tile, GameEvent ev) {
 		List<GameEvent> evs = eventsAt(tile);
@@ -220,6 +224,7 @@ public abstract class GameMapBase {
 
 	public Point2i getMapSize() {return mapData.getSizeInTiles();}
 	public int getHeight(Point2i p) {return mapData.getHeight(p.x,p.y);}
+	public int getHeight(int i, int j) {return getHeight(new Point2i(i,j));}
 	public List<GameBattler> getGameBattlers() {return gameBattlers;}
 	public GameBattler getGameBattler(int id) {
 		if(id < gameBattlers.size())

@@ -2,11 +2,13 @@ package com.me.mygdxgame.data;
 
 import java.util.ArrayDeque;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Mesh;
+import com.badlogic.gdx.graphics.VertexAttribute;
+import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
-import com.badlogic.gdx.math.Vector3;
 import com.me.mygdxgame.game.Game;
 import com.me.mygdxgame.utils.Cst;
-import com.me.mygdxgame.utils.Debug;
 import com.me.mygdxgame.utils.DecalMgr;
 import com.me.mygdxgame.utils.Point2i;
 
@@ -17,6 +19,8 @@ public class DataMap extends DataBase{
 	private byte[][] tilemap;
 	private byte[][] heightmap;
 	private ArrayDeque<Decal> decals;
+	private int maxZOrder;
+
 
 	public DataMap(int id, String name, Point2i sizeInTiles) {
 		super(id, name);
@@ -25,63 +29,75 @@ public class DataMap extends DataBase{
 		heightmap = new byte[sizeInTiles.x][sizeInTiles.y];
 		maximumHeight = 0;
 		decals = new ArrayDeque<Decal>();
+
 	}
 
 	public void loadMap() {
-
 		//TODO
 		Decal oneDecal;
 		int nbDecals = 0;
 		for(int j=0; j < sizeInTiles.y; j++) {
 			for(int i=0; i < sizeInTiles.x; i++) {
 				oneDecal = DecalMgr.build(tilemap[i][j]);
-				oneDecal.setDimensions(Cst.TILE_W,Cst.TILE_H);
-				oneDecal.setPosition((i-j) * Cst.TILE_HW,
-						-(i+j) * Cst.TILE_HH + heightmap[i][j] * Cst.TILE_WALL_H,
-						heightmap[i][j] - maximumHeight);
+				oneDecal.setPosition(
+						(i-j) * Cst.TILE_HW,
+						-((i+j) * Cst.TILE_HH - (heightmap[i][j] + 1) * Cst.TILE_WALL_H),
+						getZOrder(i,j,heightmap[i][j]) * 0.000001f
+						);
 				decals.add(oneDecal);
-				nbDecals++;		
-		
+				nbDecals++;
+
+				int heightDiffx;
+				int heightDiffy;
 				int heightDiff;
 
 				if(j < sizeInTiles.y - 1)
-					heightDiff = heightmap[i][j] - heightmap[i][j+1];
+					heightDiffx = heightmap[i][j] - heightmap[i][j+1];
 				else
-					heightDiff = heightmap[i][j];
-
-				if(heightDiff > 0) {
-					for(int h=0;h<heightDiff;h++) {
-						oneDecal = DecalMgr.build((byte)1);
-						oneDecal.setDimensions(Cst.TILE_HW,Cst.TILE_H);
-						oneDecal.setPosition((i - j) * Cst.TILE_HW - Cst.TILE_WALL_HW,
-								-(i + j) * Cst.TILE_HH + (heightmap[i][j]-h-1) * Cst.TILE_WALL_H,
-								(heightmap[i][j]-h) - maximumHeight);
-						decals.add(oneDecal);
-						nbDecals++;
-					}
-				}
+					heightDiffx = heightmap[i][j];
 
 				if(i < sizeInTiles.x - 1)
-					heightDiff = heightmap[i][j] - heightmap[i+1][j];
+					heightDiffy = heightmap[i][j] - heightmap[i+1][j];
 				else
-					heightDiff = heightmap[i][j];
+					heightDiffy = heightmap[i][j];
+
+				heightDiff = Math.max(heightDiffx, heightDiffy);
 
 				if(heightDiff > 0) {
-					for(int h=0;h<heightDiff;h++) {
-						oneDecal = DecalMgr.build((byte)2);
-						oneDecal.setDimensions(Cst.TILE_HW,Cst.TILE_H);
-						oneDecal.setPosition((i - j) * Cst.TILE_HW + Cst.TILE_WALL_HW,
-								-(i + j) * Cst.TILE_HH + (heightmap[i][j]-h-1) * Cst.TILE_WALL_H,
-								(heightmap[i][j]-h) - maximumHeight);
+					for(int h=1;h<=heightDiff;h++) {
+						oneDecal = DecalMgr.build((byte)1);
+						oneDecal.setPosition(
+								(i - j) * Cst.TILE_HW,
+								-((i+j) * Cst.TILE_HH - (heightmap[i][j] - h) * Cst.TILE_WALL_H),
+								getZOrder(i,j,heightmap[i][j] - h) * 0.000001f
+								);
 						decals.add(oneDecal);
 						nbDecals++;
 					}
 				}
+
+
 			}	
 		}
 		System.out.println(nbDecals);
 	}
 
+	public int getZOrder(int i, int j, int h) {
+		return getZOrder(i, j, h, false);
+	}
+
+	public int getZOrder(int i, int j, int h, boolean dynamic) {
+		int f1 = sizeInTiles.x*sizeInTiles.y;
+		int m = Math.max(sizeInTiles.x,sizeInTiles.y);
+		int f2 = (f1 + m) / 2;
+		int res = (i+j) * f1
+				+ h * f2
+				+ i;
+		if(dynamic)
+			res += f1 + (f2 + m)/2;
+		return res;
+			
+	}
 
 	public boolean isWall(int x, int y) {return getDataTile(x,y).isWall;}
 	public DataTile getDataTile(int x, int y) {return Data.tiles.get(tilemap[x][y]);}
