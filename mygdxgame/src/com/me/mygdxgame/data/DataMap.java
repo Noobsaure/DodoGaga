@@ -65,7 +65,7 @@ public class DataMap extends DataBase{
 
 				if(heightDiff > 0) {
 					for(int h=1;h<=heightDiff;h++) {
-						oneDecal = DecalMgr.build((byte)1);
+						oneDecal = DecalMgr.build((byte)3);
 						oneDecal.setPosition(
 								(i - j) * Cst.TILE_HW,
 								-((i+j) * Cst.TILE_HH - (heightmap[i][j] - h) * Cst.TILE_WALL_H),

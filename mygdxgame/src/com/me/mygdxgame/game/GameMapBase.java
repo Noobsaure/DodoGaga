@@ -34,7 +34,7 @@ public abstract class GameMapBase {
 		/*for(int i=2;i<8;i++)
 			for(int j=2;j<8;j++)
 				gameBattlers.add(new GameBattler(3, new Point2i(i,j)));*/
-		gameBattlers.add(new GameBattler(2, new Point2i(2,2)));
+		gameBattlers.add(new GameBattler(4, new Point2i(2,2)));
 	}
 
 	public static Point2f tileToIsof(int i, int j) {

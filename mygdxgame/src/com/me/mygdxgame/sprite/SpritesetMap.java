@@ -46,7 +46,7 @@ public class SpritesetMap {
 		Gdx.gl.glDepthFunc(GL10.GL_LESS);
 		GroupStrategy strategy = new SimpleOrthoGroupStrategy();
 		decalBatch = new DecalBatch(strategy);
-		highlightedTile = DecalMgr.build((byte)3);
+		highlightedTile = DecalMgr.build((byte)5);
 		highlightedTile.setDimensions(Cst.TILE_W,Cst.TILE_H);
 	}
 

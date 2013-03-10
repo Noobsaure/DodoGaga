@@ -136,7 +136,6 @@ public abstract class GameMover extends GameEvent {
 			hasChanged = false;
 			int i = tilePosition.x;
 			int j = tilePosition.y;
-			System.out.println(accumulatedOffsets.z + " ; " + positionOffsets.z);
 			getDecal().setPosition(
 					(i - j) * Cst.TILE_HW + positionOffsets.x,
 					-((i + j - 2) * Cst.TILE_HH - (Game.map.getHeight(i,j)+positionOffsets.z) * Cst.TILE_WALL_H + positionOffsets.y),
