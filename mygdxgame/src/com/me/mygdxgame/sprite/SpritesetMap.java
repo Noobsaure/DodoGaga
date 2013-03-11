@@ -16,6 +16,7 @@ import com.me.mygdxgame.ia.pathfinding.Path;
 import com.me.mygdxgame.utils.Cst;
 import com.me.mygdxgame.utils.DecalMgr;
 import com.me.mygdxgame.utils.Point2i;
+import com.me.mygdxgame.utils.script.GameObject;
 
 public class SpritesetMap {
 
@@ -25,6 +26,8 @@ public class SpritesetMap {
 	private Path path;
 	private DecalBatch decalBatch;
 
+	GameObject objectRuby;
+	
 	public void setHighlightedTile(Point2i highlightedTile) {
 		if(highlightedTile.x != -1) {
 			highlight = true;
@@ -48,6 +51,8 @@ public class SpritesetMap {
 		decalBatch = new DecalBatch(strategy);
 		highlightedTile = DecalMgr.build((byte)5);
 		highlightedTile.setDimensions(Cst.TILE_W,Cst.TILE_H);
+		
+		objectRuby = new GameObject();
 	}
 
 	public void update(){
@@ -86,6 +91,9 @@ public class SpritesetMap {
 			decalBatch.add(oneBattler.getDecal());
 		}
 
+		objectRuby.update();
+		decalBatch.add(objectRuby.sprite);
+		
 		decalBatch.flush();
 
 		//Game.map.mapData.mesh.render(GL10.GL_TRIANGLES, 0, 7);

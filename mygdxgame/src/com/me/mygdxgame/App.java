@@ -10,6 +10,7 @@ import com.me.mygdxgame.mgr.DataMgr;
 import com.me.mygdxgame.mgr.SceneMgr;
 import com.me.mygdxgame.mgr.WindowMgr;
 import com.me.mygdxgame.utils.Debug;
+import com.me.mygdxgame.utils.script.ScriptMgr;
 
 
 public class App implements ApplicationListener{
@@ -19,6 +20,7 @@ public class App implements ApplicationListener{
 		Debug.setDebugMode(true);
 		DataMgr.init();
 		WindowMgr.init();
+		ScriptMgr.init();
 		SceneMgr.init();
 	}
 	
