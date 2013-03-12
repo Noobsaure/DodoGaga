@@ -1,17 +1,17 @@
 package com.me.mygdxgame.scene;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL10;
 import com.me.mygdxgame.game.Game;
-import com.me.mygdxgame.mgr.WindowMgr;
+import com.me.mygdxgame.mgr.StageMgr;
+import com.me.mygdxgame.ui.stage.StageMainMenu;
 
 public class SceneMainMenu extends SceneBase {
 
 	
 
 	public SceneMainMenu() {
-		
+		StageMgr.startStageLater(new StageMainMenu());
 	}
 
 	@Override
