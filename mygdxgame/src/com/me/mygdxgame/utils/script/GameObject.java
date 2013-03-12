@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
-import com.me.mygdxgame.sprite.SpriteBase;
 import com.me.mygdxgame.utils.DecalMgr;
 
 public class GameObject {

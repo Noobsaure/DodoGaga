@@ -1,5 +1,6 @@
 package com.me.mygdxgame.scene;
 
+import com.me.mygdxgame.mgr.StageMgr;
 import com.me.mygdxgame.mgr.WindowMgr;
 
 public abstract class SceneBase{
@@ -22,7 +23,8 @@ public abstract class SceneBase{
 	}
 	
 	public void updatePost(){
-		WindowMgr.update();
+		//WindowMgr.update();
+		StageMgr.update();
 	}
 	
 	public void terminate() {

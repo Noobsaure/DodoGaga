@@ -52,7 +52,7 @@ public class SpritesetMap {
 		highlightedTile = DecalMgr.build((byte)5);
 		highlightedTile.setDimensions(Cst.TILE_W,Cst.TILE_H);
 		
-		objectRuby = new GameObject();
+		//objectRuby = new GameObject();
 	}
 
 	public void update(){
@@ -91,8 +91,8 @@ public class SpritesetMap {
 			decalBatch.add(oneBattler.getDecal());
 		}
 
-		objectRuby.update();
-		decalBatch.add(objectRuby.sprite);
+		//objectRuby.update();
+		//decalBatch.add(objectRuby.sprite);
 		
 		decalBatch.flush();
 

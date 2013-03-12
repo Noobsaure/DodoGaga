@@ -1,13 +1,10 @@
 package com.me.mygdxgame;
 
 import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.me.mygdxgame.game.Game;
-import com.me.mygdxgame.game.GameCamera;
 import com.me.mygdxgame.mgr.DataMgr;
 import com.me.mygdxgame.mgr.SceneMgr;
+import com.me.mygdxgame.mgr.StageMgr;
 import com.me.mygdxgame.mgr.WindowMgr;
 import com.me.mygdxgame.utils.Debug;
 import com.me.mygdxgame.utils.script.ScriptMgr;
@@ -20,7 +17,8 @@ public class App implements ApplicationListener{
 		Debug.setDebugMode(true);
 		DataMgr.init();
 		WindowMgr.init();
-		ScriptMgr.init();
+		StageMgr.init();
+		//ScriptMgr.init();
 		SceneMgr.init();
 	}
 	
@@ -36,6 +34,7 @@ public class App implements ApplicationListener{
 	@Override
 	public void resize(int width, int height) {
 		Game.camera.resize(width,height);
+		WindowMgr.resize(width, height);
 	}
 	
 	@Override

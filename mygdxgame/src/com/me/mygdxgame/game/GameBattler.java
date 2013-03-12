@@ -19,6 +19,8 @@ public class GameBattler extends GameMover{
 	
 	public int getMovementPoints() {return movementPoints;}
 	public void setMovementPoints(int movementPoints) {this.movementPoints = movementPoints;}
+	public void addMovementPoints(int movementPoints) {this.movementPoints = this.movementPoints + movementPoints;}
+	public void subMovementPoints(int movementPoints) {this.movementPoints = this.movementPoints - movementPoints;}
 	
 	public void update() {
 		super.update();

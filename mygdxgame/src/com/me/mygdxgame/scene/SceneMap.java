@@ -2,7 +2,6 @@ package com.me.mygdxgame.scene;
 
 import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.TweenEquation;
 import aurelienribon.tweenengine.TweenManager;
 import aurelienribon.tweenengine.equations.Linear;
 
@@ -23,10 +22,11 @@ import com.me.mygdxgame.ia.pathfinding.Path;
 import com.me.mygdxgame.ia.pathfinding.Path.Step;
 import com.me.mygdxgame.ia.pathfinding.PathFinder;
 import com.me.mygdxgame.ia.pathfinding.heuristics.ManhattanHeuristic;
+import com.me.mygdxgame.mgr.StageMgr;
 import com.me.mygdxgame.mgr.WindowMgr;
 import com.me.mygdxgame.sprite.SpritesetMap;
+import com.me.mygdxgame.ui.stage.StageMap;
 import com.me.mygdxgame.utils.Cst;
-import com.me.mygdxgame.utils.Point2f;
 import com.me.mygdxgame.utils.Point2i;
 
 public class SceneMap extends SceneBase implements InputProcessor{
@@ -50,6 +50,7 @@ public class SceneMap extends SceneBase implements InputProcessor{
 	SpritesetMap spriteset;
 
 	public SceneMap(){
+		StageMgr.startStageLater(new StageMap());
 		Game.map.setup(0);
 		spriteset = new SpritesetMap();
 		InputMultiplexer plex = new InputMultiplexer();
@@ -109,6 +110,7 @@ public class SceneMap extends SceneBase implements InputProcessor{
 
 		if(button == Buttons.LEFT) {
 			if(path != null) {
+				currentBattler.subMovementPoints(path.getLength());
 				Timeline tl = Timeline.createSequence();
 				Step newStep;
 				Step oldStep = path.getStep(0);
