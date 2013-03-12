@@ -22,8 +22,6 @@ public class StageMainMenu extends Stage {
 
 		skin = StageMgr.skin;
 
-
-
 		Label newGameLabel = new Label("New Game", skin);
 		Label exitLabel = new Label("Exit", skin);
 
@@ -52,7 +50,6 @@ public class StageMainMenu extends Stage {
 				Gdx.app.exit();
 			}
 		});
-		
 		
 		addActor(table);
 	}
