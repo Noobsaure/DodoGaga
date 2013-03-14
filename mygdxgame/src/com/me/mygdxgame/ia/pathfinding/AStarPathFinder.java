@@ -87,7 +87,7 @@ public class AStarPathFinder implements PathFinder {
 		
 		// while we haven't found the goal and haven't exceeded our max search depth
 		int maxDepth = 0;
-		while ((maxDepth < maxSearchDistance) && (open.size() != 0)) {
+		while (((maxSearchDistance < 0) || (maxDepth < maxSearchDistance)) && (open.size() != 0)) {
 			// pull out the first node in our open list, this is determined to 
 			// be the most likely to be the next step based on our heuristic
 			Node current = getFirstInOpen();

@@ -1,9 +1,6 @@
 package com.me.mygdxgame.scene;
 
-import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.TweenManager;
-import aurelienribon.tweenengine.equations.Linear;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -19,12 +16,10 @@ import com.me.mygdxgame.game.GameMover;
 import com.me.mygdxgame.game.GameMoverAccessor;
 import com.me.mygdxgame.ia.pathfinding.AStarPathFinder;
 import com.me.mygdxgame.ia.pathfinding.Path;
-import com.me.mygdxgame.ia.pathfinding.Path.Step;
 import com.me.mygdxgame.ia.pathfinding.PathFinder;
 import com.me.mygdxgame.ia.pathfinding.heuristics.ManhattanHeuristic;
 import com.me.mygdxgame.mgr.StageMgr;
-import com.me.mygdxgame.mgr.WindowMgr;
-import com.me.mygdxgame.sprite.SpritesetMap;
+import com.me.mygdxgame.sprite.MapRenderer;
 import com.me.mygdxgame.ui.stage.StageMap;
 import com.me.mygdxgame.utils.Cst;
 import com.me.mygdxgame.utils.Point2i;
@@ -36,43 +31,40 @@ public class SceneMap extends SceneBase implements InputProcessor{
 	final Vector3 delta = new Vector3();
 	final Vector3 highlight = new Vector3();
 
-	private Vector3 target; 
-
 	private int currentBattlerIndex = 0;
 	private GameBattler currentBattler;
 	private Point2i currentTile;
 
+	private boolean combatIsOn = false;
+	private boolean lockCamera = false;
+
 	private PathFinder finder;
 	private Path path;
 
-	private TweenManager manager;
-
-	SpritesetMap spriteset;
+	MapRenderer renderer;
 
 	public SceneMap(){
 		StageMgr.startStageLater(new StageMap());
 		Game.map.setup(0);
-		spriteset = new SpritesetMap();
+		renderer = new MapRenderer();
 		InputMultiplexer plex = new InputMultiplexer();
 		plex.addProcessor(this);
-		plex.addProcessor(WindowMgr.stage);
+		plex.addProcessor(StageMgr.stage);
 		Gdx.input.setInputProcessor(plex);
 		currentBattler = Game.map.getGameBattler(currentBattlerIndex);
 		finder = new AStarPathFinder(Game.map,0,false,new ManhattanHeuristic(1));
-		manager = new TweenManager();
 		Tween.registerAccessor(GameMover.class, new GameMoverAccessor());
 	}
-	/**/
+
 	public void updatePre(){
 		super.updatePre();
-		manager.update(Gdx.graphics.getDeltaTime());
 	}
-	/**/
+
 	public void updateMain(){
 		super.updateMain();
 		Game.camera.update();
 		Game.map.update();
-		spriteset.update();
+		renderer.update();
 	}
 
 	public void terminate() {
@@ -109,42 +101,27 @@ public class SceneMap extends SceneBase implements InputProcessor{
 	public boolean touchDown(int x, int y, int pointer, int button) {
 
 		if(button == Buttons.LEFT) {
-			if(path != null) {
-				currentBattler.subMovementPoints(path.getLength());
-				Timeline tl = Timeline.createSequence();
-				Step newStep;
-				Step oldStep = path.getStep(0);
-				
-				target = Game.map.getOffsets(currentBattler.getTilePosition().x,currentBattler.getTilePosition().y,oldStep.getX(),oldStep.getY(),currentBattler.getOffsetZ());
-				
-				tl.push(Timeline.createSequence().beginParallel()
-					.push(Tween.to(currentBattler, GameMoverAccessor.ADD_OFFSETS,0.5f).ease(Linear.INOUT).target(target.x,target.y))
-					.push(Timeline.createSequence()
-							.push(Tween.to(currentBattler, GameMoverAccessor.ADD_HEIGHT,0.25f).ease(Linear.INOUT).target(target.z))
-							.push(Tween.to(currentBattler, GameMoverAccessor.ADD_HEIGHT,0.25f).ease(Linear.INOUT).target(0)))
-				.end()
-				.push(Tween.set(currentBattler, GameMoverAccessor.ACCUMULATED_OFFSETS).target(0.f,0.f,0.f)));
-
-				for(int i=1;i<path.getLength();i++) {
-					
-					newStep = path.getStep(i);
-					
-					target = Game.map.getOffsets(oldStep.getX(),oldStep.getY(),newStep.getX(),newStep.getY(),currentBattler.getOffsetZ());
-
-					tl.push(Timeline.createSequence().beginParallel()
-						.push(Tween.to(currentBattler, GameMoverAccessor.ADD_OFFSETS,0.5f).ease(Linear.INOUT).target(target.x,target.y))
-						.push(Timeline.createSequence()
-							.push(Tween.to(currentBattler, GameMoverAccessor.ADD_HEIGHT,0.25f).ease(Linear.INOUT).target(target.z))
-							.push(Tween.to(currentBattler, GameMoverAccessor.ADD_HEIGHT,0.25f).ease(Linear.INOUT).target(0)))
-					.end()
-					.push(Tween.set(currentBattler, GameMoverAccessor.ACCUMULATED_OFFSETS).target(0.f,0.f,0.f)));
-					
-					oldStep = newStep;
+			if(combatIsOn) {
+				if(path != null && !currentBattler.isMoving()) {
+					currentBattler.subMovementPoints(path.getLength());
+					currentBattler.setPath(path);
 				}
-				tl.start(manager);
-				currentBattlerIndex = (currentBattlerIndex + 1) % Game.map.getGameBattlers().size();
-				currentBattler = Game.map.getGameBattlers().get(currentBattlerIndex);
+			} else {
+				Ray pickRay = Game.camera.getPickRay(x, y);
+				Intersector.intersectRayPlane(pickRay, Cst.XY_PLANE, highlight);
+				currentTile = Game.map.heightIsoToTile(highlight.x, highlight.y);
+				if(currentBattler != null) {
+					finder.setMaxSearchDistance(-1);
+					int sx = currentBattler.getTilePosition().x;
+					int sy = currentBattler.getTilePosition().y;
+					int tx = currentTile.x;
+					int ty = currentTile.y;
+					Path path = finder.findPath(currentBattler, sx, sy, tx, ty);
+					if(path != null)
+					currentBattler.setPath(path);
+				}
 			}
+
 		}
 		return true;
 	}
@@ -157,7 +134,7 @@ public class SceneMap extends SceneBase implements InputProcessor{
 
 	@Override
 	public boolean touchDragged(int x, int y, int pointer) {
-		if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT) || Gdx.input.isTouched(1)){
+		if(!lockCamera && (Gdx.input.isButtonPressed(Input.Buttons.RIGHT) || Gdx.input.isTouched(1))){
 
 			Ray pickRay = Game.camera.getPickRay(Gdx.input.getX(), Gdx.input.getY());
 			Intersector.intersectRayPlane(pickRay, Cst.XY_PLANE, curr);
@@ -193,22 +170,24 @@ public class SceneMap extends SceneBase implements InputProcessor{
 
 	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
-		Ray pickRay = Game.camera.getPickRay(screenX, screenY);
-		Intersector.intersectRayPlane(pickRay, Cst.XY_PLANE, highlight);
-		currentTile = Game.map.heightIsoToTile(highlight.x, highlight.y);
-		spriteset.setHighlightedTile(currentTile);
-		if(currentBattler != null) {
-			if(currentBattler.isTileReachable(currentTile)) {
-				finder.setMaxSearchDistance(currentBattler.getMovementPoints());
-				int sx = currentBattler.getTilePosition().x;
-				int sy = currentBattler.getTilePosition().y;
-				int tx = currentTile.x;
-				int ty = currentTile.y;
-				path = finder.findPath(currentBattler, sx, sy, tx, ty);
-			} else {
-				path = null;
+		if(combatIsOn) {
+			Ray pickRay = Game.camera.getPickRay(screenX, screenY);
+			Intersector.intersectRayPlane(pickRay, Cst.XY_PLANE, highlight);
+			currentTile = Game.map.heightIsoToTile(highlight.x, highlight.y);
+			renderer.setHighlightedTile(currentTile);
+			if(currentBattler != null) {
+				if(currentBattler.isTileReachable(currentTile)) {
+					finder.setMaxSearchDistance(currentBattler.getMovementPoints());
+					int sx = currentBattler.getTilePosition().x;
+					int sy = currentBattler.getTilePosition().y;
+					int tx = currentTile.x;
+					int ty = currentTile.y;
+					path = finder.findPath(currentBattler, sx, sy, tx, ty);
+				} else {
+					path = null;
+				}
+				renderer.setPath(path);
 			}
-			spriteset.setPath(path);
 		}
 		return true;
 	}

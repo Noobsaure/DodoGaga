@@ -18,7 +18,7 @@ import com.me.mygdxgame.utils.DecalMgr;
 import com.me.mygdxgame.utils.Point2i;
 import com.me.mygdxgame.utils.script.GameObject;
 
-public class SpritesetMap {
+public class MapRenderer {
 
 	private Decal highlightedTile;
 	private boolean highlight = false;
@@ -44,7 +44,7 @@ public class SpritesetMap {
 	public Path getPath() {return path;}
 	public void setPath(Path path) {this.path = path;}
 
-	public SpritesetMap(){
+	public MapRenderer(){
 		Gdx.gl.glEnable(GL10.GL_DEPTH_TEST);
 		Gdx.gl.glDepthFunc(GL10.GL_LESS);
 		GroupStrategy strategy = new SimpleOrthoGroupStrategy();

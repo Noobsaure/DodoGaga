@@ -64,7 +64,7 @@ public class DataMap extends DataBase{
 				heightDiff = Math.max(heightDiffx, heightDiffy);
 
 				if(heightDiff > 0) {
-					for(int h=1;h<=heightDiff;h++) {
+					for(int h=2;h<=heightDiff;h++) {
 						oneDecal = DecalMgr.build((byte)3);
 						oneDecal.setPosition(
 								(i - j) * Cst.TILE_HW,

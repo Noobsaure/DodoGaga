@@ -1,8 +1,8 @@
 package com.me.mygdxgame.game;
 
 import com.badlogic.gdx.math.Vector3;
+import com.me.mygdxgame.ia.pathfinding.Path;
 import com.me.mygdxgame.utils.Cst;
-import com.me.mygdxgame.utils.Point2f;
 import com.me.mygdxgame.utils.Point2i;
 
 public abstract class GameMover extends GameEvent {
@@ -22,8 +22,6 @@ public abstract class GameMover extends GameEvent {
 	}
 
 	public float getRotation() {return rotation;}
-
-
 
 	@Override
 	public void setPosition(Point2i p){
@@ -67,39 +65,43 @@ public abstract class GameMover extends GameEvent {
 				tilePosition.x = tilePosition.x + 1;
 				positionOffsets.x = positionOffsets.x - Cst.TILE_HW;
 				positionOffsets.y = positionOffsets.y - Cst.TILE_HH;
-				if(positionOffsets.z != 0)
-					positionOffsets.z = positionOffsets.z
-					- Game.map.getHeight(tilePosition.x - 1, tilePosition.y)
-					+ Game.map.getHeight(tilePosition.x, tilePosition.y);
-				
+				int nz = Game.map.getHeight(tilePosition.x, tilePosition.y);
+				int oz = Game.map.getHeight(tilePosition.x - 1, tilePosition.y);
+				if(positionOffsets.z > 0) {
+					positionOffsets.z = positionOffsets.z + 0.5f * (oz - nz);
+				}
+
 			} else if(positionOffsets.y < -Cst.TILE_QH) {
 				tilePosition.y = tilePosition.y - 1;
 				positionOffsets.x = positionOffsets.x - Cst.TILE_HW;
 				positionOffsets.y = positionOffsets.y + Cst.TILE_HH;
-				if(positionOffsets.z != 0)
-					positionOffsets.z = positionOffsets.z
-					- Game.map.getHeight(tilePosition.x, tilePosition.y + 1)
-					+ Game.map.getHeight(tilePosition.x, tilePosition.y);
+				int nz = Game.map.getHeight(tilePosition.x, tilePosition.y);
+				int oz = Game.map.getHeight(tilePosition.x, tilePosition.y + 1);
+				if(positionOffsets.z > 0) {
+					positionOffsets.z = positionOffsets.z + 0.5f * (oz - nz);
+				}
 			}
-			
+
 		} else if (positionOffsets.x < -Cst.TILE_QW) {
 			if(positionOffsets.y > Cst.TILE_QH) {
 				tilePosition.y = tilePosition.y + 1;
 				positionOffsets.x = positionOffsets.x + Cst.TILE_HW;
 				positionOffsets.y = positionOffsets.y - Cst.TILE_HH;
-				if(positionOffsets.z != 0)
-					positionOffsets.z = positionOffsets.z
-					- Game.map.getHeight(tilePosition.x, tilePosition.y - 1)
-					+ Game.map.getHeight(tilePosition.x, tilePosition.y);
-				
+				int nz = Game.map.getHeight(tilePosition.x, tilePosition.y);
+				int oz = Game.map.getHeight(tilePosition.x, tilePosition.y - 1);
+				if(positionOffsets.z > 0) {
+					positionOffsets.z = positionOffsets.z + 0.5f * (oz - nz);
+				}
+
 			} else if(positionOffsets.y < -Cst.TILE_QH) {
 				tilePosition.x = tilePosition.x - 1;
 				positionOffsets.x = positionOffsets.x + Cst.TILE_HW;
 				positionOffsets.y = positionOffsets.y + Cst.TILE_HH;
-				if(positionOffsets.z != 0)
-					positionOffsets.z = positionOffsets.z
-					- Game.map.getHeight(tilePosition.x + 1, tilePosition.y)
-					+ Game.map.getHeight(tilePosition.x, tilePosition.y);
+				int nz = Game.map.getHeight(tilePosition.x, tilePosition.y);
+				int oz = Game.map.getHeight(tilePosition.x + 1, tilePosition.y);
+				if(positionOffsets.z > 0) {
+					positionOffsets.z = positionOffsets.z + 0.5f * (oz - nz);
+				}
 			}
 		}
 		hasChanged = true;
@@ -133,9 +135,11 @@ public abstract class GameMover extends GameEvent {
 	@Override
 	public void update() {
 		if(hasChanged) {
+
 			hasChanged = false;
 			int i = tilePosition.x;
 			int j = tilePosition.y;
+			System.out.println(positionOffsets.z);
 			getDecal().setPosition(
 					(i - j) * Cst.TILE_HW + positionOffsets.x,
 					-((i + j - 2) * Cst.TILE_HH - (Game.map.getHeight(i,j)+positionOffsets.z) * Cst.TILE_WALL_H + positionOffsets.y),

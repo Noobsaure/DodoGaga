@@ -29,6 +29,7 @@ public class DataMgr {
 		Data.textures.add(new DataTexture(3,"baseWall01","baseWall01.png"));
 		Data.textures.add(new DataTexture(4,"Character","characterBig.png"));
 		Data.textures.add(new DataTexture(5,"HighlightedTile","highlightedTile.png"));
+		Data.textures.add(new DataTexture(6,"blueTileSlope","blueTileSlope.png"));
 
 		//Load maps database
 		Data.maps = new ArrayList<DataMap>();
@@ -39,8 +40,11 @@ public class DataMgr {
 		int height;
 		for(int i=data.getSizeInTiles().x-1; i >= 0; i--){
 			for(int j=data.getSizeInTiles().y-1; j >= 0; j--){
-				height = 1+rand.nextInt(3);
-				data.setTile(i,j,(byte)(height-1));
+				height = 1+rand.nextInt(5);
+				//if(rand.nextInt(6) > 3) {
+				//	data.setTile(i,j,(byte)6);
+				//} else
+					data.setTile(i,j,(byte)(0));
 				data.setHeight(i,j,(byte)height);
 				if(height > data.getMaximumHeight()) {
 					data.setMaximumHeight(height);
@@ -49,8 +53,6 @@ public class DataMgr {
 		}
 		data.loadMap();
 		Data.maps.add(data);
-
-		Debug.debugMsg("Done");
 	}
 
 	public static void createGameObjects(){

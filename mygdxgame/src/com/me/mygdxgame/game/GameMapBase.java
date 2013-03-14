@@ -34,7 +34,7 @@ public abstract class GameMapBase {
 		/*for(int i=2;i<8;i++)
 			for(int j=2;j<8;j++)
 				gameBattlers.add(new GameBattler(3, new Point2i(i,j)));*/
-		gameBattlers.add(new GameBattler(4, new Point2i(2,2)));
+		gameBattlers.add(new GameBattler(4, new Point2i(2,2), false));
 	}
 
 	public static Point2f tileToIsof(int i, int j) {
@@ -106,30 +106,33 @@ public abstract class GameMapBase {
 		return heightIsoToTile(new Point2f(x,y), ignoreCliff);
 	}
 
-	public Vector3 getOffsets(int x, int y, int tx, int ty, float zOffset) {
-		Vector3 res = new Vector3(0,0,0);
-		/*if(mapData.getHeight(x,y) > mapData.getHeight(tx, ty))
-			res.z = 1;
-		else
-			res.z = mapData.getHeight(tx, ty) - mapData.getHeight(x, y);*/
+	public float[] getOffsets(int x, int y, int tx, int ty, float zOffset) {
+		float[] res = new float[] {0,0,0,0};
+		if(mapData.getHeight(x,y) > mapData.getHeight(tx, ty)) {
+			res[2] = 1;
+			res[3] = mapData.getHeight(tx, ty) - (mapData.getHeight(x,y) + 1);
+		}else if (mapData.getHeight(x,y) < mapData.getHeight(tx, ty)) {
+			res[2] = mapData.getHeight(tx, ty) - mapData.getHeight(x, y) + 1;
+			res[3] = -1;
+		}
 		switch(x-tx) {
 		case -1:
-			res.x = Cst.TILE_HW;
-			res.y = Cst.TILE_HH;
+			res[0] = Cst.TILE_HW;
+			res[1] = Cst.TILE_HH;
 			break;
 		case 1:
-			res.x = -Cst.TILE_HW;
-			res.y = -Cst.TILE_HH;
+			res[0] = -Cst.TILE_HW;
+			res[1] = -Cst.TILE_HH;
 			break;
 		case 0:
 			switch(y-ty) {
 			case -1:
-				res.x = -Cst.TILE_HW;
-				res.y = Cst.TILE_HH;
+				res[0] = -Cst.TILE_HW;
+				res[1] = Cst.TILE_HH;
 				break;
 			case 1:
-				res.x = +Cst.TILE_HW;
-				res.y = -Cst.TILE_HH;				
+				res[0] = +Cst.TILE_HW;
+				res[1] = -Cst.TILE_HH;				
 				break;
 			default:
 				break;

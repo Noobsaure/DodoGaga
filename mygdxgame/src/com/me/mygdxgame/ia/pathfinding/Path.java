@@ -84,6 +84,16 @@ public class Path {
 		steps.add(0, new Step(x, y));
 	}
 	
+	public Step popStep() {
+		Step res = (Step) steps.get(0);
+		steps.remove(0);
+		return res;
+	}
+	
+	public void clear() {
+		steps.clear();
+	}
+	
 	/**
 	 * Check if this path contains the given step
 	 * 

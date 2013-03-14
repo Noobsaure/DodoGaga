@@ -2,6 +2,7 @@ package com.me.mygdxgame.game;
 
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.me.mygdxgame.utils.DecalMgr;
+import com.me.mygdxgame.utils.Point2f;
 import com.me.mygdxgame.utils.Point2i;
 
 public class GameEntity{
@@ -35,12 +36,13 @@ public class GameEntity{
 	
 	public int getTextureId() {return this.textureId;}
 
-	public Decal getDecal() {
-		return decal;
+	public Point2f getRealPosition() {
+		return new Point2f(decal.getX(),decal.getY());
 	}
 
-	public void setDecal(Decal decal) {
-		this.decal = decal;
-	}
+	public float getRealPositionX() {return decal.getX();}
+	public float getRealPositionY() {return decal.getY();}
 	
+	public Decal getDecal() {return decal;}
+	public void setDecal(Decal decal) {this.decal = decal;}
 }
